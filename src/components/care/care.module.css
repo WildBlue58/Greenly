@@ -1,0 +1,629 @@
+/* 养护组件样式 */
+
+/* CarePlan 样式 */
+.carePlan {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+}
+
+.planHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.planTitle {
+  flex: 1;
+}
+
+.plantName {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.planSubtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.planProgress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress {
+  width: 80px;
+}
+
+.progressText {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* NextTask 样式 */
+.nextTask {
+  margin-bottom: 24px;
+}
+
+.nextTaskTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.nextTaskCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-light) 100%
+  );
+  border-radius: var(--border-radius);
+  color: white;
+}
+
+.taskIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.taskContent {
+  flex: 1;
+}
+
+.taskTitle {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.taskDescription {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.taskMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.taskDue {
+  opacity: 0.8;
+}
+
+.completeButton {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  flex-shrink: 0;
+}
+
+.completeButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* TaskList 样式 */
+.taskList {
+  margin-top: 24px;
+}
+
+.taskListTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.taskSection {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  margin-bottom: 12px;
+  transition: var(--transition);
+}
+
+.taskItem:hover {
+  background-color: rgba(76, 175, 80, 0.05);
+  transform: translateX(4px);
+}
+
+.taskItem.completed {
+  opacity: 0.6;
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.taskItem.completed .taskTitle {
+  text-decoration: line-through;
+}
+
+.taskActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actionButton {
+  background-color: var(--background-white);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.actionButton:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.taskCompleted {
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+/* CareRecord 样式 */
+.careRecord {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+  margin-bottom: 16px;
+}
+
+.recordHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.recordIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.recordInfo {
+  flex: 1;
+}
+
+.recordTitle {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.recordPlant {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.recordType {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: var(--primary-light);
+  color: white;
+  border-radius: var(--border-radius-small);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.recordActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.recordContent {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.recordDescription {
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.recordNotes {
+  margin-bottom: 12px;
+}
+
+.notesLabel {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+
+.notesText {
+  margin: 8px 0 0 0;
+  padding: 12px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.recordImages {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+}
+
+.recordImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--border-radius-small);
+  flex-shrink: 0;
+}
+
+.recordTime {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* CareReminder 样式 */
+.careReminder {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+}
+
+.reminderTitle {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reminderList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reminderItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--primary-color);
+}
+
+.reminderContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.reminderIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.reminderInfo {
+  flex: 1;
+}
+
+.reminderTask {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reminderPlant {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.reminderTime {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.reminderActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.reminderAction {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.emptyReminders {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* CareStats 样式 */
+.careStats {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+}
+
+.statsTitle {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.statCard:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+  transform: translateY(-2px);
+}
+
+.statIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.statContent {
+  flex: 1;
+}
+
+.statValue {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.statLabel {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.progressSection {
+  margin-bottom: 24px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progressLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.progressValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.progress {
+  width: 100%;
+}
+
+.weeklySection {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-light) 100%
+  );
+  border-radius: var(--border-radius);
+  color: white;
+}
+
+.weeklyTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.weeklyStats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.weeklyValue {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.weeklyLabel {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* CareForm 样式 */
+.formPopup {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.formContent {
+  padding: 20px;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form {
+  margin-bottom: 24px;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancelButton,
+.submitButton {
+  flex: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .nextTaskCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .taskItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .taskActions {
+    align-self: flex-end;
+  }
+
+  .reminderItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .reminderActions {
+    align-self: flex-end;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .planHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .planProgress {
+    align-self: flex-end;
+  }
+
+  .recordHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .recordActions {
+    align-self: flex-end;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .carePlan,
+  .careRecord,
+  .careReminder,
+  .careStats {
+    background-color: var(--background-white);
+  }
+
+  .taskItem {
+    background-color: var(--background-light);
+  }
+
+  .statCard {
+    background-color: var(--background-light);
+  }
+
+  .notesText {
+    background-color: var(--background-light);
+  }
+}
