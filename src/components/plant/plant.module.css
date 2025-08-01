@@ -1,0 +1,505 @@
+/* 植物组件样式 */
+
+/* PlantCard 样式 */
+.plantCard {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.plantCard:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.cardImage {
+  position: relative;
+  overflow: hidden;
+}
+
+.cardActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.plantCard:hover .cardActions {
+  opacity: 1;
+}
+
+.actionButton {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.actionButton:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.cardContent {
+  padding: 16px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.plantName {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.plantSpecies {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.infoLabel {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.infoValue {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* PlantList 样式 */
+.plantList {
+  padding: 16px;
+}
+
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.listTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.listItem {
+  height: fit-content;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* PlantDetail 样式 */
+.plantDetail {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+}
+
+.detailImage {
+  position: relative;
+  overflow: hidden;
+}
+
+.detailContent {
+  padding: 20px;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.detailTitle {
+  flex: 1;
+}
+
+.detailName {
+  margin: 0 0 4px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.detailSpecies {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.detailActions {
+  display: flex;
+  gap: 8px;
+}
+
+.detailAction {
+  background-color: var(--background-light);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.detailAction:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.detailInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.infoSection {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+.infoSection:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.wateringInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.wateringItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+}
+
+.wateringLabel {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.wateringValue {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.waterButton {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.notes {
+  margin: 0;
+  padding: 16px;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* PlantForm 样式 */
+.formPopup {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.formContent {
+  padding: 20px;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form {
+  margin-bottom: 24px;
+}
+
+.imageUpload {
+  margin-bottom: 20px;
+}
+
+.uploadArea {
+  position: relative;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.uploadArea:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+}
+
+.uploadPlaceholder svg {
+  font-size: 48px;
+  color: var(--primary-color);
+}
+
+.fileInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancelButton,
+.submitButton {
+  flex: 1;
+}
+
+/* PlantRecognition 样式 */
+.recognition {
+  padding: 20px;
+  text-align: center;
+}
+
+.recognitionHeader {
+  margin-bottom: 24px;
+}
+
+.recognitionTitle {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.recognitionDesc {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.recognitionArea {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.previewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.previewActions {
+  display: flex;
+  gap: 12px;
+}
+
+.previewActions button {
+  flex: 1;
+}
+
+.uploadArea {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background-color: var(--background-light);
+}
+
+.uploadArea:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-secondary);
+}
+
+.uploadPlaceholder svg {
+  font-size: 64px;
+  color: var(--primary-color);
+}
+
+.uploadPlaceholder span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .listGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailName {
+    font-size: 24px;
+  }
+
+  .detailActions {
+    gap: 4px;
+  }
+
+  .detailAction {
+    width: 36px;
+    height: 36px;
+  }
+
+  .formContent {
+    padding: 16px;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .previewActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .listHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .listTitle {
+    font-size: 20px;
+  }
+
+  .detailHeader {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .detailActions {
+    align-self: flex-end;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .plantCard {
+    background-color: var(--background-white);
+  }
+
+  .plantDetail {
+    background-color: var(--background-white);
+  }
+
+  .uploadArea {
+    background-color: var(--background-light);
+  }
+
+  .wateringItem {
+    background-color: var(--background-light);
+  }
+
+  .notes {
+    background-color: var(--background-light);
+  }
+}
