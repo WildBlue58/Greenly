@@ -1,0 +1,376 @@
+/* 首页样式 */
+.home {
+  padding: 16px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  min-height: 100vh;
+}
+
+/* 欢迎区域 */
+.welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  color: white;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+}
+
+.welcomeContent {
+  flex: 1;
+}
+
+.greeting {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+/* 统计网格 */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.statContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statInfo {
+  flex: 1;
+}
+
+.statNumber {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 区域样式 */
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* 快速操作 */
+.quickActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.actionCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.actionCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.actionContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.actionInfo {
+  flex: 1;
+}
+
+.actionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.actionDesc {
+  font-size: 12px;
+  color: #666;
+}
+
+.actionArrow {
+  color: #999;
+  font-size: 16px;
+}
+
+/* 植物列表 */
+.plantsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plantCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.plantCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.plantContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.plantImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.plantImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plantInfo {
+  flex: 1;
+}
+
+.plantName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.plantSpecies {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.plantStatus {
+  display: flex;
+  gap: 8px;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.status.healthy {
+  background: #e8f5e8;
+  color: #4caf50;
+}
+
+.status.needs_care {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+/* 空状态 */
+.emptyCard {
+  background: white;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.emptyText {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+/* 进度卡片 */
+.progressCard {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.progressContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressLabel {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.progressPercent {
+  font-size: 16px;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.taskItem.completed {
+  color: #4caf50;
+}
+
+.taskItem.completed span {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .home {
+    padding: 12px;
+  }
+
+  .welcome {
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .greeting {
+    font-size: 20px;
+  }
+
+  .statsGrid {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .statCard {
+    padding: 12px;
+  }
+
+  .statNumber {
+    font-size: 20px;
+  }
+
+  .actionCard,
+  .plantCard {
+    padding: 12px;
+  }
+
+  .plantImage {
+    width: 50px;
+    height: 50px;
+  }
+
+  .progressCard {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,369 @@
+/* 用户个人资料页面样式 */
+.userProfile {
+  padding: 16px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  min-height: 100vh;
+}
+
+/* 用户信息卡片 */
+.userCard {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userAvatar {
+  flex-shrink: 0;
+  border: 4px solid #e8f5e8;
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.userBio {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.userTags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.userTag {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+/* 统计卡片 */
+.statsCard {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8fff8;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.statItem:hover {
+  background: #e8f5e8;
+  transform: translateY(-2px);
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statInfo {
+  flex: 1;
+}
+
+.statNumber {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: #666;
+}
+
+/* 菜单卡片 */
+.menuCard {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.menuList {
+  padding: 0;
+}
+
+.menuItem {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.menuItem:last-child {
+  border-bottom: none;
+}
+
+.menuItem:hover {
+  background: #f8fff8;
+}
+
+.menuIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 成就卡片 */
+.achievementsCard {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.achievementCount {
+  font-size: 12px;
+  color: #666;
+  background: #e8f5e8;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.achievementsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.achievementItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.achievementItem.earned {
+  background: #f8fff8;
+  border: 1px solid #e8f5e8;
+}
+
+.achievementItem.locked {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  opacity: 0.7;
+}
+
+.achievementIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.achievementInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.achievementName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.achievementDesc {
+  font-size: 11px;
+  color: #666;
+}
+
+.achievementStatus {
+  flex-shrink: 0;
+}
+
+/* 活动卡片 */
+.activityCard {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f8fff8;
+  transition: all 0.3s ease;
+}
+
+.activityItem:hover {
+  background: #e8f5e8;
+}
+
+.activityIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.activityContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.activityDesc {
+  font-size: 11px;
+  color: #666;
+}
+
+/* 退出登录 */
+.logoutSection {
+  margin-top: 24px;
+  margin-bottom: 80px;
+}
+
+.logoutButton {
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.logoutButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .userProfile {
+    padding: 12px;
+  }
+
+  .userCard {
+    padding: 20px;
+  }
+
+  .userName {
+    font-size: 18px;
+  }
+
+  .userBio {
+    font-size: 13px;
+  }
+
+  .statsGrid {
+    gap: 12px;
+  }
+
+  .statItem {
+    padding: 10px;
+  }
+
+  .statIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .statNumber {
+    font-size: 16px;
+  }
+
+  .menuItem {
+    padding: 14px 16px;
+  }
+
+  .achievementsCard,
+  .activityCard {
+    padding: 16px;
+  }
+
+  .achievementItem,
+  .activityItem {
+    padding: 10px;
+  }
+
+  .logoutButton {
+    font-size: 14px;
+  }
+}

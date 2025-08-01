@@ -1,0 +1,306 @@
+/* 植物列表页面样式 */
+.plantList {
+  padding: 16px;
+  background: linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%);
+  min-height: 100vh;
+}
+
+/* 搜索区域 */
+.searchSection {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  margin-bottom: 12px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* 列表容器 */
+.listContainer {
+  min-height: 400px;
+}
+
+.plantsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 植物卡片 */
+.plantCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.plantCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.plantContent {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.plantImage {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.plantImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: white;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.plantInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.plantName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plantSpecies {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.plantDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.detailLabel {
+  color: #999;
+  min-width: 60px;
+}
+
+.detailValue {
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plantActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 空状态 */
+.emptyState {
+  padding: 40px 20px;
+}
+
+.addButton {
+  margin-top: 16px;
+}
+
+/* 悬浮添加按钮 */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+  z-index: 1000;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .plantList {
+    padding: 12px;
+  }
+  
+  .plantCard {
+    padding: 12px;
+  }
+  
+  .plantContent {
+    gap: 12px;
+  }
+  
+  .plantImage {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .plantName {
+    font-size: 14px;
+  }
+  
+  .plantSpecies {
+    font-size: 11px;
+  }
+  
+  .detailItem {
+    font-size: 11px;
+  }
+  
+  .detailLabel {
+    min-width: 50px;
+  }
+  
+  .fab {
+    bottom: 70px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* 下拉刷新样式 */
+.pullRefresh {
+  min-height: 200px;
+}
+
+/* 搜索框样式优化 */
+.searchInput :global(.rv-search) {
+  border-radius: 8px;
+  background: white;
+}
+
+.searchInput :global(.rv-search__content) {
+  border-radius: 8px;
+}
+
+/* 筛选按钮样式优化 */
+.filterButton {
+  border-radius: 16px;
+  font-size: 11px;
+  padding: 4px 10px;
+  height: 28px;
+  line-height: 20px;
+}
+
+/* 卡片悬停效果 */
+.plantCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.plantCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(139, 195, 74, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.plantCard:hover::before {
+  opacity: 1;
+}
+
+/* 状态徽章动画 */
+.statusBadge {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 按钮样式优化 */
+.plantActions button {
+  border-radius: 6px;
+  font-size: 11px;
+  padding: 4px 8px;
+  height: 24px;
+  line-height: 16px;
+}
+
+/* 图片加载优化 */
+.plantImage {
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plantImage::before {
+  content: '🌱';
+  font-size: 24px;
+  opacity: 0.3;
+}
+
+.plantImage img {
+  position: relative;
+  z-index: 1;
+} 

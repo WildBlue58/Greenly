@@ -1,0 +1,415 @@
+/* 养护计划页面样式 */
+.carePlan {
+  padding: 16px;
+  background: linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%);
+  min-height: 100vh;
+}
+
+/* 统计区域 */
+.statsSection {
+  margin-bottom: 20px;
+}
+
+.statsCard {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.statsContent {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #666;
+}
+
+.progressSection {
+  margin-top: 16px;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* 筛选区域 */
+.filterSection {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filterSection button {
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* 任务区域 */
+.tasksSection {
+  margin-bottom: 80px;
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.taskCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.taskCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.taskContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.taskHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.taskIcon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.taskInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.taskTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskPlant {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+.taskActions {
+  flex-shrink: 0;
+}
+
+.taskDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.taskMeta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.taskType,
+.taskPriority,
+.taskStatus {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.taskDate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.taskDate svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 空状态 */
+.emptyState {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.addButton {
+  margin-top: 16px;
+}
+
+/* 悬浮添加按钮 */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+  z-index: 1000;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+}
+
+/* 任务状态样式 */
+.taskCard.completed {
+  opacity: 0.7;
+}
+
+.taskCard.completed .taskTitle {
+  text-decoration: line-through;
+}
+
+.taskCard.overdue {
+  border-left: 4px solid #F44336;
+}
+
+.taskCard.pending {
+  border-left: 4px solid #FF9800;
+}
+
+/* 优先级样式 */
+.taskPriority.high {
+  background: rgba(244, 67, 54, 0.1);
+  color: #F44336;
+}
+
+.taskPriority.medium {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.taskPriority.low {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+/* 任务类型样式 */
+.taskType.water {
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+}
+
+.taskType.fertilize {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.taskType.prune {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.taskType.repot {
+  background: rgba(156, 39, 176, 0.1);
+  color: #9C27B0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .carePlan {
+    padding: 12px;
+  }
+  
+  .statsCard {
+    padding: 16px;
+  }
+  
+  .statNumber {
+    font-size: 20px;
+  }
+  
+  .taskCard {
+    padding: 12px;
+  }
+  
+  .taskIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  
+  .taskTitle {
+    font-size: 14px;
+  }
+  
+  .taskPlant {
+    font-size: 11px;
+  }
+  
+  .fab {
+    bottom: 70px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* 动画效果 */
+.taskCard {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 进度条样式优化 */
+.progressSection :global(.rv-progress) {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressSection :global(.rv-progress__pivot) {
+  display: none;
+}
+
+/* 标签样式优化 */
+.taskMeta :global(.rv-tag) {
+  border-radius: 4px;
+  font-size: 10px;
+  padding: 2px 6px;
+  height: auto;
+  line-height: 1.2;
+}
+
+/* 按钮样式优化 */
+.taskActions button {
+  border-radius: 6px;
+  font-size: 11px;
+  padding: 4px 8px;
+  height: 24px;
+  line-height: 16px;
+}
+
+/* 统计卡片悬停效果 */
+.statsCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.statsCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(139, 195, 74, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.statsCard:hover::before {
+  opacity: 1;
+}
+
+/* 任务图标动画 */
+.taskIcon {
+  transition: all 0.3s ease;
+}
+
+.taskCard:hover .taskIcon {
+  transform: scale(1.1);
+}
+
+/* 完成按钮样式 */
+.taskActions button {
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.taskActions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* 筛选按钮样式 */
+.filterSection button {
+  transition: all 0.3s ease;
+}
+
+.filterSection button:hover {
+  transform: translateY(-1px);
+}
+
+/* 空状态优化 */
+.emptyState {
+  background: white;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addButton {
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+} 

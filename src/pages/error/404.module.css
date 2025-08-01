@@ -1,0 +1,296 @@
+/* 404错误页面样式 */
+.error404 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%);
+  padding: 20px;
+}
+
+.errorContent {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.errorIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: bounce 2s infinite;
+}
+
+.errorTitle {
+  font-size: 72px;
+  font-weight: 700;
+  color: #4CAF50;
+  margin: 0 0 8px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.errorSubtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.errorDesc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+}
+
+.errorActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.homeButton {
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.homeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.backButton {
+  background: white;
+  border: 1px solid #E0E0E0;
+  color: #666;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background: #F8FFF8;
+  border-color: #4CAF50;
+  color: #4CAF50;
+  transform: translateY(-2px);
+}
+
+.errorTips {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.tipsTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tipsTitle::before {
+  content: '💡';
+  font-size: 18px;
+}
+
+.tipsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tipsList li {
+  font-size: 14px;
+  color: #666;
+  padding: 6px 0;
+  position: relative;
+  padding-left: 20px;
+}
+
+.tipsList li::before {
+  content: '🌿';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-size: 12px;
+}
+
+/* 动画效果 */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.errorTitle {
+  animation: fadeInUp 0.8s ease;
+}
+
+.errorSubtitle {
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+.errorDesc {
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.errorActions {
+  animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.errorTips {
+  animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .error404 {
+    padding: 16px;
+  }
+  
+  .errorIcon {
+    font-size: 60px;
+  }
+  
+  .errorTitle {
+    font-size: 56px;
+  }
+  
+  .errorSubtitle {
+    font-size: 20px;
+  }
+  
+  .errorDesc {
+    font-size: 14px;
+  }
+  
+  .errorActions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .homeButton,
+  .backButton {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .errorTips {
+    padding: 16px;
+  }
+  
+  .tipsTitle {
+    font-size: 14px;
+  }
+  
+  .tipsList li {
+    font-size: 13px;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .error404 {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+  
+  .errorSubtitle {
+    color: #ffffff;
+  }
+  
+  .errorDesc {
+    color: #cccccc;
+  }
+  
+  .backButton {
+    background: #333333;
+    border-color: #555555;
+    color: #cccccc;
+  }
+  
+  .backButton:hover {
+    background: #404040;
+    border-color: #4CAF50;
+    color: #4CAF50;
+  }
+  
+  .errorTips {
+    background: #333333;
+  }
+  
+  .tipsTitle {
+    color: #ffffff;
+  }
+  
+  .tipsList li {
+    color: #cccccc;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .errorActions {
+    display: none;
+  }
+  
+  .error404 {
+    background: white !important;
+  }
+  
+  .errorTitle {
+    color: black !important;
+  }
+  
+  .errorSubtitle {
+    color: black !important;
+  }
+  
+  .errorDesc {
+    color: black !important;
+  }
+  
+  .errorTips {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  .tipsTitle {
+    color: black !important;
+  }
+  
+  .tipsList li {
+    color: black !important;
+  }
+} 
