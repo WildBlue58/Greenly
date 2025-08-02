@@ -1,0 +1,178 @@
+/* 头像上传组件样式 */
+.avatarUpload {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border: 3px solid #e8f5e8;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.avatarUpload:hover {
+  border-color: #4CAF50;
+  transform: scale(1.05);
+}
+
+.avatarUpload:hover .uploadOverlay {
+  opacity: 1;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-radius: 50%;
+}
+
+.placeholderIcon {
+  font-size: 30px;
+  color: #4CAF50;
+}
+
+.uploadOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+.uploadIcon {
+  font-size: 20px;
+  color: white;
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-top: 2px solid #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 预览对话框样式 */
+.previewDialog {
+  border-radius: 16px;
+}
+
+.previewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.previewAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e8f5e8;
+  margin-bottom: 16px;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewTip {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .uploadIcon {
+    font-size: 16px;
+  }
+  
+  .placeholderIcon {
+    font-size: 24px;
+  }
+  
+  .previewAvatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .previewContainer {
+    padding: 16px;
+  }
+}
+
+/* 无障碍和交互增强 */
+.avatarUpload:focus {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
+.avatarUpload:active {
+  transform: scale(0.98);
+}
+
+/* 悬停提示 */
+.avatarUpload::before {
+  content: '点击更换头像';
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.avatarUpload:hover::before {
+  opacity: 1;
+}

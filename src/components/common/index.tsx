@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import {
   Button as VantButton,
   Input as VantInput,
@@ -185,11 +185,23 @@ export const showToast = (
   message: string,
   type: "success" | "fail" | "loading" = "success"
 ) => {
-  Toast({
-    message,
-    type,
-    duration: 2000,
-  });
+  if (type === "success") {
+    Toast.success({
+      message: message,
+    });
+  } else if (type === "fail") {
+    Toast.fail({
+      message: message,
+    });
+  } else if (type === "loading") {
+    Toast.loading({
+      message: message,
+    });
+  } else {
+    Toast.info({
+      message: message,
+    });
+  }
 };
 
 // 空状态组件
@@ -280,3 +292,9 @@ export const Card: React.FC<CardProps> = ({
     </div>
   );
 };
+
+// 植物图片组件
+export { default as PlantImage } from "./PlantImage";
+
+// 头像上传组件
+export { default as AvatarUpload } from "./AvatarUpload";

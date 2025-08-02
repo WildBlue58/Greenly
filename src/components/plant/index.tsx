@@ -18,7 +18,7 @@ import {
   Input,
   Loading,
   Empty,
-  showToast,
+  // showToast, // 暂时注释掉，使用 alert 替代
 } from "../common";
 import styles from "./plant.module.css";
 
@@ -366,15 +366,15 @@ export const PlantForm: React.FC<PlantFormProps> = ({
 
   const handleSubmit = useCallback(() => {
     if (!formData.name.trim()) {
-      showToast("请输入植物名称");
+      alert("请输入植物名称");
       return;
     }
     if (!formData.species.trim()) {
-      showToast("请输入植物品种");
+      alert("请输入植物品种");
       return;
     }
     if (!formData.location.trim()) {
-      showToast("请输入植物位置");
+      alert("请输入植物位置");
       return;
     }
 

@@ -1,32 +1,23 @@
 import React, { useState, useCallback, useMemo } from "react";
 import {
-  Card,
   Progress,
-  Tag,
-  Button,
-  Cell,
   Popup,
   Form,
   Field,
   Toast,
+  Picker,
+  DatetimePicker,
 } from "react-vant";
 import {
   Clock,
   Checked,
   Close,
-  Plus,
   Edit,
   Delete,
   CalendarO,
+  Arrow,
 } from "@react-vant/icons";
-import {
-  Card as CustomCard,
-  Button as CustomButton,
-  Loading,
-  Empty,
-  Tag as CustomTag,
-  showToast,
-} from "../common";
+import { Button as CustomButton, Empty, Tag as CustomTag } from "../common";
 import styles from "./care.module.css";
 
 // 养护类型定义
@@ -256,6 +247,16 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                       完成于: {task.completedAt}
                     </span>
                   </div>
+                </div>
+                <div className={styles.taskActions}>
+                  <CustomButton
+                    size="small"
+                    type="danger"
+                    onClick={() => onTaskDelete?.(task)}
+                    className={styles.actionButton}
+                  >
+                    <Delete />
+                  </CustomButton>
                 </div>
               </div>
             ))}
@@ -549,6 +550,12 @@ export const CareForm: React.FC<CareFormProps> = ({
     priority: task?.priority || "medium",
   });
 
+  // 弹窗状态
+  const [showPlantPicker, setShowPlantPicker] = useState(false);
+  const [showTypePicker, setShowTypePicker] = useState(false);
+  const [showPriorityPicker, setShowPriorityPicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const taskTypes = [
     { value: "water", label: "浇水", icon: "💧" },
     { value: "fertilize", label: "施肥", icon: "🌱" },
@@ -563,136 +570,272 @@ export const CareForm: React.FC<CareFormProps> = ({
     { value: "low", label: "低优先级", color: "primary" },
   ];
 
+  // 准备选择器数据
+  const plantPickerColumns = useMemo(() => {
+    return [
+      plants.map((plant) => ({
+        text: plant.name,
+        value: plant.id,
+      })),
+    ];
+  }, [plants]);
+
+  const typePickerColumns = useMemo(() => {
+    return [
+      taskTypes.map((type) => ({
+        text: `${type.icon} ${type.label}`,
+        value: type.value,
+      })),
+    ];
+  }, []);
+
+  const priorityPickerColumns = useMemo(() => {
+    return [
+      priorities.map((priority) => ({
+        text: priority.label,
+        value: priority.value,
+      })),
+    ];
+  }, []);
+
+  // 处理选择器确认
+  const handlePlantConfirm = useCallback(
+    (values: string[]) => {
+      const selectedPlant = plants.find((plant) => plant.id === values[0]);
+      if (selectedPlant) {
+        setFormData((prev) => ({
+          ...prev,
+          plantId: selectedPlant.id,
+        }));
+      }
+      setShowPlantPicker(false);
+    },
+    [plants]
+  );
+
+  const handleTypeConfirm = useCallback((values: string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      type: values[0] as any,
+    }));
+    setShowTypePicker(false);
+  }, []);
+
+  const handlePriorityConfirm = useCallback((values: string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      priority: values[0] as any,
+    }));
+    setShowPriorityPicker(false);
+  }, []);
+
+  const handleDateConfirm = useCallback((value: Date) => {
+    setFormData((prev) => ({
+      ...prev,
+      dueDate: value.toISOString(),
+    }));
+    setShowDatePicker(false);
+  }, []);
+
   const handleSubmit = useCallback(() => {
     if (!formData.plantId) {
-      showToast("请选择植物");
+      Toast.fail("请选择植物");
       return;
     }
     if (!formData.title.trim()) {
-      showToast("请输入任务标题");
+      Toast.fail("请输入任务标题");
       return;
     }
     if (!formData.dueDate) {
-      showToast("请选择截止日期");
+      Toast.fail("请选择截止日期");
       return;
     }
 
-    onSubmit(formData);
-  }, [formData, onSubmit]);
+    const selectedPlant = plants.find((p) => p.id === formData.plantId);
+    const selectedType = taskTypes.find((t) => t.value === formData.type);
+
+    onSubmit({
+      ...formData,
+      plantName: selectedPlant?.name || "",
+      title: formData.title || `给${selectedPlant?.name}${selectedType?.label}`,
+    });
+  }, [formData, onSubmit, plants]);
 
   return (
-    <Popup
-      visible={visible}
-      onClose={onClose}
-      position="bottom"
-      round
-      className={`${styles.formPopup} ${className}`}
-    >
-      <div className={styles.formContent}>
-        <div className={styles.formHeader}>
-          <h2 className={styles.formTitle}>
-            {task ? "编辑任务" : "添加养护任务"}
-          </h2>
+    <>
+      <Popup
+        visible={visible}
+        onClose={onClose}
+        position="bottom"
+        round
+        className={`${styles.formPopup} ${className}`}
+      >
+        <div className={styles.formContent}>
+          <div className={styles.formHeader}>
+            <h2 className={styles.formTitle}>
+              {task ? "编辑任务" : "添加养护任务"}
+            </h2>
+          </div>
+
+          <Form className={styles.form}>
+            <Field
+              label="选择植物"
+              value={
+                plants.find((p) => p.id === formData.plantId)?.name ||
+                "请选择植物"
+              }
+              placeholder="请选择植物"
+              required
+              readOnly
+              rightIcon={<Arrow />}
+              onClick={() => setShowPlantPicker(true)}
+            />
+
+            <Field
+              label="任务类型"
+              value={
+                taskTypes.find((t) => t.value === formData.type)?.label ||
+                "请选择任务类型"
+              }
+              placeholder="请选择任务类型"
+              required
+              readOnly
+              rightIcon={<Arrow />}
+              onClick={() => setShowTypePicker(true)}
+            />
+
+            <Field
+              label="任务标题"
+              value={formData.title}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, title: value }))
+              }
+              placeholder="请输入任务标题"
+              required
+            />
+
+            <Field
+              label="任务描述"
+              value={formData.description}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, description: value }))
+              }
+              placeholder="请输入任务描述"
+              type="textarea"
+              rows={3}
+            />
+
+            <Field
+              label="截止日期"
+              value={
+                formData.dueDate
+                  ? new Date(formData.dueDate).toLocaleString("zh-CN", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "请选择截止日期"
+              }
+              placeholder="请选择截止日期"
+              required
+              readOnly
+              rightIcon={<CalendarO />}
+              onClick={() => setShowDatePicker(true)}
+            />
+
+            <Field
+              label="优先级"
+              value={
+                priorities.find((p) => p.value === formData.priority)?.label ||
+                "请选择优先级"
+              }
+              placeholder="请选择优先级"
+              required
+              readOnly
+              rightIcon={<Arrow />}
+              onClick={() => setShowPriorityPicker(true)}
+            />
+          </Form>
+
+          <div className={styles.formActions}>
+            <CustomButton
+              type="default"
+              onClick={onClose}
+              disabled={loading}
+              className={styles.cancelButton}
+            >
+              取消
+            </CustomButton>
+            <CustomButton
+              type="primary"
+              onClick={handleSubmit}
+              loading={loading}
+              className={styles.submitButton}
+            >
+              {task ? "更新" : "添加"}
+            </CustomButton>
+          </div>
         </div>
+      </Popup>
 
-        <Form className={styles.form}>
-          <Field
-            label="选择植物"
-            value={formData.plantId}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, plantId: value }))
-            }
-            placeholder="请选择植物"
-            required
-            readOnly
-            onClick={() => {
-              // 这里应该打开植物选择器
-            }}
-          />
+      {/* 植物选择器 */}
+      <Popup
+        visible={showPlantPicker}
+        position="bottom"
+        onClose={() => setShowPlantPicker(false)}
+      >
+        <Picker
+          title="选择植物"
+          columns={plantPickerColumns}
+          onConfirm={handlePlantConfirm}
+          onCancel={() => setShowPlantPicker(false)}
+        />
+      </Popup>
 
-          <Field
-            label="任务类型"
-            value={formData.type}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, type: value as any }))
-            }
-            placeholder="请选择任务类型"
-            required
-            readOnly
-            onClick={() => {
-              // 这里应该打开类型选择器
-            }}
-          />
+      {/* 任务类型选择器 */}
+      <Popup
+        visible={showTypePicker}
+        position="bottom"
+        onClose={() => setShowTypePicker(false)}
+      >
+        <Picker
+          title="选择任务类型"
+          columns={typePickerColumns}
+          onConfirm={handleTypeConfirm}
+          onCancel={() => setShowTypePicker(false)}
+        />
+      </Popup>
 
-          <Field
-            label="任务标题"
-            value={formData.title}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, title: value }))
-            }
-            placeholder="请输入任务标题"
-            required
-          />
+      {/* 优先级选择器 */}
+      <Popup
+        visible={showPriorityPicker}
+        position="bottom"
+        onClose={() => setShowPriorityPicker(false)}
+      >
+        <Picker
+          title="选择优先级"
+          columns={priorityPickerColumns}
+          onConfirm={handlePriorityConfirm}
+          onCancel={() => setShowPriorityPicker(false)}
+        />
+      </Popup>
 
-          <Field
-            label="任务描述"
-            value={formData.description}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, description: value }))
-            }
-            placeholder="请输入任务描述"
-            type="textarea"
-            rows={3}
-          />
-
-          <Field
-            label="截止日期"
-            value={formData.dueDate}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, dueDate: value }))
-            }
-            placeholder="请选择截止日期"
-            required
-            readOnly
-            onClick={() => {
-              // 这里应该打开日期选择器
-            }}
-          />
-
-          <Field
-            label="优先级"
-            value={formData.priority}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, priority: value as any }))
-            }
-            placeholder="请选择优先级"
-            required
-            readOnly
-            onClick={() => {
-              // 这里应该打开优先级选择器
-            }}
-          />
-        </Form>
-
-        <div className={styles.formActions}>
-          <CustomButton
-            type="default"
-            onClick={onClose}
-            disabled={loading}
-            className={styles.cancelButton}
-          >
-            取消
-          </CustomButton>
-          <CustomButton
-            type="primary"
-            onClick={handleSubmit}
-            loading={loading}
-            className={styles.submitButton}
-          >
-            {task ? "更新" : "添加"}
-          </CustomButton>
-        </div>
-      </div>
-    </Popup>
+      {/* 日期选择器 */}
+      <Popup
+        visible={showDatePicker}
+        position="bottom"
+        onClose={() => setShowDatePicker(false)}
+      >
+        <DatetimePicker
+          title="选择截止日期"
+          type="datetime"
+          value={formData.dueDate ? new Date(formData.dueDate) : new Date()}
+          onConfirm={handleDateConfirm}
+          onCancel={() => setShowDatePicker(false)}
+          minDate={new Date()}
+        />
+      </Popup>
+    </>
   );
 };

@@ -10,7 +10,7 @@ import { ChatO, UserO, PhotoO } from "@react-vant/icons";
 import {
   Button as CustomButton,
   Loading as CustomLoading,
-  showToast,
+  // showToast, // 暂时注释掉，使用 alert 替代
 } from "../common";
 import styles from "./ai.module.css";
 
@@ -374,7 +374,7 @@ export const ImageGenerator: React.FC<ImageGeneratorProps> = ({
 
   const handleGenerate = useCallback(() => {
     if (!prompt.trim()) {
-      showToast("请输入生成描述");
+      alert("请输入生成描述");
       return;
     }
 
@@ -490,11 +490,11 @@ export const PlantDiagnosis: React.FC<PlantDiagnosisProps> = ({
 
   const handleDiagnose = useCallback(() => {
     if (!selectedImage) {
-      showToast("请选择植物图片");
+      alert("请选择植物图片");
       return;
     }
     if (!symptoms.trim()) {
-      showToast("请描述症状");
+      alert("请描述症状");
       return;
     }
 
