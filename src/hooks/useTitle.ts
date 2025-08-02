@@ -16,7 +16,6 @@ const PAGE_TITLES: Record<string, string> = {
   
   // 养护管理
   '/care': '养护管理 - 小养',
-  '/care/plan': '养护计划 - 小养',
   '/care/add': '添加养护任务 - 小养',
   '/care/edit': '编辑养护任务 - 小养',
   '/care/record': '养护记录 - 小养',

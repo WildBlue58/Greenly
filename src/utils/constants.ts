@@ -310,7 +310,7 @@ export const ROUTE_CONSTANTS = {
     PLANTS: '/plants',
     PLANT_DETAIL: '/plants/:id',
     CARE: '/care',
-    CARE_PLAN: '/care/plan',
+    CARE_PLAN: '/care',
     AI: '/ai',
     AI_CHAT: '/ai/chat',
     SETTINGS: '/settings',

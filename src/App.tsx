@@ -195,7 +195,10 @@ function App() {
                 {/* 养护管理路由 */}
                 <Route path="care">
                   <Route index element={<Care />} />
-                  <Route path="plan" element={<CarePlan />} />
+                  <Route
+                    path="plan"
+                    element={<Navigate to="/care" replace />}
+                  />
                   {/* <Route path="add" element={<AddCareTask />} /> */}
                   <Route path="edit/:id" element={<EditCareTask />} />
                 </Route>

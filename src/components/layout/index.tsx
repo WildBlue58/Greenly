@@ -237,7 +237,7 @@ export const Layout: React.FC<LayoutProps> = ({
             <div
               className={styles.sidebarItem}
               onClick={() => {
-                navigate("/care/plan");
+                navigate("/care");
                 handleSidebarClose();
               }}
             >

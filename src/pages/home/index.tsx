@@ -21,10 +21,10 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const { plants, fetchPlants, user } = useStore() as any;
   const { todayTasks, careStats, fetchCareTasks } = useCare();
-  
+
   // 设置页面标题
   useTitle();
-  
+
   const [stats, setStats] = useState({
     totalPlants: 0,
     healthyPlants: 0,
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
       title: "养护计划",
       desc: "查看养护安排",
       color: "#8BC34A",
-      onClick: () => navigate("/care/plan"),
+      onClick: () => navigate("/care"),
     },
     {
       icon: ChatO,
