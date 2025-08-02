@@ -31,44 +31,73 @@ interface PlantDetail {
 const PlantDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { plants } = useStore() as any;
+  const { plants, deletePlant } = useStore() as any;
   const [plant, setPlant] = useState<PlantDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 模拟从API获取植物详情
-    const mockPlant: PlantDetail = {
-      id: id || "1",
-      name: "绿萝",
-      species: "Epipremnum aureum",
-      status: "healthy",
-      image:
-        "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400",
-      location: "客厅窗台",
-      createdAt: new Date("2024-01-15"),
-      lastWatered: new Date("2024-01-20"),
-      nextWatering: new Date("2024-01-23"),
-      careLevel: "easy",
-      lightNeeds: "medium",
-      waterNeeds: "medium",
-      temperature: {
-        min: 15,
-        max: 30,
-      },
-      humidity: 60,
-      description:
-        "绿萝是一种非常受欢迎的室内植物，以其美丽的叶子和易于养护而闻名。它能够净化空气，是理想的室内装饰植物。",
-      careTips: [
-        "保持土壤湿润但不要过湿",
-        "避免阳光直射，喜欢散射光",
-        "定期擦拭叶片保持清洁",
-        "每月施肥一次",
-      ],
-    };
+    if (!id) {
+      setLoading(false);
+      return;
+    }
 
-    setPlant(mockPlant);
-    setLoading(false);
-  }, [id]);
+    // 从store中根据ID查找植物数据
+    if (plants && plants.length > 0) {
+      const foundPlant = plants.find((p: any) => p.id === id);
+
+      if (foundPlant) {
+        // 转换store中的植物数据为详情页面所需的格式
+        const plantDetail: PlantDetail = {
+          id: foundPlant.id,
+          name: foundPlant.name,
+          species: foundPlant.species || "未知品种",
+          status:
+            foundPlant.status || foundPlant.health === "good"
+              ? "healthy"
+              : "needs_care",
+          image:
+            foundPlant.image ||
+            "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400",
+          location: foundPlant.location || "未设置",
+          createdAt: new Date(
+            foundPlant.createdAt || foundPlant.addedAt || Date.now()
+          ),
+          lastWatered: new Date(foundPlant.lastWatered || Date.now()),
+          nextWatering: new Date(
+            foundPlant.nextWatering || Date.now() + 7 * 24 * 60 * 60 * 1000
+          ),
+          careLevel: foundPlant.careLevel || "easy",
+          lightNeeds: foundPlant.lightNeeds || "medium",
+          waterNeeds: foundPlant.waterNeeds || "medium",
+          temperature: foundPlant.temperature || { min: 15, max: 30 },
+          humidity: foundPlant.humidity || 60,
+          description:
+            foundPlant.description ||
+            foundPlant.notes ||
+            "这是一株美丽的植物，需要精心照料。",
+          careTips: foundPlant.careTips || [
+            "保持土壤适度湿润",
+            "提供适当的光照",
+            "定期检查植物状态",
+            "注意通风环境",
+          ],
+        };
+
+        setPlant(plantDetail);
+      } else {
+        // 植物不存在
+        setPlant(null);
+      }
+      setLoading(false);
+    } else {
+      // 如果plants数据还未加载，等待一下
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [id, plants]);
 
   const getStatusColor = (status: string) => {
     return status === "healthy" ? "#4CAF50" : "#FF9800";
@@ -134,10 +163,16 @@ const PlantDetail: React.FC = () => {
     navigate(`/plant/edit/${id}`);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // 删除确认逻辑
     if (window.confirm("确定要删除这株植物吗？")) {
-      navigate("/plant/list");
+      try {
+        await deletePlant(id!);
+        navigate("/plant/list");
+      } catch (error) {
+        console.error("删除植物失败:", error);
+        alert("删除失败，请重试");
+      }
     }
   };
 
@@ -172,7 +207,19 @@ const PlantDetail: React.FC = () => {
     <div className={styles.plantDetail}>
       {/* 头部图片 */}
       <div className={styles.plantImage}>
-        <img src={plant.image} alt={plant.name} />
+        <img
+          src={
+            plant.image ||
+            "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400"
+          }
+          alt={plant.name}
+          onError={(e) => {
+            // 图片加载失败时使用默认图片
+            const target = e.target as HTMLImageElement;
+            target.src =
+              "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400";
+          }}
+        />
         <div className={styles.imageOverlay}>
           <Button
             icon={<ArrowLeft />}

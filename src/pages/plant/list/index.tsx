@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card, Button, Search, Empty, PullRefresh, List } from "react-vant";
-import { Plus, Search as SearchIcon, FilterO } from "@react-vant/icons";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Card, Button, Search, Empty, PullRefresh } from "react-vant";
+import { Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
 import styles from "./list.module.css";
 
 const PlantList: React.FC = () => {
   const navigate = useNavigate();
-  const { plants, fetchPlants, loading } = useStore();
+  const location = useLocation();
+  const { plants, fetchPlants } = useStore() as any;
   const [searchValue, setSearchValue] = useState("");
   const [filterStatus, setFilterStatus] = useState<
     "all" | "healthy" | "needs_care"
   >("all");
-  const [refreshing, setRefreshing] = useState(false);
-
   useEffect(() => {
     fetchPlants();
-  }, [fetchPlants]);
+  }, [fetchPlants, location.pathname]);
 
   const onRefresh = async () => {
-    setRefreshing(true);
     await fetchPlants();
-    setRefreshing(false);
   };
 
-  const filteredPlants = plants.filter((plant) => {
+  const filteredPlants = plants.filter((plant: any) => {
     const matchesSearch =
       plant.name.toLowerCase().includes(searchValue.toLowerCase()) ||
       plant.species.toLowerCase().includes(searchValue.toLowerCase());
@@ -74,14 +71,10 @@ const PlantList: React.FC = () => {
       </div>
 
       {/* 植物列表 */}
-      <PullRefresh
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        className={styles.listContainer}
-      >
+      <PullRefresh onRefresh={onRefresh} className={styles.listContainer}>
         {filteredPlants.length > 0 ? (
-          <List className={styles.plantsGrid}>
-            {filteredPlants.map((plant) => (
+          <div className={styles.plantsGrid}>
+            {filteredPlants.map((plant: any) => (
               <Card
                 key={plant.id}
                 className={styles.plantCard}
@@ -89,7 +82,19 @@ const PlantList: React.FC = () => {
               >
                 <div className={styles.plantContent}>
                   <div className={styles.plantImage}>
-                    <img src={plant.image} alt={plant.name} />
+                    <img
+                      src={
+                        plant.image ||
+                        "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop"
+                      }
+                      alt={plant.name}
+                      onError={(e) => {
+                        // 图片加载失败时使用默认图片
+                        const target = e.target as HTMLImageElement;
+                        target.src =
+                          "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop";
+                      }}
+                    />
                     <div
                       className={styles.statusBadge}
                       style={{ backgroundColor: getStatusColor(plant.status) }}
@@ -142,7 +147,7 @@ const PlantList: React.FC = () => {
                 </div>
               </Card>
             ))}
-          </List>
+          </div>
         ) : (
           <Empty
             description={

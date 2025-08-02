@@ -1,0 +1,229 @@
+/* 编辑植物页面样式 */
+.editPlant {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  padding-bottom: 80px; /* 为底部导航留出空间 */
+}
+
+/* 头部样式 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.backButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.placeholder {
+  width: 40px; /* 占位元素，保持标题居中 */
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.loadingText {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 内容区域 */
+.content {
+  padding: 16px;
+}
+
+/* 卡片样式 */
+.imageCard,
+.formCard {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+/* 图片上传区域 */
+.imageSection {
+  text-align: center;
+}
+
+.uploader {
+  width: 100%;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  border: 2px dashed #4CAF50;
+  border-radius: 8px;
+  background: #f8fffe;
+  color: #4CAF50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.uploadArea:hover {
+  background: #e8f5e8;
+  border-color: #388E3C;
+}
+
+.uploadText {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #4CAF50;
+}
+
+/* 表单样式 */
+.formCard .rv-cell-group {
+  background: transparent;
+  box-shadow: none;
+}
+
+.formCard .rv-cell {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.formCard .rv-cell:last-child {
+  border-bottom: none;
+}
+
+.formCard .rv-field__label {
+  color: #333;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.formCard .rv-field__control {
+  color: #666;
+}
+
+.formCard .rv-field__control::-webkit-input-placeholder {
+  color: #ccc;
+}
+
+.formCard .rv-field__control::-moz-placeholder {
+  color: #ccc;
+}
+
+.formCard .rv-field__control:-ms-input-placeholder {
+  color: #ccc;
+}
+
+.formCard .rv-field__control::placeholder {
+  color: #ccc;
+}
+
+/* 提交按钮区域 */
+.submitSection {
+  padding: 24px 0;
+  margin-top: 20px;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .content {
+    padding: 12px;
+  }
+  
+  .imageCard,
+  .formCard {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .uploadArea {
+    padding: 30px 15px;
+  }
+  
+  .header {
+    padding: 12px 16px;
+  }
+  
+  .title {
+    font-size: 16px;
+  }
+}
+
+/* 选择器弹窗样式优化 */
+.rv-popup {
+  border-radius: 12px 12px 0 0;
+}
+
+.rv-picker {
+  background: white;
+}
+
+.rv-picker__toolbar {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rv-picker__confirm {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.rv-picker__cancel {
+  color: #999;
+}
+
+.rv-picker__title {
+  font-weight: 600;
+  color: #333;
+}

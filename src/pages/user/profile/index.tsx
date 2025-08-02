@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Button, Cell, Avatar, Tag, Divider } from 'react-vant';
+import { Card, Button, Cell, Tag, Divider } from 'react-vant';
 import { UserO, SettingO, StarO, FlowerO, ServiceO, ChatO } from '@react-vant/icons';
 import { useStore } from '../../../store';
 import styles from './profile.module.css';
@@ -58,13 +58,15 @@ const UserProfile: React.FC = () => {
       {/* 用户信息卡片 */}
       <Card className={styles.userCard}>
         <div className={styles.userHeader}>
-          <Avatar 
-            size={80} 
-            src={user?.avatar} 
-            className={styles.userAvatar}
-          >
-            <UserO />
-          </Avatar>
+          <div className={styles.userAvatar}>
+            {user?.avatar ? (
+              <img src={user.avatar} alt={user.name} className={styles.avatarImage} />
+            ) : (
+              <div className={styles.avatarPlaceholder}>
+                <UserO size={40} color="#4CAF50" />
+              </div>
+            )}
+          </div>
           <div className={styles.userInfo}>
             <h2 className={styles.userName}>{user?.name || '植物爱好者'}</h2>
             <p className={styles.userBio}>热爱植物，享受养护的乐趣 🌱</p>
