@@ -1,13 +1,5 @@
 import type { ChatMessage, PlantRecognitionResult, ImageGenerationResult } from "./types";
-
-// 模拟AI响应数据
-const mockAIResponses = {
-  "浇水": "根据你的描述，这盆植物需要浇水了。建议使用室温的水，避免冷水直接浇灌。浇水时要确保土壤充分湿润，但不要积水。",
-  "施肥": "植物施肥建议使用稀释的肥料，避免浓度过高烧伤根系。一般建议在生长季节每月施肥1-2次。",
-  "光照": "这盆植物需要充足的散射光，避免阳光直射。可以放在朝东或朝北的窗台附近。",
-  "修剪": "定期修剪可以促进植物生长，去除枯黄叶片，保持植株美观。",
-  "换盆": "当植物根系充满花盆时，需要换更大的花盆。建议在春季进行换盆操作。",
-};
+import { plantCareChat, type LLMMessage } from "../utils/llm";
 
 // AI状态管理
 export const aiStore = (set: any, get: any) => ({
@@ -31,30 +23,25 @@ export const aiStore = (set: any, get: any) => ({
     }));
 
     try {
-      // 模拟AI响应延迟
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // 获取当前聊天历史，转换为LLM格式
+      const currentMessages = get().chatMessages;
+      const chatHistory: LLMMessage[] = currentMessages
+        .slice(-10) // 只保留最近10条消息作为上下文
+        .map((msg: ChatMessage) => ({
+          role: msg.role,
+          content: msg.content,
+        }));
+
+      // 调用真实的LLM API
+      const response = await plantCareChat(message, chatHistory, model);
       
-      // 生成模拟响应
-      let aiResponse = "我是你的植物养护AI助手，很高兴为你服务！";
-      
-      // 根据关键词生成相应回复
-      if (message.includes("浇水") || message.includes("水")) {
-        aiResponse = mockAIResponses["浇水"];
-      } else if (message.includes("施肥") || message.includes("肥料")) {
-        aiResponse = mockAIResponses["施肥"];
-      } else if (message.includes("光照") || message.includes("阳光")) {
-        aiResponse = mockAIResponses["光照"];
-      } else if (message.includes("修剪")) {
-        aiResponse = mockAIResponses["修剪"];
-      } else if (message.includes("换盆")) {
-        aiResponse = mockAIResponses["换盆"];
-      } else {
-        aiResponse = "感谢你的咨询！我是专业的植物养护AI助手，可以为你提供浇水、施肥、光照、修剪等方面的建议。请告诉我你的具体问题。";
+      if (response.code !== 0 || !response.data) {
+        throw new Error(response.msg || "AI响应失败");
       }
 
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        content: aiResponse,
+        content: response.data.content,
         role: "assistant",
         timestamp: new Date(),
         model,
@@ -66,7 +53,23 @@ export const aiStore = (set: any, get: any) => ({
       }));
     } catch (error) {
       console.error("AI聊天失败:", error);
-      set({ aiLoading: false });
+      
+      // 添加错误消息到聊天记录
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        content: error instanceof Error 
+          ? `抱歉，AI服务暂时不可用：${error.message}。请检查网络连接或稍后重试。` 
+          : "抱歉，AI服务暂时不可用，请稍后重试。",
+        role: "assistant",
+        timestamp: new Date(),
+        model,
+      };
+
+      set((state: any) => ({ 
+        chatMessages: [...state.chatMessages, errorMessage],
+        aiLoading: false 
+      }));
+      
       throw error;
     }
   },
@@ -130,7 +133,7 @@ export const aiStore = (set: any, get: any) => ({
   },
 
   // 植物诊断
-  diagnosePlant: async (image: File, symptoms: string) => {
+  diagnosePlant: async (image: File, _symptoms: string) => {
     set({ aiLoading: true });
     try {
       // 模拟诊断延迟

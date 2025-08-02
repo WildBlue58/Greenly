@@ -34,6 +34,19 @@ export interface Plant {
   location: string;
   wateringFrequency: number; // 浇水频率（天数）
   notes?: string;
+  description?: string; // 植物描述
+  
+  // 养护信息
+  careLevel?: "easy" | "medium" | "hard"; // 养护难度
+  lightNeeds?: "low" | "medium" | "high"; // 光照需求
+  waterNeeds?: "low" | "medium" | "high"; // 浇水需求
+  temperature?: {
+    min: number;
+    max: number;
+  }; // 适宜温度范围
+  humidity?: number; // 湿度要求（百分比）
+  careTips?: string[]; // 养护技巧
+  
   createdAt: string;
   updatedAt: string;
 }

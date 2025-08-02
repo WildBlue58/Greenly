@@ -1,70 +1,6 @@
 import type { CarePlan, CareRecord, CareTask } from "./types";
 
-// 模拟养护数据
-const mockCareTasks: CareTask[] = [
-  {
-    id: "1",
-    plantId: "1",
-    plantName: "绿萝",
-    type: "water",
-    title: "给绿萝浇水",
-    description: "绿萝需要定期浇水，保持土壤湿润",
-    dueDate: new Date().toISOString(),
-    completed: true,
-    completedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    priority: "high",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    plantId: "2",
-    plantName: "多肉植物",
-    type: "water",
-    title: "给多肉浇水",
-    description: "多肉植物需要浇水，叶子有些干瘪",
-    dueDate: new Date().toISOString(),
-    completed: false,
-    priority: "medium",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    plantId: "3",
-    plantName: "君子兰",
-    type: "fertilize",
-    title: "给君子兰施肥",
-    description: "君子兰开花期，需要适当施肥",
-    dueDate: new Date().toISOString(),
-    completed: false,
-    priority: "low",
-    createdAt: new Date().toISOString(),
-  },
-];
-
-const mockCareRecords: CareRecord[] = [
-  {
-    id: "1",
-    plantId: "1",
-    plantName: "绿萝",
-    type: "water",
-    title: "浇水记录",
-    description: "给绿萝浇水，土壤湿润",
-    completedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    notes: "生长良好",
-  },
-];
-
-const mockCarePlans: CarePlan[] = [
-  {
-    id: "1",
-    plantId: "1",
-    plantName: "绿萝",
-    tasks: mockCareTasks.filter(task => task.plantId === "1"),
-    nextTask: mockCareTasks.find(task => task.plantId === "1" && !task.completed),
-    progress: 67,
-    createdAt: new Date().toISOString(),
-  },
-];
+// 清空的初始数据 - 不使用模拟数据
 
 // 养护状态管理
 export const careStore = (set: any, get: any) => ({
@@ -85,13 +21,13 @@ export const careStore = (set: any, get: any) => ({
         return;
       }
 
-      // 如果没有存储的数据，使用模拟数据
-      console.log("使用模拟养护计划数据");
-      localStorage.setItem("carePlans", JSON.stringify(mockCarePlans));
-      set({ carePlans: mockCarePlans, careLoading: false });
+      // 如果没有存储的数据，使用空数组
+      console.log("初始化空的养护计划数据");
+      localStorage.setItem("carePlans", JSON.stringify([]));
+      set({ carePlans: [], careLoading: false });
     } catch (error) {
       console.error("获取养护计划失败:", error);
-      set({ carePlans: mockCarePlans, careLoading: false });
+      set({ carePlans: [], careLoading: false });
     }
   },
 
@@ -107,13 +43,13 @@ export const careStore = (set: any, get: any) => ({
         return;
       }
 
-      // 如果没有存储的数据，使用模拟数据
-      console.log("使用模拟养护记录数据");
-      localStorage.setItem("careRecords", JSON.stringify(mockCareRecords));
-      set({ careRecords: mockCareRecords, careLoading: false });
+      // 如果没有存储的数据，使用空数组
+      console.log("初始化空的养护记录数据");
+      localStorage.setItem("careRecords", JSON.stringify([]));
+      set({ careRecords: [], careLoading: false });
     } catch (error) {
       console.error("获取养护记录失败:", error);
-      set({ careRecords: mockCareRecords, careLoading: false });
+      set({ careRecords: [], careLoading: false });
     }
   },
 
@@ -129,13 +65,13 @@ export const careStore = (set: any, get: any) => ({
         return;
       }
 
-      // 如果没有存储的数据，使用模拟数据
-      console.log("使用模拟养护任务数据");
-      localStorage.setItem("careTasks", JSON.stringify(mockCareTasks));
-      set({ careTasks: mockCareTasks, careLoading: false });
+      // 如果没有存储的数据，使用空数组
+      console.log("初始化空的养护任务数据");
+      localStorage.setItem("careTasks", JSON.stringify([]));
+      set({ careTasks: [], careLoading: false });
     } catch (error) {
       console.error("获取养护任务失败:", error);
-      set({ careTasks: mockCareTasks, careLoading: false });
+      set({ careTasks: [], careLoading: false });
     }
   },
 
@@ -161,10 +97,10 @@ export const careStore = (set: any, get: any) => ({
         return { careTasks: newTasks };
       });
       
-      return newTask;
+      return { success: true, data: newTask };
     } catch (error) {
       console.error("添加养护任务失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '添加任务失败' };
     }
   },
 
@@ -194,9 +130,10 @@ export const careStore = (set: any, get: any) => ({
         localStorage.setItem("careTasks", JSON.stringify(updatedTasks));
         return { careTasks: updatedTasks };
       });
+      return { success: true };
     } catch (error) {
       console.error("完成任务失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '完成任务失败' };
     }
   },
 
@@ -208,9 +145,10 @@ export const careStore = (set: any, get: any) => ({
         localStorage.setItem("careTasks", JSON.stringify(filteredTasks));
         return { careTasks: filteredTasks };
       });
+      return { success: true };
     } catch (error) {
       console.error("删除养护任务失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '删除任务失败' };
     }
   },
 
@@ -235,9 +173,23 @@ export const careStore = (set: any, get: any) => ({
         return { careRecords: newRecords };
       });
       
-      return newRecord;
+      return { success: true, data: newRecord };
     } catch (error) {
       console.error("添加养护记录失败:", error);
+      return { success: false, error: error instanceof Error ? error.message : '添加记录失败' };
+    }
+  },
+
+  // 删除养护记录
+  deleteCareRecord: async (id: string) => {
+    try {
+      set((state: any) => {
+        const filteredRecords = state.careRecords.filter((record: CareRecord) => record.id !== id);
+        localStorage.setItem("careRecords", JSON.stringify(filteredRecords));
+        return { careRecords: filteredRecords };
+      });
+    } catch (error) {
+      console.error("删除养护记录失败:", error);
       throw error;
     }
   },
