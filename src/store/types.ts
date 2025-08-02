@@ -27,11 +27,12 @@ export interface Plant {
   name: string;
   species: string;
   image: string;
-  health: "excellent" | "good" | "fair" | "poor";
+  health: "excellent" | "good" | "fair" | "poor" | "warning";
   status: "healthy" | "needs_care" | "sick";
   lastWatered: string;
   nextWatering: string;
   location: string;
+  wateringFrequency: number; // 浇水频率（天数）
   notes?: string;
   createdAt: string;
   updatedAt: string;

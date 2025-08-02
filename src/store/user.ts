@@ -1,5 +1,16 @@
 import type { User, LoginCredentials, RegisterData } from "./types";
 
+// 模拟用户数据
+const mockUser: User = {
+  id: "1",
+  name: "植物爱好者",
+  email: "user@example.com",
+  avatar: "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=100&h=100&fit=crop",
+  phone: "13800138000",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
 // 用户状态管理
 export const userStore = (set: any, get: any) => ({
   user: null as User | null,
@@ -10,26 +21,14 @@ export const userStore = (set: any, get: any) => ({
   login: async (credentials: LoginCredentials) => {
     set({ loading: true });
     try {
-      // 模拟API调用
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      if (!response.ok) {
-        throw new Error("登录失败");
-      }
-
-      const data = await response.json();
-      
-      // 存储token
-      localStorage.setItem("token", data.token);
+      // 模拟登录成功
+      console.log("模拟登录成功");
+      const mockToken = "mock-jwt-token-" + Date.now();
+      localStorage.setItem("token", mockToken);
+      localStorage.setItem("user", JSON.stringify(mockUser));
       
       set({
-        user: data.user,
+        user: mockUser,
         isAuthenticated: true,
         loading: false,
       });
@@ -44,25 +43,23 @@ export const userStore = (set: any, get: any) => ({
   register: async (userData: RegisterData) => {
     set({ loading: true });
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error("注册失败");
-      }
-
-      const data = await response.json();
+      // 模拟注册成功
+      console.log("模拟注册成功");
+      const newUser: User = {
+        id: Date.now().toString(),
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
       
-      // 存储token
-      localStorage.setItem("token", data.token);
+      const mockToken = "mock-jwt-token-" + Date.now();
+      localStorage.setItem("token", mockToken);
+      localStorage.setItem("user", JSON.stringify(newUser));
       
       set({
-        user: data.user,
+        user: newUser,
         isAuthenticated: true,
         loading: false,
       });
@@ -76,6 +73,7 @@ export const userStore = (set: any, get: any) => ({
   // 登出
   logout: () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     set({
       user: null,
       isAuthenticated: false,
@@ -86,24 +84,13 @@ export const userStore = (set: any, get: any) => ({
   updateProfile: async (profile: Partial<User>) => {
     set({ loading: true });
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/user/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(profile),
-      });
-
-      if (!response.ok) {
-        throw new Error("更新资料失败");
-      }
-
-      const data = await response.json();
+      const currentUser = get().user;
+      const updatedUser = { ...currentUser, ...profile, updatedAt: new Date().toISOString() };
+      
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       
       set({
-        user: data.user,
+        user: updatedUser,
         loading: false,
       });
     } catch (error) {
@@ -116,34 +103,23 @@ export const userStore = (set: any, get: any) => ({
   // 检查登录状态
   checkAuth: async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    const storedUser = localStorage.getItem("user");
+    
+    if (!token || !storedUser) {
       set({ isAuthenticated: false, user: null });
       return;
     }
 
     try {
-      const response = await fetch("/api/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const user = JSON.parse(storedUser);
+      set({
+        user,
+        isAuthenticated: true,
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        set({
-          user: data.user,
-          isAuthenticated: true,
-        });
-      } else {
-        localStorage.removeItem("token");
-        set({
-          user: null,
-          isAuthenticated: false,
-        });
-      }
     } catch (error) {
       console.error("检查登录状态失败:", error);
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       set({
         user: null,
         isAuthenticated: false,

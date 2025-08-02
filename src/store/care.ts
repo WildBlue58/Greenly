@@ -1,5 +1,71 @@
 import type { CarePlan, CareRecord, CareTask } from "./types";
 
+// 模拟养护数据
+const mockCareTasks: CareTask[] = [
+  {
+    id: "1",
+    plantId: "1",
+    plantName: "绿萝",
+    type: "water",
+    title: "给绿萝浇水",
+    description: "绿萝需要定期浇水，保持土壤湿润",
+    dueDate: new Date().toISOString(),
+    completed: true,
+    completedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    priority: "high",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    plantId: "2",
+    plantName: "多肉植物",
+    type: "water",
+    title: "给多肉浇水",
+    description: "多肉植物需要浇水，叶子有些干瘪",
+    dueDate: new Date().toISOString(),
+    completed: false,
+    priority: "medium",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "3",
+    plantId: "3",
+    plantName: "君子兰",
+    type: "fertilize",
+    title: "给君子兰施肥",
+    description: "君子兰开花期，需要适当施肥",
+    dueDate: new Date().toISOString(),
+    completed: false,
+    priority: "low",
+    createdAt: new Date().toISOString(),
+  },
+];
+
+const mockCareRecords: CareRecord[] = [
+  {
+    id: "1",
+    plantId: "1",
+    plantName: "绿萝",
+    type: "water",
+    title: "浇水记录",
+    description: "给绿萝浇水，土壤湿润",
+    completedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    notes: "生长良好",
+  },
+];
+
+const mockCarePlans: CarePlan[] = [
+  {
+    id: "1",
+    plantId: "1",
+    plantName: "绿萝",
+    tasks: mockCareTasks.filter(task => task.plantId === "1"),
+    nextTask: mockCareTasks.find(task => task.plantId === "1" && !task.completed),
+    progress: 67,
+    createdAt: new Date().toISOString(),
+  },
+];
+
 // 养护状态管理
 export const careStore = (set: any, get: any) => ({
   carePlans: [] as CarePlan[],
@@ -11,23 +77,21 @@ export const careStore = (set: any, get: any) => ({
   fetchCarePlans: async () => {
     set({ careLoading: true });
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/care/plans", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("获取养护计划失败");
+      // 首先尝试从localStorage获取数据
+      const storedPlans = localStorage.getItem("carePlans");
+      if (storedPlans) {
+        const plans = JSON.parse(storedPlans);
+        set({ carePlans: plans, careLoading: false });
+        return;
       }
 
-      const data = await response.json();
-      set({ carePlans: data.plans, careLoading: false });
+      // 如果没有存储的数据，使用模拟数据
+      console.log("使用模拟养护计划数据");
+      localStorage.setItem("carePlans", JSON.stringify(mockCarePlans));
+      set({ carePlans: mockCarePlans, careLoading: false });
     } catch (error) {
       console.error("获取养护计划失败:", error);
-      set({ careLoading: false });
-      throw error;
+      set({ carePlans: mockCarePlans, careLoading: false });
     }
   },
 
@@ -35,23 +99,21 @@ export const careStore = (set: any, get: any) => ({
   fetchCareRecords: async () => {
     set({ careLoading: true });
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/care/records", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("获取养护记录失败");
+      // 首先尝试从localStorage获取数据
+      const storedRecords = localStorage.getItem("careRecords");
+      if (storedRecords) {
+        const records = JSON.parse(storedRecords);
+        set({ careRecords: records, careLoading: false });
+        return;
       }
 
-      const data = await response.json();
-      set({ careRecords: data.records, careLoading: false });
+      // 如果没有存储的数据，使用模拟数据
+      console.log("使用模拟养护记录数据");
+      localStorage.setItem("careRecords", JSON.stringify(mockCareRecords));
+      set({ careRecords: mockCareRecords, careLoading: false });
     } catch (error) {
       console.error("获取养护记录失败:", error);
-      set({ careLoading: false });
-      throw error;
+      set({ careRecords: mockCareRecords, careLoading: false });
     }
   },
 
@@ -59,47 +121,45 @@ export const careStore = (set: any, get: any) => ({
   fetchCareTasks: async () => {
     set({ careLoading: true });
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/care/tasks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("获取养护任务失败");
+      // 首先尝试从localStorage获取数据
+      const storedTasks = localStorage.getItem("careTasks");
+      if (storedTasks) {
+        const tasks = JSON.parse(storedTasks);
+        set({ careTasks: tasks, careLoading: false });
+        return;
       }
 
-      const data = await response.json();
-      set({ careTasks: data.tasks, careLoading: false });
+      // 如果没有存储的数据，使用模拟数据
+      console.log("使用模拟养护任务数据");
+      localStorage.setItem("careTasks", JSON.stringify(mockCareTasks));
+      set({ careTasks: mockCareTasks, careLoading: false });
     } catch (error) {
       console.error("获取养护任务失败:", error);
-      set({ careLoading: false });
-      throw error;
+      set({ careTasks: mockCareTasks, careLoading: false });
     }
   },
 
   // 添加养护任务
   addCareTask: async (taskData: Partial<CareTask>) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/care/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(taskData),
+      const newTask: CareTask = {
+        id: Date.now().toString(),
+        plantId: taskData.plantId || "",
+        plantName: taskData.plantName || "",
+        type: taskData.type || "water",
+        title: taskData.title || "新任务",
+        description: taskData.description || "",
+        dueDate: taskData.dueDate || new Date().toISOString(),
+        completed: false,
+        priority: taskData.priority || "medium",
+        createdAt: new Date().toISOString(),
+      };
+
+      set((state: any) => {
+        const newTasks = [...state.careTasks, newTask];
+        localStorage.setItem("careTasks", JSON.stringify(newTasks));
+        return { careTasks: newTasks };
       });
-
-      if (!response.ok) {
-        throw new Error("添加养护任务失败");
-      }
-
-      const newTask = await response.json();
-      set((state: any) => ({ 
-        careTasks: [...state.careTasks, newTask] 
-      }));
       
       return newTask;
     } catch (error) {
@@ -111,26 +171,13 @@ export const careStore = (set: any, get: any) => ({
   // 更新养护任务
   updateCareTask: async (id: string, taskData: Partial<CareTask>) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/api/care/tasks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(taskData),
+      set((state: any) => {
+        const updatedTasks = state.careTasks.map((task: CareTask) =>
+          task.id === id ? { ...task, ...taskData } : task
+        );
+        localStorage.setItem("careTasks", JSON.stringify(updatedTasks));
+        return { careTasks: updatedTasks };
       });
-
-      if (!response.ok) {
-        throw new Error("更新养护任务失败");
-      }
-
-      const updatedTask = await response.json();
-      set((state: any) => ({
-        careTasks: state.careTasks.map((task: CareTask) =>
-          task.id === id ? updatedTask : task
-        ),
-      }));
     } catch (error) {
       console.error("更新养护任务失败:", error);
       throw error;
@@ -140,24 +187,13 @@ export const careStore = (set: any, get: any) => ({
   // 完成养护任务
   completeCareTask: async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/api/care/tasks/${id}/complete`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      set((state: any) => {
+        const updatedTasks = state.careTasks.map((task: CareTask) =>
+          task.id === id ? { ...task, completed: true, completedAt: new Date().toISOString() } : task
+        );
+        localStorage.setItem("careTasks", JSON.stringify(updatedTasks));
+        return { careTasks: updatedTasks };
       });
-
-      if (!response.ok) {
-        throw new Error("完成任务失败");
-      }
-
-      const updatedTask = await response.json();
-      set((state: any) => ({
-        careTasks: state.careTasks.map((task: CareTask) =>
-          task.id === id ? updatedTask : task
-        ),
-      }));
     } catch (error) {
       console.error("完成任务失败:", error);
       throw error;
@@ -167,21 +203,11 @@ export const careStore = (set: any, get: any) => ({
   // 删除养护任务
   deleteCareTask: async (id: string) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/api/care/tasks/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      set((state: any) => {
+        const filteredTasks = state.careTasks.filter((task: CareTask) => task.id !== id);
+        localStorage.setItem("careTasks", JSON.stringify(filteredTasks));
+        return { careTasks: filteredTasks };
       });
-
-      if (!response.ok) {
-        throw new Error("删除养护任务失败");
-      }
-
-      set((state: any) => ({
-        careTasks: state.careTasks.filter((task: CareTask) => task.id !== id),
-      }));
     } catch (error) {
       console.error("删除养护任务失败:", error);
       throw error;
@@ -191,24 +217,23 @@ export const careStore = (set: any, get: any) => ({
   // 添加养护记录
   addCareRecord: async (recordData: Partial<CareRecord>) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/care/records", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(recordData),
+      const newRecord: CareRecord = {
+        id: Date.now().toString(),
+        plantId: recordData.plantId || "",
+        plantName: recordData.plantName || "",
+        type: recordData.type || "water",
+        title: recordData.title || "养护记录",
+        description: recordData.description || "",
+        completedAt: new Date().toISOString(),
+        notes: recordData.notes,
+        images: recordData.images,
+      };
+
+      set((state: any) => {
+        const newRecords = [...state.careRecords, newRecord];
+        localStorage.setItem("careRecords", JSON.stringify(newRecords));
+        return { careRecords: newRecords };
       });
-
-      if (!response.ok) {
-        throw new Error("添加养护记录失败");
-      }
-
-      const newRecord = await response.json();
-      set((state: any) => ({ 
-        careRecords: [...state.careRecords, newRecord] 
-      }));
       
       return newRecord;
     } catch (error) {
@@ -220,24 +245,26 @@ export const careStore = (set: any, get: any) => ({
   // 生成养护计划
   generateCarePlan: async (plantId: string) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/api/care/plans/generate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ plantId }),
-      });
-
-      if (!response.ok) {
-        throw new Error("生成养护计划失败");
+      const state = get();
+      const plant = state.plants?.find((p: any) => p.id === plantId);
+      if (!plant) {
+        throw new Error("植物不存在");
       }
 
-      const newPlan = await response.json();
-      set((state: any) => ({ 
-        carePlans: [...state.carePlans, newPlan] 
-      }));
+      const newPlan: CarePlan = {
+        id: Date.now().toString(),
+        plantId,
+        plantName: plant.name,
+        tasks: [],
+        progress: 0,
+        createdAt: new Date().toISOString(),
+      };
+
+      set((state: any) => {
+        const newPlans = [...state.carePlans, newPlan];
+        localStorage.setItem("carePlans", JSON.stringify(newPlans));
+        return { carePlans: newPlans };
+      });
       
       return newPlan;
     } catch (error) {
