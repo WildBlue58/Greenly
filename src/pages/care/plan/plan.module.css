@@ -178,9 +178,7 @@
   text-align: center;
 }
 
-.addButton {
-  margin-top: 16px;
-}
+
 
 /* 悬浮添加按钮 */
 .fab {
@@ -399,17 +397,4 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.addButton {
-  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
-  border: none;
-  color: white;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.addButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-} 
+ 

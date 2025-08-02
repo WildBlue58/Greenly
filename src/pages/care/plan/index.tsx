@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Tag, Progress, Calendar, Empty } from "react-vant";
-import { ClockO, StarO, Checked, Plus } from "@react-vant/icons";
+import { Card, Button, Tag, Progress, Empty } from "react-vant";
+import { ClockO, Checked, Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
-import type { Plant } from "../../../store/types";
 import styles from "./plan.module.css";
 
 interface CareTask {
@@ -17,7 +16,7 @@ interface CareTask {
 
 const CarePlan: React.FC = () => {
   const { plants } = useStore() as any;
-  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const [tasks, setTasks] = useState<CareTask[]>([]);
   const [filterStatus, setFilterStatus] = useState<
     "all" | "pending" | "completed"
@@ -148,10 +147,6 @@ const CarePlan: React.FC = () => {
         task.id === taskId ? { ...task, status: "completed" as const } : task
       )
     );
-  };
-
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
   };
 
   return (
@@ -289,18 +284,7 @@ const CarePlan: React.FC = () => {
               filterStatus !== "all" ? "没有符合条件的任务" : "还没有养护任务"
             }
             className={styles.emptyState}
-          >
-            <Button
-              type="primary"
-              onClick={() => {
-                /* 添加任务逻辑 */
-              }}
-              className={styles.addButton}
-            >
-              <Plus />
-              添加养护任务
-            </Button>
-          </Empty>
+          />
         )}
       </div>
 

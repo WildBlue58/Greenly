@@ -294,13 +294,16 @@
   justify-content: center;
 }
 
-.plantImage::before {
-  content: '🌱';
-  font-size: 24px;
-  opacity: 0.3;
-}
-
 .plantImage img {
   position: relative;
   z-index: 1;
+}
+
+/* 图片加载状态 */
+.plantImage.loading::before {
+  content: '🌱';
+  font-size: 24px;
+  opacity: 0.3;
+  position: absolute;
+  z-index: 0;
 } 

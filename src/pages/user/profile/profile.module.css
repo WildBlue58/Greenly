@@ -23,30 +23,6 @@
 
 .userAvatar {
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #e8f5e8;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatarImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatarPlaceholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
 }
 
 .userInfo {
@@ -54,11 +30,27 @@
   min-width: 0;
 }
 
+.userNameSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 .userName {
   font-size: 20px;
   font-weight: 600;
   color: #333;
-  margin: 0 0 8px 0;
+  margin: 0;
+  flex: 1;
+}
+
+.editNameBtn {
+  flex-shrink: 0;
+  height: 28px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
 }
 
 .userBio {
@@ -390,4 +382,24 @@
   .logoutButton {
     font-size: 14px;
   }
+}
+
+/* 编辑用户名对话框样式 */
+.editNameDialog {
+  border-radius: 16px;
+}
+
+.editNameContent {
+  padding: 16px 0;
+}
+
+.editNameContent .rv-field {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #f8f8f8;
+}
+
+.editNameContent .rv-field:focus-within {
+  border-color: #4caf50;
+  background: white;
 }

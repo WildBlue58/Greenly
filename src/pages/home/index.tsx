@@ -13,6 +13,7 @@ import {
 } from "@react-vant/icons";
 import { useStore } from "../../store";
 import type { Plant } from "../../store/types";
+import { AvatarUpload } from "../../components/common";
 import styles from "./home.module.css";
 
 const Home: React.FC = () => {
@@ -76,7 +77,15 @@ const Home: React.FC = () => {
           <p className={styles.subtitle}>今天也要好好照顾你的植物哦 🌱</p>
         </div>
         <div className={styles.avatar}>
-          <FlowerO />
+          {user?.avatar ? (
+            <AvatarUpload
+              src={user.avatar}
+              alt={user.name || "用户头像"}
+              size={60}
+            />
+          ) : (
+            <FlowerO />
+          )}
         </div>
       </div>
 

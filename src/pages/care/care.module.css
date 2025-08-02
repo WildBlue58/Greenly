@@ -1,0 +1,164 @@
+/* 养护页面样式 */
+.carePage {
+  min-height: 100vh;
+  background-color: var(--rv-background-color);
+  padding-bottom: 20px; /* 调整底部间距，配合全局导航栏 */
+}
+
+/* Tab 按钮 */
+.tabButtons {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  background: var(--rv-cell-background-color);
+}
+
+.tabButtons button {
+  flex: 1;
+}
+
+/* Tab 内容 */
+.tabContent {
+  background: var(--rv-background-color);
+}
+
+.pageContent {
+  padding: 16px;
+}
+
+/* 提醒区域 */
+.reminderSection {
+  margin-bottom: 16px;
+}
+
+/* 统计区域 */
+.statsSection {
+  margin-bottom: 16px;
+}
+
+/* 任务区域 */
+.taskSection {
+  background: var(--rv-cell-background-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabs {
+  --rv-tabs-nav-background-color: var(--rv-cell-background-color);
+}
+
+.taskList {
+  padding: 16px;
+  background: var(--rv-background-color);
+}
+
+.taskItem {
+  margin-bottom: 12px;
+}
+
+.taskItem:last-child {
+  margin-bottom: 0;
+}
+
+/* 记录列表 */
+.recordList {
+  padding: 16px;
+  background: var(--rv-background-color);
+}
+
+.recordItem {
+  margin-bottom: 12px;
+}
+
+.recordItem:last-child {
+  margin-bottom: 0;
+}
+
+/* 空状态 */
+.emptyState {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* 移除了底部操作栏，避免与全局导航栏重叠 */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .pageContent {
+    padding: 12px;
+  }
+
+  .taskItem {
+    margin-bottom: 8px;
+  }
+
+  .recordItem {
+    margin-bottom: 8px;
+  }
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* 筛选器 */
+.filterSection {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--rv-cell-background-color);
+  border-radius: 8px;
+}
+
+.filterRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.filterRow:last-child {
+  margin-bottom: 0;
+}
+
+.filterButton {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 搜索框 */
+.searchSection {
+  margin-bottom: 16px;
+}
+
+/* 浮动添加按钮 */
+.floatingAddButton {
+  position: fixed;
+  bottom: 80px; /* 调整位置，避免与全局导航栏重叠 */
+  right: 20px;
+  z-index: 99;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--rv-primary-color);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.floatingAddButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.floatingAddButton:active {
+  transform: scale(0.95);
+}

@@ -4,6 +4,7 @@ import { Card, Button, Tag, Progress, Cell, Divider } from "react-vant";
 import { ArrowLeft, Edit, Delete, CalendarO, StarO } from "@react-vant/icons";
 import { useStore } from "../../../store";
 import type { Plant } from "../../../store/types";
+import { PlantImage } from "../../../components/common";
 import styles from "./detail.module.css";
 
 interface PlantDetail {
@@ -207,18 +208,11 @@ const PlantDetail: React.FC = () => {
     <div className={styles.plantDetail}>
       {/* 头部图片 */}
       <div className={styles.plantImage}>
-        <img
-          src={
-            plant.image ||
-            "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400"
-          }
+        <PlantImage
+          src={plant.image}
           alt={plant.name}
-          onError={(e) => {
-            // 图片加载失败时使用默认图片
-            const target = e.target as HTMLImageElement;
-            target.src =
-              "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400";
-          }}
+          width="100%"
+          height="100%"
         />
         <div className={styles.imageOverlay}>
           <Button

@@ -1,0 +1,284 @@
+/* 编辑养护任务页面样式 */
+.editTaskPage {
+  min-height: 100vh;
+  background-color: var(--rv-background-color);
+}
+
+.navbar {
+  background: var(--rv-cell-background-color);
+  border-bottom: 1px solid var(--rv-border-color);
+}
+
+.content {
+  padding: 16px;
+  padding-bottom: 120px; /* 为底部按钮留更多空间 */
+}
+
+/* 加载状态 */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  gap: 16px;
+}
+
+.loadingText {
+  font-size: 14px;
+  color: var(--rv-text-color-2);
+}
+
+/* 错误状态 */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  gap: 16px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.errorText {
+  font-size: 16px;
+  color: var(--rv-text-color-2);
+}
+
+/* 完成状态横幅 */
+.completedBanner {
+  background: linear-gradient(135deg, #4caf50, #8bc34a);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.bannerText {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 表单样式 */
+.form {
+  background: var(--rv-cell-background-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.fieldItem {
+  border-bottom: 1px solid var(--rv-border-color);
+}
+
+.fieldItem:last-child {
+  border-bottom: none;
+}
+
+/* 优先级指示器 */
+.priorityIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+/* 任务信息 */
+.taskInfo {
+  background: var(--rv-cell-background-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.infoTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--rv-text-color);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--rv-border-color);
+  padding-bottom: 8px;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.infoItem:last-child {
+  margin-bottom: 0;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: var(--rv-text-color-2);
+}
+
+.infoValue {
+  font-size: 14px;
+  color: var(--rv-text-color);
+}
+
+/* 操作按钮 */
+.actions {
+  position: fixed;
+  bottom: 50px; /* 调整位置，避免与全局导航栏重叠 */
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: var(--rv-cell-background-color);
+  border-top: 1px solid var(--rv-border-color);
+  display: flex;
+  gap: 8px;
+  z-index: 100; /* 确保在合适的层级 */
+}
+
+.deleteButton {
+  flex: 1;
+  height: 48px;
+}
+
+.cancelButton {
+  flex: 1;
+  height: 48px;
+}
+
+.saveButton {
+  flex: 2;
+  height: 48px;
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  background-color: var(--rv-background-color-light);
+  color: var(--rv-text-color-3);
+}
+
+/* 更改指示器 */
+.changedField {
+  position: relative;
+}
+
+.changedField::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--rv-primary-color);
+  border-radius: 50%;
+}
+
+/* 表单状态 */
+.fieldError {
+  --rv-field-border-color: var(--rv-danger-color);
+  --rv-field-label-text-color: var(--rv-danger-color);
+}
+
+.fieldSelected {
+  --rv-field-border-color: var(--rv-primary-color);
+}
+
+.fieldDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .content {
+    padding: 12px;
+    padding-bottom: 120px;
+  }
+
+  .taskInfo {
+    padding: 12px;
+  }
+
+  .actions {
+    padding: 12px;
+    gap: 6px;
+  }
+
+  .actions button {
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+/* 动画效果 */
+.form,
+.taskInfo {
+  transition: all 0.3s ease;
+}
+
+.actions button {
+  transition: all 0.2s ease;
+}
+
+.actions button:active {
+  transform: scale(0.98);
+}
+
+/* 保存状态指示 */
+.saving {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* 确认对话框样式覆盖 */
+.confirmDialog {
+  --rv-dialog-confirm-button-text-color: var(--rv-danger-color);
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .editTaskPage {
+    background-color: #121212;
+  }
+
+  .taskInfo {
+    background-color: #1e1e1e;
+  }
+
+  .completedBanner {
+    background: linear-gradient(135deg, #2e7d32, #4caf50);
+  }
+}
+
+/* 任务类型图标 */
+.typeIcon {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+/* 状态标签 */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.statusBadge.completed {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.statusBadge.pending {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.statusBadge.overdue {
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}

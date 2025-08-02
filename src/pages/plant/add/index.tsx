@@ -8,10 +8,10 @@ import {
   Uploader,
   Picker,
   Popup,
-  Toast,
 } from "react-vant";
 import { ArrowLeft, PhotoO } from "@react-vant/icons";
 import { useStore } from "../../../store";
+// import { showToast } from "../../../components/common"; // 暂时注释掉，使用 alert 替代
 import styles from "./add.module.css";
 
 const AddPlant: React.FC = () => {
@@ -73,17 +73,17 @@ const AddPlant: React.FC = () => {
   const handleSubmit = async () => {
     // 表单验证
     if (!formData.name.trim()) {
-      Toast.fail("请输入植物名称");
+      alert("请输入植物名称");
       return;
     }
 
     if (!formData.species.trim()) {
-      Toast.fail("请输入植物种类");
+      alert("请输入植物种类");
       return;
     }
 
     if (!formData.location) {
-      Toast.fail("请选择植物位置");
+      alert("请选择植物位置");
       return;
     }
 
@@ -106,6 +106,13 @@ const AddPlant: React.FC = () => {
           Date.now() + (formData.wateringFrequency || 7) * 24 * 60 * 60 * 1000
         ).toISOString(),
         notes: formData.description,
+        // 默认养护信息
+        careLevel: "easy",
+        lightNeeds: "medium",
+        waterNeeds: "medium",
+        temperature: { min: 15, max: 30 },
+        humidity: 60,
+        careTips: ["保持土壤适度湿润", "提供适当的光照", "定期检查植物状态"],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -113,11 +120,11 @@ const AddPlant: React.FC = () => {
       // 添加植物到store
       await addPlant(newPlant);
 
-      Toast.success("植物添加成功！");
+      alert("植物添加成功！");
       navigate("/plant/list");
     } catch (error) {
       console.error("添加植物失败:", error);
-      Toast.fail("添加植物失败，请重试");
+      alert("添加植物失败，请重试");
     }
   };
 
