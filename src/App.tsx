@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,14 +9,15 @@ import {
 import { ConfigProvider } from "react-vant";
 import { Layout, BlankLayout } from "./components/layout";
 import Loading from "./components/common/Loading";
+import { useStore } from "./store";
 import "./App.css";
 
 // 懒加载页面组件
 const Home = React.lazy(() => import("./pages/home"));
 const PlantList = React.lazy(() => import("./pages/plant/list"));
 const PlantDetail = React.lazy(() => import("./pages/plant/detail"));
-// const PlantAdd = React.lazy(() => import("./pages/plant/add"));
-// const PlantEdit = React.lazy(() => import("./pages/plant/edit"));
+const PlantAdd = React.lazy(() => import("./pages/plant/add"));
+const PlantEdit = React.lazy(() => import("./pages/plant/edit"));
 const CarePlan = React.lazy(() => import("./pages/care/plan"));
 // const CareRecord = React.lazy(() => import("./pages/care/record"));
 // const CareReminder = React.lazy(() => import("./pages/care/reminder"));
@@ -52,9 +53,9 @@ const greenTheme = {
   "--rv-tab-active-text-color": "#4CAF50",
   "--rv-tab-default-color": "#666666",
   "--rv-tabs-default-color": "#4CAF50",
-  "--rv-tabs-line-height": "44px",
+  "--rv-tabs-line-height": "1.17rem",
   "--rv-tabs-nav-background-color": "#FFFFFF",
-  "--rv-tab-item-font-size": "14px",
+  "--rv-tab-item-font-size": "0.37rem",
   "--rv-tab-item-text-color": "#666666",
   "--rv-tab-item-active-text-color": "#4CAF50",
   "--rv-tab-item-active-background-color": "#E8F5E8",
@@ -68,6 +69,8 @@ const greenTheme = {
   "--rv-button-warning-border-color": "#FF9800",
   "--rv-button-danger-background-color": "#F44336",
   "--rv-button-danger-border-color": "#F44336",
+  "--rv-button-height": "1.2rem",
+  "--rv-button-font-size": "0.4rem",
   "--rv-cell-background-color": "#FFFFFF",
   "--rv-cell-border-color": "#E0E0E0",
   "--rv-cell-text-color": "#333333",
@@ -98,48 +101,6 @@ const greenTheme = {
   "--rv-list-finished-text-color": "#999999",
   "--rv-list-error-text-color": "#F44336",
   "--rv-empty-text-color": "#999999",
-  "--rv-empty-image-color": "#CCCCCC",
-  "--rv-loading-color": "#4CAF50",
-  "--rv-loading-text-color": "#666666",
-  "--rv-overlay-background-color": "rgba(0, 0, 0, 0.5)",
-  "--rv-popup-background-color": "#FFFFFF",
-  "--rv-popup-border-radius": "8px",
-  "--rv-popup-close-icon-color": "#999999",
-  "--rv-popup-close-icon-size": "20px",
-  "--rv-action-sheet-background-color": "#FFFFFF",
-  "--rv-action-sheet-border-radius": "8px",
-  "--rv-action-sheet-item-text-color": "#333333",
-  "--rv-action-sheet-item-disabled-text-color": "#999999",
-  "--rv-action-sheet-cancel-text-color": "#666666",
-  "--rv-action-sheet-cancel-background-color": "#F5F5F5",
-  "--rv-picker-background-color": "#FFFFFF",
-  "--rv-picker-border-radius": "8px",
-  "--rv-picker-title-text-color": "#333333",
-  "--rv-picker-confirm-text-color": "#4CAF50",
-  "--rv-picker-cancel-text-color": "#666666",
-  "--rv-picker-column-text-color": "#333333",
-  "--rv-picker-column-disabled-text-color": "#999999",
-  "--rv-picker-column-active-text-color": "#4CAF50",
-  "--rv-picker-column-loading-color": "#4CAF50",
-  "--rv-datetime-picker-background-color": "#FFFFFF",
-  "--rv-datetime-picker-border-radius": "8px",
-  "--rv-datetime-picker-title-text-color": "#333333",
-  "--rv-datetime-picker-confirm-text-color": "#4CAF50",
-  "--rv-datetime-picker-cancel-text-color": "#666666",
-  "--rv-datetime-picker-column-text-color": "#333333",
-  "--rv-datetime-picker-column-disabled-text-color": "#999999",
-  "--rv-datetime-picker-column-active-text-color": "#4CAF50",
-  "--rv-datetime-picker-column-loading-color": "#4CAF50",
-  "--rv-switch-background-color": "#E0E0E0",
-  "--rv-switch-active-background-color": "#4CAF50",
-  "--rv-switch-border-color": "#E0E0E0",
-  "--rv-switch-active-border-color": "#4CAF50",
-  "--rv-switch-handle-background-color": "#FFFFFF",
-  "--rv-switch-handle-border-color": "#E0E0E0",
-  "--rv-switch-handle-active-border-color": "#4CAF50",
-  "--rv-switch-handle-size": "20px",
-  "--rv-switch-width": "44px",
-  "--rv-switch-height": "24px",
   "--rv-checkbox-background-color": "#FFFFFF",
   "--rv-checkbox-border-color": "#E0E0E0",
   "--rv-checkbox-active-background-color": "#4CAF50",
@@ -148,7 +109,7 @@ const greenTheme = {
   "--rv-checkbox-disabled-border-color": "#E0E0E0",
   "--rv-checkbox-disabled-text-color": "#999999",
   "--rv-checkbox-icon-color": "#FFFFFF",
-  "--rv-checkbox-icon-size": "12px",
+  "--rv-checkbox-icon-size": "0.32rem",
   "--rv-radio-background-color": "#FFFFFF",
   "--rv-radio-border-color": "#E0E0E0",
   "--rv-radio-active-background-color": "#4CAF50",
@@ -157,11 +118,11 @@ const greenTheme = {
   "--rv-radio-disabled-border-color": "#E0E0E0",
   "--rv-radio-disabled-text-color": "#999999",
   "--rv-radio-icon-color": "#FFFFFF",
-  "--rv-radio-icon-size": "6px",
+  "--rv-radio-icon-size": "0.16rem",
   "--rv-rate-icon-color": "#E0E0E0",
   "--rv-rate-icon-active-color": "#FF9800",
-  "--rv-rate-icon-size": "20px",
-  "--rv-rate-icon-gutter": "4px",
+  "--rv-rate-icon-size": "0.53rem",
+  "--rv-rate-icon-gutter": "0.11rem",
   "--rv-slider-background-color": "#E0E0E0",
   "--rv-slider-active-background-color": "#4CAF50",
   "--rv-slider-button-background-color": "#FFFFFF",
@@ -174,6 +135,36 @@ const greenTheme = {
 };
 
 function App() {
+  const {
+    checkAuth,
+    fetchPlants,
+    fetchCarePlans,
+    fetchCareTasks,
+    initializeApp,
+  } = useStore() as any;
+
+  // 初始化应用
+  useEffect(() => {
+    const initApp = async () => {
+      try {
+        // 初始化应用设置
+        initializeApp();
+
+        // 检查用户认证状态
+        await checkAuth();
+
+        // 加载数据
+        await Promise.all([fetchPlants(), fetchCarePlans(), fetchCareTasks()]);
+
+        console.log("应用初始化完成");
+      } catch (error) {
+        console.error("应用初始化失败:", error);
+      }
+    };
+
+    initApp();
+  }, [checkAuth, fetchPlants, fetchCarePlans, fetchCareTasks, initializeApp]);
+
   return (
     <ConfigProvider themeVars={greenTheme}>
       <Router>
@@ -190,8 +181,8 @@ function App() {
                   <Route index element={<PlantList />} />
                   <Route path="list" element={<PlantList />} />
                   <Route path="detail/:id" element={<PlantDetail />} />
-                  {/* <Route path="add" element={<PlantAdd />} />
-                  <Route path="edit/:id" element={<PlantEdit />} /> */}
+                  <Route path="add" element={<PlantAdd />} />
+                  <Route path="edit/:id" element={<PlantEdit />} />
                 </Route>
 
                 {/* 养护管理路由 */}
