@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- 花盆 -->
+  <rect x="8" y="20" width="16" height="8" fill="#8B4513" rx="2"/>
+  
+  <!-- 植物茎 -->
+  <rect x="15" y="12" width="2" height="8" fill="#228B22"/>
+  
+  <!-- 叶子 -->
+  <ellipse cx="12" cy="14" rx="3" ry="1.5" fill="#32CD32" transform="rotate(-30 12 14)"/>
+  <ellipse cx="20" cy="14" rx="3" ry="1.5" fill="#32CD32" transform="rotate(30 20 14)"/>
+  
+  <!-- 花朵 -->
+  <circle cx="16" cy="10" r="2" fill="#FF69B4"/>
+  <circle cx="14" cy="8" r="1" fill="#FF69B4"/>
+  <circle cx="18" cy="8" r="1" fill="#FF69B4"/>
+  <circle cx="14" cy="12" r="1" fill="#FF69B4"/>
+  <circle cx="18" cy="12" r="1" fill="#FF69B4"/>
+</svg> 
