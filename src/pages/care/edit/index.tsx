@@ -15,6 +15,7 @@ import { Arrow, CalendarO, Delete } from "@react-vant/icons";
 import { useCare } from "../../../hooks/useCare";
 import { usePlant } from "../../../hooks/usePlant";
 import type { CareTask } from "../../../store/types";
+import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./edit.module.css";
 
 /**
@@ -422,7 +423,7 @@ const EditCareTask: React.FC = () => {
           <div className={styles.completedBanner}>
             <div className={styles.bannerText}>
               ✅ 此任务已完成于{" "}
-              {formatDisplayDate(currentTask.completedAt || "")}
+              {formatCareReminderTime(currentTask.completedAt || "")}
             </div>
           </div>
         )}
@@ -515,7 +516,7 @@ const EditCareTask: React.FC = () => {
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>完成时间：</span>
               <span className={styles.infoValue}>
-                {formatDisplayDate(currentTask.completedAt)}
+                {formatCareReminderTime(currentTask.completedAt)}
               </span>
             </div>
           )}

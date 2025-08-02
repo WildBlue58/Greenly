@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Tag, Progress, Empty } from "react-vant";
 import { ClockO, Checked, Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
+import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./plan.module.css";
 
 interface CareTask {
@@ -271,7 +272,7 @@ const CarePlan: React.FC = () => {
 
                     <div className={styles.taskDate}>
                       <ClockO />
-                      <span>{task.dueDate.toLocaleDateString("zh-CN")}</span>
+                      <span>{formatCareReminderTime(task.dueDate)}</span>
                     </div>
                   </div>
                 </div>

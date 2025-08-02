@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, Field, Loading } from "react-vant";
 import { PhotoO, Search, Setting, Arrow, Add } from "@react-vant/icons";
+import { useNavigate } from "react-router-dom";
 import { useAI } from "../../hooks/useAI";
 import styles from "./ai.module.css";
 
@@ -14,6 +15,7 @@ interface Message {
 
 const AIPage: React.FC = () => {
   const { sendChatMessage, aiLoading, chatMessages } = useAI();
+  const navigate = useNavigate();
 
   // 检查API密钥配置状态
   const checkAPIConfig = () => {
@@ -40,7 +42,7 @@ const AIPage: React.FC = () => {
       icon: <Search />,
       title: "植物识别",
       description: "拍照识别植物种类，获取专业养护建议",
-      action: () => alert("植物识别功能即将上线！"),
+      action: () => navigate("/ai/recognition"),
       color: "#2196F3",
     },
     {

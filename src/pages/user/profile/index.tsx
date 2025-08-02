@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Cell, Tag, Dialog, Field } from "react-vant";
 import {
   UserO,
@@ -9,12 +9,18 @@ import {
   ChatO,
   Edit,
 } from "@react-vant/icons";
+import { useNavigate } from "react-router-dom";
 import { useStore } from "../../../store";
+import { useCare } from "../../../hooks/useCare";
 import { AvatarUpload } from "../../../components/common";
+import { formatRelativeDate } from "../../../utils/date";
 import styles from "./profile.module.css";
 
 const UserProfile: React.FC = () => {
   const { user, plants, updateProfile } = useStore();
+  const { careTasks, careRecords, fetchCareTasks, fetchCareRecords } =
+    useCare();
+  const navigate = useNavigate();
   const [showEditName, setShowEditName] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -22,11 +28,27 @@ const UserProfile: React.FC = () => {
   //   "profile"
   // );
 
+  // 获取养护任务和记录数据
+  useEffect(() => {
+    fetchCareTasks();
+    fetchCareRecords();
+  }, [fetchCareTasks, fetchCareRecords]);
+
+  // 计算用户活跃天数（基于用户创建时间）
+  const calculateDaysActive = () => {
+    if (!user?.createdAt) return 30;
+    const createdDate = new Date(user.createdAt);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - createdDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return Math.max(diffDays, 1); // 至少1天
+  };
+
   const userStats = {
     totalPlants: plants.length,
     healthyPlants: plants.filter((p: any) => p.status === "healthy").length,
-    careTasks: 5,
-    daysActive: 30,
+    careTasks: careTasks.length,
+    daysActive: calculateDaysActive(),
   };
 
   const menuItems = [
@@ -36,7 +58,7 @@ const UserProfile: React.FC = () => {
       desc: `${userStats.totalPlants} 株植物`,
       color: "#4CAF50",
       onClick: () => {
-        /* 导航到植物列表 */
+        navigate("/plant");
       },
     },
     {
@@ -45,7 +67,7 @@ const UserProfile: React.FC = () => {
       desc: "查看养护历史",
       color: "#8BC34A",
       onClick: () => {
-        /* 导航到养护记录 */
+        navigate("/care");
       },
     },
     {
@@ -54,7 +76,7 @@ const UserProfile: React.FC = () => {
       desc: "智能养护咨询",
       color: "#2196F3",
       onClick: () => {
-        /* 导航到AI助手 */
+        navigate("/ai");
       },
     },
     {
@@ -63,17 +85,46 @@ const UserProfile: React.FC = () => {
       desc: "应用设置",
       color: "#FF9800",
       onClick: () => {
-        /* 导航到设置 */
+        // 暂时导航到用户资料页面，因为设置页面还未实现
+        navigate("/user/profile");
       },
     },
   ];
 
-  const achievements = [
-    { name: "植物新手", desc: "添加第一株植物", earned: true },
-    { name: "养护达人", desc: "完成10次养护任务", earned: true },
-    { name: "绿手指", desc: "拥有5株健康植物", earned: false },
-    { name: "AI专家", desc: "使用AI助手10次", earned: false },
-  ];
+  // 计算成就状态
+  const calculateAchievements = () => {
+    const completedTasks = careTasks.filter(
+      (task: any) => task.completed
+    ).length;
+    const healthyPlantsCount = plants.filter(
+      (p: any) => p.status === "healthy"
+    ).length;
+
+    return [
+      {
+        name: "植物新手",
+        desc: "添加第一株植物",
+        earned: plants.length > 0,
+      },
+      {
+        name: "养护达人",
+        desc: "完成10次养护任务",
+        earned: completedTasks >= 10,
+      },
+      {
+        name: "绿手指",
+        desc: "拥有5株健康植物",
+        earned: healthyPlantsCount >= 5,
+      },
+      {
+        name: "AI专家",
+        desc: "使用AI助手10次",
+        earned: false, // 暂时设为false，因为AI使用次数统计功能还未实现
+      },
+    ];
+  };
+
+  const achievements = calculateAchievements();
 
   // 处理用户名编辑
   const handleEditName = () => {
@@ -248,29 +299,35 @@ const UserProfile: React.FC = () => {
           <h3 className={styles.cardTitle}>最近活动</h3>
         </div>
         <div className={styles.activityList}>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>🌱</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>添加了新植物</div>
-              <div className={styles.activityDesc}>绿萝 - 2小时前</div>
-            </div>
-          </div>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>💧</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>完成了养护任务</div>
-              <div className={styles.activityDesc}>给多肉浇水 - 1天前</div>
-            </div>
-          </div>
-          <div className={styles.activityItem}>
-            <div className={styles.activityIcon}>🤖</div>
-            <div className={styles.activityContent}>
-              <div className={styles.activityTitle}>使用了AI助手</div>
-              <div className={styles.activityDesc}>
-                咨询植物养护问题 - 2天前
+          {careRecords.length > 0 ? (
+            careRecords.slice(0, 3).map((record: any) => (
+              <div key={record.id} className={styles.activityItem}>
+                <div className={styles.activityIcon}>
+                  {record.type === "water"
+                    ? "💧"
+                    : record.type === "fertilize"
+                    ? "🌱"
+                    : record.type === "prune"
+                    ? "✂️"
+                    : record.type === "repot"
+                    ? "🪴"
+                    : "🌿"}
+                </div>
+                <div className={styles.activityContent}>
+                  <div className={styles.activityTitle}>{record.title}</div>
+                  <div className={styles.activityDesc}>
+                    {record.plantName} -{" "}
+                    {formatRelativeDate(new Date(record.completedAt))}
+                  </div>
+                </div>
               </div>
+            ))
+          ) : (
+            <div className={styles.emptyActivity}>
+              <div className={styles.emptyActivityIcon}>📝</div>
+              <div className={styles.emptyActivityText}>暂无活动记录</div>
             </div>
-          </div>
+          )}
         </div>
       </Card>
 
@@ -282,7 +339,11 @@ const UserProfile: React.FC = () => {
           block
           className={styles.logoutButton}
           onClick={() => {
-            /* 退出登录逻辑 */
+            // 退出登录逻辑
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            navigate("/");
+            window.location.reload();
           }}
         >
           退出登录

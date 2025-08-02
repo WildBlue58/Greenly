@@ -1,29 +1,103 @@
-/* 养护页面样式 */
+/* 🌿 养护页面 - 智能管理系统 */
+@import '../shared/variables.css';
+
 .carePage {
   min-height: 100vh;
-  background-color: var(--rv-background-color);
-  padding-bottom: 20px; /* 调整底部间距，配合全局导航栏 */
+  background: var(--bg-gradient-primary);
+  padding-bottom: 100px; /* 调整底部间距，配合全局导航栏 */
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Tab 按钮 */
+/* 护理主题背景装饰 */
+.carePage::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -30%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.04) 0%, transparent 70%);
+  animation: floating 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.carePage::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -20%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(circle, rgba(139, 195, 74, 0.03) 0%, transparent 70%);
+  animation: floating 8s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+/* 📊 Tab 按钮 - 现代导航 */
 .tabButtons {
   display: flex;
-  gap: 8px;
-  padding: 16px;
-  background: var(--rv-cell-background-color);
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--card-border);
+  position: relative;
+  z-index: 1;
 }
 
 .tabButtons button {
   flex: 1;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--card-radius);
+  padding: var(--space-md) var(--space-lg);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Tab 内容 */
+.tabButtons button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.tabButtons button:hover {
+  border-color: var(--primary-300);
+  color: var(--primary-600);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15);
+}
+
+.tabButtons button:hover::before {
+  left: 100%;
+}
+
+.tabButtons button.active {
+  background: linear-gradient(135deg, var(--primary-500) 0%, var(--green-light) 100%);
+  color: white;
+  border-color: var(--primary-600);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+}
+
+/* 📋 Tab 内容 - 流畅体验 */
 .tabContent {
-  background: var(--rv-background-color);
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
 .pageContent {
-  padding: 16px;
+  padding: var(--space-lg);
+  animation: fadeInUp 0.6s var(--ease-out-cubic);
 }
 
 /* 提醒区域 */
@@ -36,28 +110,98 @@
   margin-bottom: 16px;
 }
 
-/* 任务区域 */
+/* 📋 任务区域 - 现代卡片 */
 .taskSection {
-  background: var(--rv-cell-background-color);
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
   overflow: hidden;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  margin-bottom: var(--space-lg);
+  transition: all var(--transition-normal);
+}
+
+.taskSection:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.taskSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-500) 0%, var(--green-light) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.taskSection:hover::before {
+  opacity: 1;
 }
 
 .tabs {
-  --rv-tabs-nav-background-color: var(--rv-cell-background-color);
+  background: var(--card-bg);
 }
 
 .taskList {
-  padding: 16px;
-  background: var(--rv-background-color);
+  padding: var(--space-xl);
+  background: transparent;
 }
 
 .taskItem {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--gray-50);
+  border-radius: var(--card-radius);
+  border-left: 4px solid var(--primary-400);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.taskItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.05), transparent);
+  transition: left var(--transition-slow);
+}
+
+.taskItem:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.1);
+  border-left-color: var(--primary-600);
+}
+
+.taskItem:hover::before {
+  left: 100%;
 }
 
 .taskItem:last-child {
   margin-bottom: 0;
+}
+
+.taskItem.completed {
+  background: var(--primary-50);
+  border-left-color: var(--success);
+  opacity: 0.8;
+}
+
+.taskItem.completed::after {
+  content: '✓';
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: var(--font-size-lg);
+  color: var(--success);
+  font-weight: bold;
 }
 
 /* 记录列表 */

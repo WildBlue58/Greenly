@@ -12,6 +12,7 @@ import {
   ClockO,
 } from "@react-vant/icons";
 import { useStore } from "../../store";
+import { useCare } from "../../hooks/useCare";
 import type { Plant } from "../../store/types";
 import { AvatarUpload } from "../../components/common";
 import styles from "./home.module.css";
@@ -19,6 +20,7 @@ import styles from "./home.module.css";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { plants, fetchPlants, user } = useStore() as any;
+  const { todayTasks, careStats, fetchCareTasks } = useCare();
   const [stats, setStats] = useState({
     totalPlants: 0,
     healthyPlants: 0,
@@ -28,17 +30,18 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchPlants();
-  }, [fetchPlants]);
+    fetchCareTasks();
+  }, [fetchPlants, fetchCareTasks]);
 
   useEffect(() => {
-    // 模拟统计数据
+    // 使用真实数据更新统计
     setStats({
       totalPlants: plants.length,
       healthyPlants: plants.filter((p: Plant) => p.status === "healthy").length,
       needsCare: plants.filter((p: Plant) => p.status === "needs_care").length,
-      todayTasks: 3,
+      todayTasks: todayTasks.length,
     });
-  }, [plants]);
+  }, [plants, todayTasks]);
 
   const quickActions = [
     {
@@ -228,25 +231,41 @@ const Home: React.FC = () => {
         <h2 className={styles.sectionTitle}>今日养护进度</h2>
         <Card className={styles.progressCard}>
           <div className={styles.progressContent}>
-            <div className={styles.progressInfo}>
-              <span className={styles.progressLabel}>已完成 2/3 项任务</span>
-              <span className={styles.progressPercent}>67%</span>
-            </div>
-            <Progress percentage={67} color="#4CAF50" strokeWidth={8} />
-            <div className={styles.taskList}>
-              <div className={`${styles.taskItem} ${styles.completed}`}>
-                <StarO />
-                <span>给绿萝浇水</span>
-              </div>
-              <div className={`${styles.taskItem} ${styles.completed}`}>
-                <StarO />
-                <span>检查多肉状态</span>
-              </div>
-              <div className={styles.taskItem}>
+            {todayTasks.length > 0 ? (
+              <>
+                <div className={styles.progressInfo}>
+                  <span className={styles.progressLabel}>
+                    已完成 {careStats.completedCount}/{todayTasks.length} 项任务
+                  </span>
+                  <span className={styles.progressPercent}>
+                    {Math.round(careStats.completionRate)}%
+                  </span>
+                </div>
+                <Progress
+                  percentage={Math.round(careStats.completionRate)}
+                  color="#4CAF50"
+                  strokeWidth={8}
+                />
+                <div className={styles.taskList}>
+                  {todayTasks.map((task: any) => (
+                    <div
+                      key={task.id}
+                      className={`${styles.taskItem} ${
+                        task.completed ? styles.completed : ""
+                      }`}
+                    >
+                      {task.completed ? <StarO /> : <ClockO />}
+                      <span>{task.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className={styles.emptyTasks}>
                 <ClockO />
-                <span>给君子兰施肥</span>
+                <span>今日暂无养护任务</span>
               </div>
-            </div>
+            )}
           </div>
         </Card>
       </div>

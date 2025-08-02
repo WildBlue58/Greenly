@@ -1,0 +1,855 @@
+/* 植物识别页面样式 - 现代化设计 */
+.recognitionPage {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #f8fffe 0%, #e8f8f5 50%, #d4ece6 100%);
+  padding: 0.3rem;
+  padding-bottom: 1.5rem;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 添加背景装饰效果 */
+.recognitionPage::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(76, 175, 80, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(139, 195, 74, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 60%,
+      rgba(76, 175, 80, 0.03) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 头部区域 - 优化后更紧凑 */
+.header {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 50%, #8bc34a 100%);
+  border-radius: 0.4rem;
+  padding: 0.3rem;
+  margin-bottom: 0.3rem;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* 头部装饰效果 */
+.header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 60%
+  );
+  transform: rotate(15deg);
+  pointer-events: none;
+}
+
+.backButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  backdrop-filter: blur(10px);
+  border-radius: 0.24rem;
+  margin-bottom: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.4rem;
+  flex-shrink: 0;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.backButton:active {
+  transform: translateY(0);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.headerIcon {
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.headerText {
+  flex: 1;
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  margin-bottom: 0.05rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  line-height: 1.3;
+  opacity: 0.9;
+}
+
+/* API配置警告 */
+.configWarning {
+  margin-bottom: 0.5rem;
+  z-index: 1;
+  position: relative;
+}
+
+.warningCard {
+  border: 2px solid #ff9800;
+  border-radius: 0.4rem;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.15);
+}
+
+.warningContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.32rem;
+  padding: 0.5rem;
+}
+
+.warningIcon {
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+
+.warningText h3 {
+  font-size: 0.42rem;
+  color: #f57c00;
+  margin: 0 0 0.2rem 0;
+  font-weight: 700;
+}
+
+.warningText p {
+  font-size: 0.32rem;
+  color: #666;
+  margin: 0.2rem 0;
+  line-height: 1.5;
+}
+
+.codeBlock {
+  background: rgba(245, 245, 245, 0.8);
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  margin: 0.3rem 0;
+  border-left: 4px solid #ff9800;
+  backdrop-filter: blur(5px);
+}
+
+.codeBlock pre {
+  font-size: 0.28rem;
+  color: #333;
+  margin: 0;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 图片上传区域 - 优化空间 */
+.uploadSection {
+  margin-bottom: 0.3rem;
+  z-index: 1;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.uploadCard {
+  border-radius: 0.4rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.uploadArea {
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed #e8f5e8;
+  border-radius: 0.3rem;
+  margin: 0.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 上传区域悬停效果 */
+.uploadArea::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(76, 175, 80, 0.1) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.uploadArea:hover::before {
+  transform: translateX(100%);
+}
+
+.uploadArea:hover {
+  border-color: #4caf50;
+  background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.15),
+    0 4px 16px rgba(76, 175, 80, 0.1);
+}
+
+.uploadIcon {
+  color: #999;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.uploadArea:hover .uploadIcon {
+  color: #4caf50;
+  transform: scale(1.1);
+}
+
+.uploadText {
+  position: relative;
+  z-index: 1;
+}
+
+.uploadText h3 {
+  font-size: 0.48rem;
+  color: #333;
+  margin: 0 0 0.3rem 0;
+  font-weight: 700;
+}
+
+.uploadText p {
+  font-size: 0.34rem;
+  color: #666;
+  margin: 0.15rem 0;
+  line-height: 1.5;
+}
+
+.uploadHint {
+  color: #999 !important;
+  font-size: 0.28rem !important;
+  opacity: 0.8;
+}
+
+/* 图片预览 */
+.imagePreview {
+  padding: 0.5rem;
+}
+
+.imageContainer {
+  position: relative;
+  margin-bottom: 0.5rem;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  z-index: 2;
+  border-radius: 0.25rem;
+  background: rgba(244, 67, 54, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.deleteButton:hover {
+  background: rgba(244, 67, 54, 1);
+  transform: scale(1.05);
+}
+
+.recognizeActions {
+  margin-top: 0.5rem;
+}
+
+.recognizeButton {
+  height: 1.3rem;
+  border-radius: 0.32rem;
+  font-size: 0.42rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border: none;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3),
+    0 2px 8px rgba(76, 175, 80, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recognizeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(76, 175, 80, 0.4),
+    0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.recognizeButton:active {
+  transform: translateY(-1px);
+}
+
+/* 聊天区域 - 优化空间利用 */
+.chatSection {
+  margin-bottom: 0.3rem;
+  z-index: 1;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.chatCard {
+  border-radius: 0.4rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatHeader {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 50%, #8bc34a 100%);
+  color: white;
+  padding: 0.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.chatHeader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.chatHeader h3 {
+  font-size: 0.42rem;
+  margin: 0;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+/* 消息区域 - 优化高度 */
+.messagesContainer {
+  max-height: 15rem;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: #fafafa;
+  flex: 1;
+  min-height: 0;
+}
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.messageItem {
+  display: flex;
+  max-width: 85%;
+  animation: messageSlideIn 0.4s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.userMessage {
+  align-self: flex-end;
+}
+
+.assistantMessage {
+  align-self: flex-start;
+}
+
+.messageContent {
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  position: relative;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.userMessage .messageContent {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  color: white;
+  border-bottom-right-radius: 0.2rem;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+}
+
+.assistantMessage .messageContent {
+  background: #ffffff;
+  color: #1b5e20;
+  border: 1px solid #e8f5e8;
+  border-bottom-left-radius: 0.2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.messageText {
+  font-size: 0.4rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 0.2rem;
+  font-weight: 400;
+  letter-spacing: 0.02rem;
+}
+
+/* 优化识别结果的文字显示 */
+.assistantMessage .messageText {
+  color: #2196F3;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.userMessage .messageText {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+/* 为识别结果添加特殊样式 */
+.messageText strong,
+.messageText **strong** {
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+.assistantMessage .messageText strong,
+.assistantMessage .messageText **strong** {
+  color: #1b5e20;
+}
+
+/* 优化emoji和特殊字符显示 */
+.messageText {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.messageTime {
+  font-size: 0.24rem;
+  opacity: 0.7;
+  text-align: right;
+  font-weight: 500;
+}
+
+.recognitionBadge {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.recognitionBadge span {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.15rem;
+  font-size: 0.28rem;
+  font-weight: 600;
+  backdrop-filter: blur(5px);
+  letter-spacing: 0.02rem;
+}
+
+.assistantMessage .recognitionBadge span {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  color: #1b5e20;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 流式输出光标 */
+.cursor {
+  animation: blink 1.2s infinite;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #4caf50;
+}
+
+/* 输入区域 */
+.inputSection {
+  background: #ffffff;
+  border-top: 1px solid #e8f5e8;
+  padding: 0.5rem;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #f8f9fa;
+  border-radius: 0.8rem;
+  padding: 0.2rem;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.inputContainer:focus-within {
+  border-color: #4caf50;
+  background: white;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15);
+}
+
+.messageInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.6rem;
+  font-size: 0.36rem;
+  color: #333;
+}
+
+.messageInput::placeholder {
+  color: #999;
+}
+
+.messageInput:focus {
+  outline: none;
+}
+
+.sendButton {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sendButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.sendButton:active {
+  transform: scale(0.95);
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .recognitionPage {
+    padding: 0.3rem;
+  }
+
+  .title {
+    font-size: 0.52rem;
+  }
+
+  .subtitle {
+    font-size: 0.3rem;
+  }
+
+  .uploadArea {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .messageItem {
+    max-width: 90%;
+  }
+
+  .messageText {
+    font-size: 0.34rem;
+  }
+}
+
+/* 滚动条美化 */
+.messagesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesContainer::-webkit-scrollbar-track {
+  background: rgba(245, 245, 245, 0.5);
+  border-radius: 3px;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+}
+
+/* 高级动画效果 */
+.uploadArea {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.uploadArea:active {
+  transform: scale(0.98);
+}
+
+/* 毛玻璃效果增强 */
+.chatCard,
+.uploadCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .recognitionPage {
+    background: linear-gradient(145deg, #121212 0%, #1e1e1e 50%, #2c2c2c 100%);
+  }
+
+  .uploadArea {
+    background: linear-gradient(135deg, #2c2c2c 0%, #333333 100%);
+    border-color: #4a6741;
+    color: #e0e0e0;
+  }
+
+  .uploadArea:hover {
+    background: linear-gradient(135deg, #3a5998 0%, #4caf50 100%);
+    border-color: #27ae60;
+  }
+
+  .messageContent {
+    background: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #4a6741;
+  }
+
+  .assistantMessage .messageContent {
+    background: #424242;
+    border-color: #555555;
+  }
+
+  .messagesContainer {
+    background: #1e1e1e;
+  }
+
+  .inputSection {
+    background: #2c2c2c;
+    border-color: #4a6741;
+  }
+
+  .inputContainer {
+    background: #333333;
+  }
+
+  .inputContainer:focus-within {
+    background: #404040;
+  }
+
+  .messageInput {
+    color: #e0e0e0;
+  }
+
+  .messageInput::placeholder {
+    color: #999999;
+  }
+}
+
+/* 微交互动画 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.1rem);
+  }
+}
+
+.headerIcon {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 粒子效果（纯CSS实现） */
+.recognitionPage::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+      1px 1px at 20px 30px,
+      rgba(76, 175, 80, 0.3),
+      transparent
+    ),
+    radial-gradient(1px 1px at 40px 70px, rgba(139, 195, 74, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(76, 175, 80, 0.3), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(139, 195, 74, 0.2), transparent),
+    radial-gradient(1px 1px at 160px 30px, rgba(76, 175, 80, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: particleFloat 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-200px) translateY(-100px);
+  }
+}
+
+/* 识别结果专用样式 */
+.recognitionContent {
+  line-height: 1.8;
+}
+
+.sectionTitle {
+  font-size: 0.44rem;
+  font-weight: 700;
+  color: #1b5e20;
+  margin: 0.4rem 0 0.2rem 0;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid rgba(27, 94, 32, 0.3);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.listItem {
+  font-size: 0.38rem;
+  color: #2e7d32;
+  margin: 0.15rem 0;
+  padding-left: 0.3rem;
+  position: relative;
+  font-weight: 600;
+}
+
+.listItem::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.12rem;
+  height: 0.12rem;
+  background: #1b5e20;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(27, 94, 32, 0.4);
+}
+
+.contentLine {
+  font-size: 0.38rem;
+  color: #2e7d32;
+  margin: 0.1rem 0;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.spacer {
+  height: 0.2rem;
+}
+
+.recognitionText {
+  background: #ffffff;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  margin: -0.4rem -0.5rem -0.2rem -0.5rem;
+  box-shadow: inset 0 1px 3px rgba(27, 94, 32, 0.1);
+}
+
+.assistantMessage .recognitionText {
+  border: 1px solid #e8f5e8;
+}
