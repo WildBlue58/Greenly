@@ -1,29 +1,115 @@
-/* 植物列表页面样式 */
+/* 🌿 植物列表页面 - 现代网格展示 */
+@import "../../shared/variables.css";
+
 .plantList {
-  padding: 16px;
-  background: linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%);
+  padding: var(--space-lg);
+  background: var(--bg-gradient-primary);
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* 搜索区域 */
+/* 动态背景装饰 */
+.plantList::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 195, 74, 0.04) 0%,
+    transparent 70%
+  );
+  animation: floating 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 🔍 搜索区域 - 智能筛选 */
 .searchSection {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-2xl);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-cubic);
 }
 
 .searchInput {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-lg);
+}
+
+.searchInput :global(.rv-search) {
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all var(--transition-normal);
+}
+
+.searchInput :global(.rv-search:focus-within) {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+  transform: translateY(-2px);
+}
+
+.searchInput :global(.rv-search__content) {
+  border-radius: var(--card-radius);
+  padding: var(--space-md);
 }
 
 .filterButtons {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
 .filterButton {
-  border-radius: 20px;
-  font-size: 12px;
-  padding: 6px 12px;
+  border-radius: var(--card-radius-large);
+  font-size: var(--font-size-xs);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--card-bg);
+  border: 2px solid var(--primary-100);
+  color: var(--primary-600);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.filterButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(76, 175, 80, 0.1),
+    transparent
+  );
+  transition: left var(--transition-slow);
+}
+
+.filterButton:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-300);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15);
+}
+
+.filterButton:hover::before {
+  left: 100%;
+}
+
+.filterButton.active {
+  background: var(--primary-500);
+  color: white;
+  border-color: var(--primary-600);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
 }
 
 /* 列表容器 */
@@ -37,51 +123,159 @@
   gap: 12px;
 }
 
-/* 植物卡片 */
+/* 🌱 植物卡片 - 精美展示 */
 .plantCard {
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-xl);
+  box-shadow: var(--card-shadow);
+  transition: all var(--transition-normal);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  animation: fadeInUp 0.6s var(--ease-out-cubic)
+    calc(var(--animation-delay, 0) * 0.1s) both;
+}
+
+.plantCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
+  transform: scaleX(0);
+  transition: transform var(--transition-normal);
+}
+
+.plantCard::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(76, 175, 80, 0.02) 0%,
+    rgba(139, 195, 74, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  pointer-events: none;
 }
 
 .plantCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.plantCard:hover::before {
+  transform: scaleX(1);
+}
+
+.plantCard:hover::after {
+  opacity: 1;
 }
 
 .plantContent {
   display: flex;
-  gap: 16px;
+  gap: var(--space-lg);
   align-items: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 .plantImage {
   position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--card-radius);
   overflow: hidden;
   flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-normal);
+}
+
+.plantImage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(76, 175, 80, 0.1),
+    rgba(139, 195, 74, 0.1)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: 1;
+}
+
+.plantCard:hover .plantImage {
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.plantCard:hover .plantImage::before {
+  opacity: 1;
 }
 
 .plantImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.plantCard:hover .plantImage img {
+  transform: scale(1.1);
+}
+
+.plantHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .statusBadge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 2px 6px;
-  border-radius: 4px;
+  position: static;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--card-radius-small);
   color: white;
-  font-size: 10px;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: none;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+  transition: all var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.statusBadge.healthy {
+  background: linear-gradient(
+    135deg,
+    var(--success) 0%,
+    var(--primary-500) 100%
+  );
+}
+
+.statusBadge.needs_care {
+  background: linear-gradient(135deg, var(--warning) 0%, #ff6f00 100%);
+}
+
+.statusBadge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .plantInfo {
@@ -90,44 +284,75 @@
 }
 
 .plantName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 4px 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-800);
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color var(--transition-normal);
+  line-height: var(--line-height-tight);
+  flex: 1;
+  min-width: 0;
+}
+
+.plantCard:hover .plantName {
+  color: var(--primary-600);
 }
 
 .plantSpecies {
-  font-size: 12px;
-  color: #666;
-  margin: 0 0 12px 0;
+  font-size: var(--font-size-xs);
+  color: var(--gray-600);
+  margin: 0 0 var(--space-md) 0;
+  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  opacity: 0.8;
 }
 
 .plantDetails {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-xs);
 }
 
 .detailItem {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  padding: var(--space-xs) 0;
+  border-radius: 4px;
+  transition: all var(--transition-normal);
+}
+
+.detailItem:hover {
+  background: rgba(76, 175, 80, 0.05);
+  padding-left: var(--space-xs);
+  margin-left: calc(-1 * var(--space-xs));
+}
+
+.detailItem::before {
+  content: "•";
+  color: var(--primary-400);
+  font-weight: bold;
+  font-size: 8px;
 }
 
 .detailLabel {
-  color: #999;
-  min-width: 60px;
+  color: var(--gray-500);
+  min-width: 70px;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .detailValue {
-  color: #333;
+  color: var(--gray-700);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: var(--font-weight-medium);
 }
 
 .plantActions {
@@ -168,36 +393,36 @@
   .plantList {
     padding: 12px;
   }
-  
+
   .plantCard {
     padding: 12px;
   }
-  
+
   .plantContent {
     gap: 12px;
   }
-  
+
   .plantImage {
     width: 60px;
     height: 60px;
   }
-  
+
   .plantName {
     font-size: 14px;
   }
-  
+
   .plantSpecies {
     font-size: 11px;
   }
-  
+
   .detailItem {
     font-size: 11px;
   }
-  
+
   .detailLabel {
     min-width: 50px;
   }
-  
+
   .fab {
     bottom: 70px;
     right: 16px;
@@ -245,13 +470,17 @@
 }
 
 .plantCard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(139, 195, 74, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(76, 175, 80, 0.05) 0%,
+    rgba(139, 195, 74, 0.05) 100%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -301,9 +530,9 @@
 
 /* 图片加载状态 */
 .plantImage.loading::before {
-  content: '🌱';
+  content: "🌱";
   font-size: 24px;
   opacity: 0.3;
   position: absolute;
   z-index: 0;
-} 
+}

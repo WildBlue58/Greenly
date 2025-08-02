@@ -1,65 +1,182 @@
-/* 添加植物页面样式 */
+/* 🌱 添加植物页面 - 创造新生命 */
+@import "../../shared/variables.css";
+
 .addPlant {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
-  padding-bottom: 80px; /* 为底部导航留出空间 */
+  background: var(--bg-gradient-primary);
+  padding-bottom: 100px; /* 为底部导航留出空间 */
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* 头部样式 */
+/* 创造性背景装饰 */
+.addPlant::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 195, 74, 0.05) 0%,
+    transparent 70%
+  );
+  animation: floating 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.addPlant::after {
+  content: "";
+  position: absolute;
+  bottom: -20%;
+  right: -20%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(76, 175, 80, 0.05) 0%,
+    transparent 70%
+  );
+  animation: floating 10s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+/* 🎨 头部样式 - 吸引力设计 */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+  padding: var(--space-xl) var(--space-2xl);
+  background: linear-gradient(
+    135deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow-hover);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
 }
 
 .backButton {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all var(--transition-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateX(-4px) scale(1.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
   margin: 0;
   flex: 1;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .placeholder {
-  width: 40px; /* 占位元素，保持标题居中 */
+  width: 48px; /* 占位元素，保持标题居中 */
 }
 
-/* 内容区域 */
+/* 📋 内容区域 - 整洁布局 */
 .content {
-  padding: 16px;
+  padding: var(--space-lg);
+  position: relative;
+  z-index: 1;
 }
 
-/* 卡片样式 */
+/* 🎨 卡片样式 - 现代设计 */
 .imageCard,
 .formCard {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s var(--ease-out-cubic)
+    calc(var(--animation-delay, 0) * 0.2s) both;
+}
+
+.imageCard::before,
+.formCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.imageCard:hover,
+.formCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.imageCard:hover::before,
+.formCard:hover::before {
+  opacity: 1;
 }
 
 .sectionTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 16px 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-800);
+  margin: 0 0 var(--space-lg) 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.sectionTitle::before {
+  content: attr(data-icon);
+  font-size: var(--font-size-xl);
+  opacity: 0.8;
 }
 
 /* 图片上传区域 */
@@ -68,8 +185,7 @@
 }
 
 .uploader {
-  display: flex;
-  justify-content: center;
+  width: 100%;
 }
 
 .uploadPlaceholder {
@@ -84,6 +200,7 @@
   background: #fafafa;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin: 0 auto;
 }
 
 .uploadPlaceholder:hover {
@@ -95,6 +212,31 @@
   margin: 8px 0 0 0;
   font-size: 12px;
   color: #666;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  border: 2px dashed #4caf50;
+  border-radius: 8px;
+  background: #f8fffe;
+  color: #4caf50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.uploadArea:hover {
+  background: #e8f5e8;
+  border-color: #388e3c;
+}
+
+.uploadText {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #4caf50;
 }
 
 /* 提交区域 */
@@ -138,7 +280,7 @@
 }
 
 .formCard :global(.rv-field--required .rv-field__label::after) {
-  content: '*';
+  content: "*";
   color: #f44336;
   margin-left: 4px;
 }
@@ -148,26 +290,26 @@
   .header {
     padding: 12px 16px;
   }
-  
+
   .title {
     font-size: 16px;
   }
-  
+
   .content {
     padding: 12px;
   }
-  
+
   .imageCard,
   .formCard {
     padding: 16px;
     margin-bottom: 12px;
   }
-  
+
   .uploadPlaceholder {
     width: 100px;
     height: 100px;
   }
-  
+
   .sectionTitle {
     font-size: 14px;
   }
@@ -177,25 +319,25 @@
   .header {
     padding: 8px 12px;
   }
-  
+
   .backButton {
     width: 36px;
     height: 36px;
   }
-  
+
   .placeholder {
     width: 36px;
   }
-  
+
   .content {
     padding: 8px;
   }
-  
+
   .uploadPlaceholder {
     width: 80px;
     height: 80px;
   }
-  
+
   .uploadPlaceholder p {
     font-size: 10px;
   }

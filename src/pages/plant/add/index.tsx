@@ -25,28 +25,79 @@ const AddPlant: React.FC = () => {
     wateringFrequency: 7,
     description: "",
     image: "",
+    // 养护信息
+    careLevel: "easy" as "easy" | "medium" | "hard",
+    lightNeeds: "medium" as "low" | "medium" | "high",
+    waterNeeds: "medium" as "low" | "medium" | "high",
+    temperatureMin: 15,
+    temperatureMax: 30,
+    humidity: 60,
+    careTips: [
+      "保持土壤适度湿润",
+      "提供适当的光照",
+      "定期检查植物状态",
+    ] as string[],
+    status: "healthy" as "healthy" | "needs_care" | "sick",
   });
 
   const [showLocationPicker, setShowLocationPicker] = useState(false);
   const [showFrequencyPicker, setShowFrequencyPicker] = useState(false);
+  const [showCareLevelPicker, setShowCareLevelPicker] = useState(false);
+  const [showLightPicker, setShowLightPicker] = useState(false);
+  const [showWaterPicker, setShowWaterPicker] = useState(false);
+  const [showStatusPicker, setShowStatusPicker] = useState(false);
 
-  const locationOptions = ["客厅", "卧室", "阳台", "书房", "厨房", "卫生间"];
+  const locationOptions = [["客厅", "卧室", "阳台", "书房", "厨房", "卫生间"]];
 
   const frequencyOptions = [
-    "每天浇水",
-    "每2天浇水",
-    "每3天浇水",
-    "每周浇水",
-    "每2周浇水",
-    "每月浇水",
+    ["每天浇水", "每2天浇水", "每3天浇水", "每周浇水", "每2周浇水", "每月浇水"],
   ];
 
   const frequencyValues = [1, 2, 3, 7, 14, 30];
 
-  const handleInputChange = (field: string, value: string | number) => {
+  const careLevelOptions = [["简单", "中等", "困难"]];
+  const careLevelValues = ["easy", "medium", "hard"];
+
+  const lightOptions = [["低光照", "中等光照", "高光照"]];
+  const lightValues = ["low", "medium", "high"];
+
+  const waterOptions = [["少浇水", "适中浇水", "多浇水"]];
+  const waterValues = ["low", "medium", "high"];
+
+  const statusOptions = [["健康", "需要养护", "生病"]];
+  const statusValues = ["healthy", "needs_care", "sick"];
+
+  const handleInputChange = (
+    field: string,
+    value: string | number | string[]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+    }));
+  };
+
+  const handleCareTipChange = (index: number, value: string) => {
+    const newTips = [...formData.careTips];
+    newTips[index] = value;
+    setFormData((prev) => ({
+      ...prev,
+      careTips: newTips,
+    }));
+  };
+
+  const addCareTip = () => {
+    setFormData((prev) => ({
+      ...prev,
+      careTips: [...prev.careTips, ""],
+    }));
+  };
+
+  const removeCareTip = (index: number) => {
+    const newTips = formData.careTips.filter((_, i) => i !== index);
+    setFormData((prev) => ({
+      ...prev,
+      careTips: newTips,
     }));
   };
 
@@ -99,20 +150,23 @@ const AddPlant: React.FC = () => {
         image:
           formData.image ||
           "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop",
-        status: "healthy",
         health: "good",
         lastWatered: new Date().toISOString(),
         nextWatering: new Date(
           Date.now() + (formData.wateringFrequency || 7) * 24 * 60 * 60 * 1000
         ).toISOString(),
         notes: formData.description,
-        // 默认养护信息
-        careLevel: "easy",
-        lightNeeds: "medium",
-        waterNeeds: "medium",
-        temperature: { min: 15, max: 30 },
-        humidity: 60,
-        careTips: ["保持土壤适度湿润", "提供适当的光照", "定期检查植物状态"],
+        // 养护信息
+        careLevel: formData.careLevel,
+        lightNeeds: formData.lightNeeds,
+        waterNeeds: formData.waterNeeds,
+        temperature: {
+          min: formData.temperatureMin,
+          max: formData.temperatureMax,
+        },
+        humidity: formData.humidity,
+        careTips: formData.careTips.filter((tip) => tip.trim()),
+        status: formData.status,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -191,7 +245,7 @@ const AddPlant: React.FC = () => {
               label="浇水频率"
               placeholder="请选择浇水频率"
               value={
-                frequencyOptions[
+                frequencyOptions[0][
                   frequencyValues.indexOf(formData.wateringFrequency)
                 ] || ""
               }
@@ -203,17 +257,135 @@ const AddPlant: React.FC = () => {
           </CellGroup>
         </Card>
 
+        {/* 养护信息 */}
+        <Card className={styles.formCard}>
+          <h3 className={styles.sectionTitle}>养护信息</h3>
+          <CellGroup>
+            <Field
+              label="植物状态"
+              placeholder="请选择植物状态"
+              value={
+                statusOptions[0][statusValues.indexOf(formData.status)] || ""
+              }
+              readOnly
+              isLink
+              onClick={() => setShowStatusPicker(true)}
+              required
+            />
+            <Field
+              label="养护难度"
+              placeholder="请选择养护难度"
+              value={
+                careLevelOptions[0][
+                  careLevelValues.indexOf(formData.careLevel)
+                ] || ""
+              }
+              readOnly
+              isLink
+              onClick={() => setShowCareLevelPicker(true)}
+              required
+            />
+            <Field
+              label="光照需求"
+              placeholder="请选择光照需求"
+              value={
+                lightOptions[0][lightValues.indexOf(formData.lightNeeds)] || ""
+              }
+              readOnly
+              isLink
+              onClick={() => setShowLightPicker(true)}
+              required
+            />
+            <Field
+              label="浇水需求"
+              placeholder="请选择浇水需求"
+              value={
+                waterOptions[0][waterValues.indexOf(formData.waterNeeds)] || ""
+              }
+              readOnly
+              isLink
+              onClick={() => setShowWaterPicker(true)}
+              required
+            />
+            <Field
+              label="最低温度"
+              type="number"
+              placeholder="请输入最低温度"
+              value={formData.temperatureMin.toString()}
+              onChange={(value) =>
+                handleInputChange("temperatureMin", Number(value))
+              }
+              required
+            />
+            <Field
+              label="最高温度"
+              type="number"
+              placeholder="请输入最高温度"
+              value={formData.temperatureMax.toString()}
+              onChange={(value) =>
+                handleInputChange("temperatureMax", Number(value))
+              }
+              required
+            />
+            <Field
+              label="湿度要求"
+              type="number"
+              placeholder="请输入湿度百分比"
+              value={formData.humidity.toString()}
+              onChange={(value) => handleInputChange("humidity", Number(value))}
+              required
+            />
+          </CellGroup>
+        </Card>
+
+        {/* 养护技巧 */}
+        <Card className={styles.formCard}>
+          <h3 className={styles.sectionTitle}>养护技巧</h3>
+          <CellGroup>
+            {formData.careTips.map((tip, index) => (
+              <Field
+                key={index}
+                label={`技巧 ${index + 1}`}
+                placeholder="请输入养护技巧"
+                value={tip}
+                onChange={(value) => handleCareTipChange(index, value)}
+                rightIcon={
+                  formData.careTips.length > 1 ? (
+                    <Button
+                      size="mini"
+                      type="danger"
+                      onClick={() => removeCareTip(index)}
+                    >
+                      删除
+                    </Button>
+                  ) : undefined
+                }
+              />
+            ))}
+            <Button
+              type="primary"
+              size="small"
+              onClick={addCareTip}
+              style={{ margin: "16px" }}
+            >
+              添加技巧
+            </Button>
+          </CellGroup>
+        </Card>
+
         {/* 植物描述 */}
         <Card className={styles.formCard}>
           <h3 className={styles.sectionTitle}>植物描述</h3>
           <CellGroup>
             <Field
               label="备注信息"
+              type="textarea"
               placeholder="添加一些关于这株植物的描述..."
               value={formData.description}
               onChange={(value) => handleInputChange("description", value)}
-              type="textarea"
-              rows={3}
+              autoSize={{ minHeight: 80 }}
+              maxLength={200}
+              showWordLimit
             />
           </CellGroup>
         </Card>
@@ -264,6 +436,82 @@ const AddPlant: React.FC = () => {
             setShowFrequencyPicker(false);
           }}
           onCancel={() => setShowFrequencyPicker(false)}
+        />
+      </Popup>
+
+      {/* 植物状态选择器 */}
+      <Popup
+        visible={showStatusPicker}
+        position="bottom"
+        onClose={() => setShowStatusPicker(false)}
+      >
+        <Picker
+          title="选择植物状态"
+          columns={statusOptions}
+          onConfirm={(values: any) => {
+            const selectedIndex = statusOptions[0].indexOf(values[0]);
+            const statusValue = statusValues[selectedIndex];
+            handleInputChange("status", statusValue);
+            setShowStatusPicker(false);
+          }}
+          onCancel={() => setShowStatusPicker(false)}
+        />
+      </Popup>
+
+      {/* 养护难度选择器 */}
+      <Popup
+        visible={showCareLevelPicker}
+        position="bottom"
+        onClose={() => setShowCareLevelPicker(false)}
+      >
+        <Picker
+          title="选择养护难度"
+          columns={careLevelOptions}
+          onConfirm={(values: any) => {
+            const selectedIndex = careLevelOptions[0].indexOf(values[0]);
+            const careLevelValue = careLevelValues[selectedIndex];
+            handleInputChange("careLevel", careLevelValue);
+            setShowCareLevelPicker(false);
+          }}
+          onCancel={() => setShowCareLevelPicker(false)}
+        />
+      </Popup>
+
+      {/* 光照需求选择器 */}
+      <Popup
+        visible={showLightPicker}
+        position="bottom"
+        onClose={() => setShowLightPicker(false)}
+      >
+        <Picker
+          title="选择光照需求"
+          columns={lightOptions}
+          onConfirm={(values: any) => {
+            const selectedIndex = lightOptions[0].indexOf(values[0]);
+            const lightValue = lightValues[selectedIndex];
+            handleInputChange("lightNeeds", lightValue);
+            setShowLightPicker(false);
+          }}
+          onCancel={() => setShowLightPicker(false)}
+        />
+      </Popup>
+
+      {/* 浇水需求选择器 */}
+      <Popup
+        visible={showWaterPicker}
+        position="bottom"
+        onClose={() => setShowWaterPicker(false)}
+      >
+        <Picker
+          title="选择浇水需求"
+          columns={waterOptions}
+          onConfirm={(values: any) => {
+            const selectedIndex = waterOptions[0].indexOf(values[0]);
+            const waterValue = waterValues[selectedIndex];
+            handleInputChange("waterNeeds", waterValue);
+            setShowWaterPicker(false);
+          }}
+          onCancel={() => setShowWaterPicker(false)}
         />
       </Popup>
     </div>

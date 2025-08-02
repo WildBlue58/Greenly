@@ -1,28 +1,119 @@
-/* 用户个人资料页面样式 */
+/* 👤 用户个人资料页面 - 现代个人中心体验 */
+@import "../../shared/variables.css";
+
 .userProfile {
-  padding: 16px;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  padding: var(--space-lg);
+  background: var(--bg-gradient-primary);
   min-height: 100vh;
-  padding-bottom: 80px; /* 为底部导航留出空间 */
+  padding-bottom: 100px; /* 为底部导航留出空间 */
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* 用户信息卡片 */
+/* 个人中心背景装饰 */
+.userProfile::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -30%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    rgba(76, 175, 80, 0.04) 0%,
+    transparent 70%
+  );
+  animation: floating 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.userProfile::after {
+  content: "";
+  position: absolute;
+  bottom: -20%;
+  left: -20%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 195, 74, 0.03) 0%,
+    transparent 70%
+  );
+  animation: floating 8s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+/* 💫 用户信息卡片 - 精美展示 */
 .userCard {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow-hover);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.8s var(--ease-out-cubic);
+}
+
+.userCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-500) 0%,
+    var(--green-light) 50%,
+    var(--primary-600) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+}
+
+.userCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 64px rgba(76, 175, 80, 0.15);
 }
 
 .userHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-lg);
+  position: relative;
+  z-index: 1;
 }
 
 .userAvatar {
   flex-shrink: 0;
+  position: relative;
+}
+
+.userAvatar img {
+  border-radius: 50%;
+  border: 3px solid var(--primary-100);
+  transition: all var(--transition-normal);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.2);
+}
+
+.userCard:hover .userAvatar img {
+  transform: scale(1.05);
+  border-color: var(--primary-300);
+  box-shadow: 0 12px 32px rgba(76, 175, 80, 0.3);
 }
 
 .userInfo {
@@ -33,83 +124,194 @@
 .userNameSection {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .userName {
-  font-size: 20px;
-  font-weight: 600;
-  color: #333;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-800);
   margin: 0;
   flex: 1;
+  background: linear-gradient(
+    135deg,
+    var(--gray-800) 0%,
+    var(--primary-600) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all var(--transition-normal);
 }
 
 .editNameBtn {
   flex-shrink: 0;
-  height: 28px;
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 6px;
+  height: 32px;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  border-radius: var(--card-radius-small);
+  background: var(--primary-50);
+  color: var(--primary-600);
+  border: 1px solid var(--primary-200);
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-medium);
+}
+
+.editNameBtn:hover {
+  background: var(--primary-100);
+  border-color: var(--primary-400);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .userBio {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  margin: 0 0 var(--space-md) 0;
+  line-height: var(--line-height-relaxed);
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .userTags {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
 .userTag {
-  font-size: 10px;
-  padding: 2px 6px;
+  font-size: var(--font-size-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--primary-50);
+  color: var(--primary-600);
+  border-radius: var(--card-radius-small);
+  border: 1px solid var(--primary-200);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* 统计卡片 */
+.userTag:hover {
+  background: var(--primary-100);
+  border-color: var(--primary-400);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+/* 📊 统计卡片 - 数据可视化 */
 .statsCard {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1s var(--ease-out-cubic) 0.2s both;
+}
+
+.statsCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(76, 175, 80, 0.02) 0%,
+    rgba(139, 195, 74, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  pointer-events: none;
+}
+
+.statsCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.statsCard:hover::before {
+  opacity: 1;
 }
 
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: var(--space-lg);
+  position: relative;
+  z-index: 1;
 }
 
 .statItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: #f8fff8;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--primary-50);
+  border-radius: var(--card-radius);
+  transition: all var(--transition-normal);
+  border: 1px solid var(--primary-100);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.statItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(76, 175, 80, 0.1),
+    transparent
+  );
+  transition: left var(--transition-slow);
 }
 
 .statItem:hover {
-  background: #e8f5e8;
-  transform: translateY(-2px);
+  background: var(--primary-100);
+  border-color: var(--primary-300);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
+}
+
+.statItem:hover::before {
+  left: 100%;
 }
 
 .statIcon {
-  width: 40px;
-  height: 40px;
-  background: white;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  color: white;
+  font-size: var(--font-size-lg);
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.statItem:hover .statIcon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 .statInfo {
@@ -117,34 +319,76 @@
 }
 
 .statNumber {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 2px;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: #000000;
+  margin-bottom: var(--space-sm);
+  transition: all var(--transition-normal);
+  line-height: var(--line-height-tight);
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.statItem:hover .statNumber {
+  transform: scale(1.05);
 }
 
 .statLabel {
-  font-size: 11px;
-  color: #666;
+  font-size: var(--font-size-base);
+  color: #000000;
+  font-weight: var(--font-weight-bold);
+  text-transform: none;
+  letter-spacing: 0.3px;
+  opacity: 1;
+  line-height: var(--line-height-normal);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-/* 菜单卡片 */
+/* 📝 菜单卡片 - 交互式导航 */
 .menuCard {
-  background: white;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
   overflow: hidden;
+  transition: all var(--transition-normal);
+  animation: fadeInUp 1.2s var(--ease-out-cubic) 0.4s both;
+}
+
+.menuCard:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
 }
 
 .menuList {
   padding: 0;
+  position: relative;
 }
 
 .menuItem {
-  padding: 16px 20px;
-  border-bottom: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid var(--card-border);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.menuItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(76, 175, 80, 0.05),
+    transparent
+  );
+  transition: left var(--transition-slow);
 }
 
 .menuItem:last-child {
@@ -152,84 +396,190 @@
 }
 
 .menuItem:hover {
-  background: #f8fff8;
+  background: var(--primary-50);
+  transform: translateX(4px);
+}
+
+.menuItem:hover::before {
+  left: 100%;
 }
 
 .menuIcon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: var(--primary-100);
+  color: var(--primary-600);
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
 }
 
-/* 成就卡片 */
+.menuItem:hover .menuIcon {
+  background: var(--primary-200);
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.25);
+}
+
+/* 🏆 成就卡片 - 成就系统 */
 .achievementsCard {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1.4s var(--ease-out-cubic) 0.6s both;
+}
+
+.achievementsCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ffb300 0%, #ffc107 50%, #ffd54f 100%);
+  opacity: 0.8;
+}
+
+.achievementsCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-lg);
+  position: relative;
+  z-index: 1;
 }
 
 .cardTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-800);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cardTitle::before {
+  content: "🏆";
+  font-size: var(--font-size-xl);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .achievementCount {
-  font-size: 12px;
-  color: #666;
-  background: #e8f5e8;
-  padding: 4px 8px;
-  border-radius: 12px;
+  font-size: var(--font-size-xs);
+  color: var(--warning);
+  background: #fff3e0;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--card-radius-large);
+  border: 1px solid #ffcc80;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .achievementsList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
 }
 
 .achievementItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--card-radius);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievementItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 193, 7, 0.1),
+    transparent
+  );
+  transition: left var(--transition-slow);
 }
 
 .achievementItem.earned {
   background: #f8fff8;
-  border: 1px solid #e8f5e8;
+  border: 2px solid var(--primary-200);
+}
+
+.achievementItem.earned:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-400);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
+}
+
+.achievementItem.earned:hover::before {
+  left: 100%;
 }
 
 .achievementItem.locked {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  opacity: 0.7;
+  background: var(--gray-100);
+  border: 2px solid var(--gray-200);
+  opacity: 0.6;
+}
+
+.achievementItem.locked:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
 }
 
 .achievementIcon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: var(--font-size-xl);
   flex-shrink: 0;
+  border-radius: 50%;
+  transition: all var(--transition-normal);
+}
+
+.achievementItem.earned .achievementIcon {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.achievementItem.locked .achievementIcon {
+  background: var(--gray-300);
+  color: var(--gray-500);
+}
+
+.achievementItem:hover .achievementIcon {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .achievementInfo {
@@ -238,58 +588,129 @@
 }
 
 .achievementName {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 2px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: #1a1a1a;
+  margin-bottom: var(--space-xs);
+  transition: color var(--transition-normal);
+}
+
+.achievementItem.earned:hover .achievementName {
+  color: var(--primary-600);
 }
 
 .achievementDesc {
-  font-size: 11px;
-  color: #666;
+  font-size: var(--font-size-base);
+  color: #000000;
+  opacity: 1;
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .achievementStatus {
   flex-shrink: 0;
+  transition: all var(--transition-normal);
 }
 
-/* 活动卡片 */
+/* 📊 活动卡片 - 动态展示 */
 .activityCard {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: var(--card-radius-large);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1.6s var(--ease-out-cubic) 0.8s both;
+}
+
+.activityCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--info) 0%, #64b5f6 50%, #90caf9 100%);
+  opacity: 0.8;
+}
+
+.activityCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .activityList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
 }
 
 .activityItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 8px;
-  background: #f8fff8;
-  transition: all 0.3s ease;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--card-radius);
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.activityItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(33, 150, 243, 0.1),
+    transparent
+  );
+  transition: left var(--transition-slow);
 }
 
 .activityItem:hover {
-  background: #e8f5e8;
+  background: var(--primary-100);
+  border-color: var(--primary-300);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
+}
+
+.activityItem:hover::before {
+  left: 100%;
 }
 
 .activityIcon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--info) 0%, #64b5f6 100%);
+  color: white;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.activityItem:hover .activityIcon {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
 }
 
 .activityContent {
@@ -298,108 +719,266 @@
 }
 
 .activityTitle {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 2px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: #1a1a1a;
+  margin-bottom: var(--space-sm);
+  transition: color var(--transition-normal);
+  line-height: var(--line-height-normal);
+}
+
+.activityItem:hover .activityTitle {
+  color: var(--info);
 }
 
 .activityDesc {
-  font-size: 11px;
-  color: #666;
+  font-size: var(--font-size-base);
+  color: #000000;
+  opacity: 1;
+  line-height: var(--line-height-relaxed);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* 退出登录 */
+/* 🚞 退出登录 - 安全操作 */
 .logoutSection {
-  margin-top: 24px;
-  margin-bottom: 80px;
+  margin-top: var(--space-2xl);
+  margin-bottom: 100px;
+  animation: fadeInUp 1.8s var(--ease-out-cubic) 1s both;
 }
 
 .logoutButton {
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+  border-radius: var(--card-radius);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  background: linear-gradient(135deg, var(--error) 0%, #e53935 100%);
   border: none;
   color: white;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
+  padding: var(--space-lg) var(--space-2xl);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.3);
+}
+
+.logoutButton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
 }
 
 .logoutButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(244, 67, 54, 0.4);
 }
 
-/* 响应式设计 */
+.logoutButton:hover::before {
+  opacity: 1;
+}
+
+.logoutButton:active {
+  transform: translateY(-2px);
+}
+
+/* 📱 响应式设计 - 移动优先 */
 @media (max-width: 768px) {
   .userProfile {
-    padding: 12px;
+    padding: var(--space-md);
   }
 
   .userCard {
-    padding: 20px;
+    padding: var(--space-xl);
   }
 
   .userName {
-    font-size: 18px;
+    font-size: var(--font-size-xl);
   }
 
   .userBio {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
+  }
+
+  .userAvatar img {
+    width: 80px;
+    height: 80px;
   }
 
   .statsGrid {
-    gap: 12px;
+    gap: var(--space-md);
   }
 
   .statItem {
-    padding: 10px;
+    padding: var(--space-md);
   }
 
   .statIcon {
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-size-base);
+  }
+
+  .statNumber {
+    font-size: var(--font-size-xl);
+  }
+
+  .menuItem {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .menuIcon {
     width: 36px;
     height: 36px;
   }
 
-  .statNumber {
-    font-size: 16px;
-  }
-
-  .menuItem {
-    padding: 14px 16px;
-  }
-
   .achievementsCard,
   .activityCard {
-    padding: 16px;
+    padding: var(--space-xl);
   }
 
   .achievementItem,
   .activityItem {
-    padding: 10px;
+    padding: var(--space-md);
+  }
+
+  .achievementIcon,
+  .activityIcon {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-base);
   }
 
   .logoutButton {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
+    padding: var(--space-md) var(--space-xl);
   }
 }
 
-/* 编辑用户名对话框样式 */
+@media (max-width: 480px) {
+  .userProfile {
+    padding: var(--space-sm);
+  }
+
+  .userCard {
+    padding: var(--space-lg);
+  }
+
+  .userHeader {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .userName {
+    font-size: var(--font-size-lg);
+  }
+
+  .userAvatar img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .statItem {
+    padding: var(--space-sm);
+  }
+
+  .menuItem {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .achievementsCard,
+  .activityCard {
+    padding: var(--space-lg);
+  }
+
+  .achievementItem,
+  .activityItem {
+    padding: var(--space-sm);
+  }
+}
+
+/* ✏️ 编辑用户名对话框 - 现代设计 */
 .editNameDialog {
-  border-radius: 16px;
+  border-radius: var(--card-radius-large);
+  overflow: hidden;
+  backdrop-filter: blur(20px);
 }
 
 .editNameContent {
-  padding: 16px 0;
+  padding: var(--space-lg) 0;
 }
 
 .editNameContent .rv-field {
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  background: #f8f8f8;
+  border-radius: var(--card-radius);
+  border: 2px solid var(--gray-200);
+  background: var(--gray-50);
+  transition: all var(--transition-normal);
+  margin: var(--space-sm) 0;
 }
 
 .editNameContent .rv-field:focus-within {
-  border-color: #4caf50;
+  border-color: var(--primary-400);
   background: white;
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+  transform: translateY(-2px);
+}
+
+.editNameContent .rv-field input {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-800);
+  padding: var(--space-md);
+}
+
+.editNameContent .rv-field input::placeholder {
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+/* ✨ 全局动画效果 */
+.userProfile * {
+  animation-fill-mode: both;
+}
+
+/* 🔄 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: var(--font-size-base);
+  color: var(--gray-600);
+}
+
+.loading::before {
+  content: "👤";
+  font-size: 48px;
+  margin-right: var(--space-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 🎆 特殊效果 */
+.userCard,
+.statsCard,
+.menuCard,
+.achievementsCard,
+.activityCard {
+  transform-origin: center;
+  will-change: transform, box-shadow;
+}
+
+/* 🔍 聚焦效果 */
+.userCard:focus-within,
+.statsCard:focus-within,
+.menuCard:focus-within {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
 }

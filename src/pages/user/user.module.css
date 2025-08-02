@@ -1,0 +1,64 @@
+/* 👤 用户页面 - 现代个人中心设计 */
+@import "../shared/variables.css";
+
+.userPage {
+  min-height: 100vh;
+  background: var(--bg-gradient-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 用户主题背景装饰 */
+.userPage::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    rgba(76, 175, 80, 0.04) 0%,
+    transparent 70%
+  );
+  animation: floating 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.userPage::after {
+  content: "";
+  position: absolute;
+  bottom: -20%;
+  left: -20%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 195, 74, 0.03) 0%,
+    transparent 70%
+  );
+  animation: floating 8s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+/* 通用容器 */
+.container {
+  padding: var(--space-lg);
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--space-sm);
+  }
+}

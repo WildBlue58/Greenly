@@ -37,10 +37,6 @@ const PlantList: React.FC = () => {
     { label: "需要养护", value: "needs_care" },
   ];
 
-  const getStatusColor = (status: string) => {
-    return status === "healthy" ? "#4CAF50" : "#FF9800";
-  };
-
   const getStatusText = (status: string) => {
     return status === "healthy" ? "健康" : "需要养护";
   };
@@ -90,16 +86,19 @@ const PlantList: React.FC = () => {
                       height="100%"
                       style={{ borderRadius: "8px" }}
                     />
-                    <div
-                      className={styles.statusBadge}
-                      style={{ backgroundColor: getStatusColor(plant.status) }}
-                    >
-                      {getStatusText(plant.status)}
-                    </div>
                   </div>
 
                   <div className={styles.plantInfo}>
-                    <h3 className={styles.plantName}>{plant.name}</h3>
+                    <div className={styles.plantHeader}>
+                      <h3 className={styles.plantName}>{plant.name}</h3>
+                      <div
+                        className={`${styles.statusBadge} ${
+                          styles[plant.status]
+                        }`}
+                      >
+                        {getStatusText(plant.status)}
+                      </div>
+                    </div>
                     <p className={styles.plantSpecies}>{plant.species}</p>
 
                     <div className={styles.plantDetails}>
