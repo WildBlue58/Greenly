@@ -115,7 +115,7 @@ pnpm build
 pnpm preview
 ```
 
-## �� 项目结构
+## 🪄🪄项目结构
 
 ```bash
 src/
@@ -235,8 +235,8 @@ src/
 
 ## 📞 联系方式
 
-- 项目链接：[https://github.com/your-username/greenly](https://github.com/your-username/greenly)
-- 问题反馈：[Issues](https://github.com/your-username/greenly/issues)
+- 项目链接：[https://github.com/WildBlue58/greenly](https://github.com/WildBlue58/greenly)
+- 问题反馈：[Issues](https://github.com/WildBlue58/greenly/issues)
 
 ---
 
