@@ -339,3 +339,40 @@ export const isTomorrow = (date: Date): boolean => {
   tomorrow.setDate(tomorrow.getDate() + 1);
   return isSameDay(date, tomorrow);
 };
+
+/**
+ * 格式化养护提醒时间
+ * @param dateString 日期字符串或日期对象
+ * @returns 格式化后的时间字符串
+ */
+export const formatCareReminderTime = (dateString: string | Date): string => {
+  try {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+    
+    // 检查日期是否有效
+    if (!isValidDate(date)) {
+      return '无效时间';
+    }
+    
+    const now = new Date();
+    
+    if (isToday(date)) {
+      return `今天 ${formatDate(date, DATE_FORMATS.TIME_SHORT)}`;
+    } else if (isTomorrow(date)) {
+      return `明天 ${formatDate(date, DATE_FORMATS.TIME_SHORT)}`;
+    } else if (isYesterday(date)) {
+      return `昨天 ${formatDate(date, DATE_FORMATS.TIME_SHORT)}`;
+    } else {
+      // 如果是本年内，显示月-日 时:分
+      if (date.getFullYear() === now.getFullYear()) {
+        return formatDate(date, DATE_FORMATS.DATETIME_SHORT);
+      } else {
+        // 跨年显示完整日期
+        return formatDate(date, DATE_FORMATS.DATETIME);
+      }
+    }
+  } catch (error) {
+    console.error('格式化养护提醒时间失败:', error);
+    return '时间格式错误';
+  }
+};
