@@ -1,5 +1,6 @@
 import { api } from '../utils/request';
-import type { ChatMessage, PlantRecognitionResult, ImageGenerationResult, ApiResponse } from '../store/types';
+import { chatWithModel, type LLMMessage } from '../utils/llm';
+import type { ChatMessage, PlantRecognitionResult, ImageGenerationResult } from '../store/types';
 
 // AI 聊天相关 API
 export const aiChatAPI = {
@@ -19,7 +20,54 @@ export const aiChatAPI = {
       totalTokens: number;
     };
   }> => {
-    return api.post('/ai/chat', data);
+    try {
+      // 构建消息历史
+      const messages: LLMMessage[] = [];
+      
+      // 添加上下文（如果有）
+      if (data.context) {
+        messages.push({
+          role: "system",
+          content: data.context,
+        });
+      }
+      
+      // 添加历史消息
+      if (data.history && data.history.length > 0) {
+        const historyMessages = data.history.slice(-10).map((msg: ChatMessage) => ({
+          role: msg.role,
+          content: msg.content,
+        }));
+        messages.push(...historyMessages);
+      }
+      
+      // 添加当前用户消息
+      messages.push({
+        role: "user",
+        content: data.message,
+      });
+
+      // 调用LLM API
+      const response = await chatWithModel(data.model || "deepseek", messages);
+      
+      if (response.code !== 0 || !response.data) {
+        throw new Error(response.msg || "LLM调用失败");
+      }
+
+      return {
+        content: response.data.content,
+        model: data.model || "deepseek",
+        timestamp: new Date().toISOString(),
+        usage: {
+          promptTokens: 0, // TODO: 从实际API响应中获取
+          completionTokens: 0,
+          totalTokens: 0,
+        },
+      };
+    } catch (error) {
+      console.error("聊天API调用失败:", error);
+      throw error;
+    }
   },
 
   // 获取聊天历史
@@ -55,56 +103,46 @@ export const aiChatAPI = {
       };
     }>;
   }> => {
-    return api.get('/ai/models/chat');
+    // 返回支持的模型列表
+    return {
+      models: [
+        {
+          id: "deepseek",
+          name: "DeepSeek Chat",
+          description: "DeepSeek大模型，擅长中文对话和逻辑推理",
+          maxTokens: 16384,
+          supportsStreaming: false,
+          pricing: {
+            input: 0.14,
+            output: 0.28,
+          },
+        },
+        {
+          id: "kimi",
+          name: "Kimi Chat",
+          description: "月之暗面Kimi大模型，支持超长上下文",
+          maxTokens: 128000,
+          supportsStreaming: false,
+          pricing: {
+            input: 0.12,
+            output: 0.12,
+          },
+        },
+      ],
+    };
   },
 
-  // 流式聊天（WebSocket 或 Server-Sent Events）
-  streamChat: async (data: {
-    message: string;
-    model?: string;
-    history?: ChatMessage[];
-  }, onMessage: (chunk: string) => void): Promise<void> => {
-    const response = await fetch('/api/ai/chat/stream', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error('流式聊天失败');
-    }
-
-    const reader = response.body?.getReader();
-    if (!reader) {
-      throw new Error('无法读取响应流');
-    }
-
-    const decoder = new TextDecoder();
-    
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      
-      const chunk = decoder.decode(value);
-      const lines = chunk.split('\n');
-      
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          if (data === '[DONE]') return;
-          
-          try {
-            const parsed = JSON.parse(data);
-            onMessage(parsed.content || '');
-          } catch (e) {
-            console.error('解析流数据失败:', e);
-          }
-        }
-      }
-    }
+  // 流式聊天（暂未实现）
+  streamChat: async (
+    _data: {
+      message: string;
+      model?: string;
+      history?: ChatMessage[];
+    }, 
+    _onMessage: (chunk: string) => void
+  ): Promise<void> => {
+    // TODO: 实现基于LLM的流式聊天
+    throw new Error('流式聊天功能暂未实现，将在后续版本中支持');
   },
 };
 
