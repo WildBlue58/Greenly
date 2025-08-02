@@ -18,6 +18,7 @@ import {
   Arrow,
 } from "@react-vant/icons";
 import { Button as CustomButton, Empty, Tag as CustomTag } from "../common";
+import { formatCareReminderTime } from "../../utils/date";
 import styles from "./care.module.css";
 
 // 养护类型定义
@@ -244,7 +245,7 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                   <p className={styles.taskDescription}>{task.description}</p>
                   <div className={styles.taskMeta}>
                     <span className={styles.taskCompleted}>
-                      完成于: {task.completedAt}
+                      完成于: {formatCareReminderTime(task.completedAt || "")}
                     </span>
                   </div>
                 </div>
@@ -361,7 +362,7 @@ export const CareRecordComponent: React.FC<CareRecordProps> = ({
         )}
         <div className={styles.recordTime}>
           <Clock />
-          <span>{record.completedAt}</span>
+          <span>{formatCareReminderTime(record.completedAt)}</span>
         </div>
       </div>
     </div>
@@ -407,7 +408,9 @@ export const CareReminder: React.FC<CareReminderProps> = ({
               <div className={styles.reminderInfo}>
                 <h4 className={styles.reminderTask}>{reminder.title}</h4>
                 <p className={styles.reminderPlant}>{reminder.plantName}</p>
-                <span className={styles.reminderTime}>{reminder.dueDate}</span>
+                <span className={styles.reminderTime}>
+                  {formatCareReminderTime(reminder.dueDate)}
+                </span>
               </div>
             </div>
             <div className={styles.reminderActions}>
