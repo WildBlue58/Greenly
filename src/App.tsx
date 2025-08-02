@@ -20,13 +20,14 @@ const PlantDetail = React.lazy(() => import("./pages/plant/detail"));
 const PlantAdd = React.lazy(() => import("./pages/plant/add"));
 const PlantEdit = React.lazy(() => import("./pages/plant/edit"));
 const Care = React.lazy(() => import("./pages/care"));
+const CarePlan = React.lazy(() => import("./pages/care/plan"));
 // const AddCareTask = React.lazy(() => import("./pages/care/add"));
 const EditCareTask = React.lazy(() => import("./pages/care/edit"));
 // const CareRecord = React.lazy(() => import("./pages/care/record"));
 // const CareReminder = React.lazy(() => import("./pages/care/reminder"));
 // const CareStats = React.lazy(() => import("./pages/care/stats"));
 const AIPage = React.lazy(() => import("./pages/ai"));
-// const AIRecognition = React.lazy(() => import("./pages/ai/recognition"));
+const AIRecognition = React.lazy(() => import("./pages/ai/recognition"));
 // const AIGenerate = React.lazy(() => import("./pages/ai/generate"));
 // const AIDiagnosis = React.lazy(() => import("./pages/ai/diagnosis"));
 const UserProfile = React.lazy(() => import("./pages/user/profile"));
@@ -194,6 +195,7 @@ function App() {
                 {/* 养护管理路由 */}
                 <Route path="care">
                   <Route index element={<Care />} />
+                  <Route path="plan" element={<CarePlan />} />
                   {/* <Route path="add" element={<AddCareTask />} /> */}
                   <Route path="edit/:id" element={<EditCareTask />} />
                 </Route>
@@ -202,8 +204,8 @@ function App() {
                 <Route path="ai" element={<AIPage />} />
                 {/* 暂时保留chat路由作为重定向 */}
                 <Route path="ai/chat" element={<AIPage />} />
-                {/* <Route path="ai/recognition" element={<AIRecognition />} />
-                <Route path="ai/generate" element={<AIGenerate />} />
+                <Route path="ai/recognition" element={<AIRecognition />} />
+                {/* <Route path="ai/generate" element={<AIGenerate />} />
                 <Route path="ai/diagnosis" element={<AIDiagnosis />} /> */}
 
                 {/* 用户中心路由 */}
