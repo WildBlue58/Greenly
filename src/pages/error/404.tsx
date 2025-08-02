@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Empty } from 'react-vant';
 import { ArrowLeft, HomeO } from '@react-vant/icons';
 import styles from './404.module.css';
+import { useTitle } from '../../hooks';
 
 const Error404: React.FC = () => {
+  useTitle();
   const navigate = useNavigate();
 
   const handleGoHome = () => {

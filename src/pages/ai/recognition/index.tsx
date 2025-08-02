@@ -4,6 +4,7 @@ import { PhotoO, Arrow, Delete, ArrowLeft } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { plantCareChat } from "../../../utils/llm";
 import styles from "./recognition.module.css";
+import { useTitle } from "../../../hooks";
 
 interface Message {
   id: string;
@@ -22,6 +23,7 @@ interface RecognitionResult {
 }
 
 const PlantRecognition: React.FC = () => {
+  useTitle();
   const navigate = useNavigate();
 
   // 状态管理

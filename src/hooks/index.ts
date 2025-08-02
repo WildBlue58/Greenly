@@ -15,4 +15,9 @@ export {
   useUserPreferences,
   useAppSettings,
   useCache,
-} from './useLocalStorage'; 
+} from './useLocalStorage';
+export { 
+  useTitle,
+  setPageTitle,
+  resetPageTitle,
+} from './useTitle'; 

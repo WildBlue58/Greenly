@@ -12,7 +12,7 @@ import {
   ClockO,
 } from "@react-vant/icons";
 import { useStore } from "../../store";
-import { useCare } from "../../hooks/useCare";
+import { useCare, useTitle } from "../../hooks";
 import type { Plant } from "../../store/types";
 import { AvatarUpload } from "../../components/common";
 import styles from "./home.module.css";
@@ -21,6 +21,10 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const { plants, fetchPlants, user } = useStore() as any;
   const { todayTasks, careStats, fetchCareTasks } = useCare();
+  
+  // 设置页面标题
+  useTitle();
+  
   const [stats, setStats] = useState({
     totalPlants: 0,
     healthyPlants: 0,

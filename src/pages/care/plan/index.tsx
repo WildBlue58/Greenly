@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Tag, Progress, Empty } from "react-vant";
 import { ClockO, Checked, Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
 import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./plan.module.css";
 
@@ -17,7 +18,10 @@ interface CareTask {
 
 const CarePlan: React.FC = () => {
   const { plants } = useStore() as any;
-
+  
+  // 设置页面标题
+  useTitle();
+  
   const [tasks, setTasks] = useState<CareTask[]>([]);
   const [filterStatus, setFilterStatus] = useState<
     "all" | "pending" | "completed"

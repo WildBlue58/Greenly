@@ -10,7 +10,7 @@ import {
   CareForm,
 } from "../../components/care";
 import { Loading, Empty } from "../../components/common";
-import { useCare } from "../../hooks/useCare";
+import { useCare, useTitle } from "../../hooks";
 import { usePlant } from "../../hooks/usePlant";
 import type { CareTask } from "../../store/types";
 import styles from "./care.module.css";
@@ -21,6 +21,10 @@ import styles from "./care.module.css";
  */
 const CarePage: React.FC = () => {
   const navigate = useNavigate();
+  
+  // 设置页面标题
+  useTitle();
+  
   const [activeTab, setActiveTab] = useState("plan");
   const [showAddForm, setShowAddForm] = useState(false);
 

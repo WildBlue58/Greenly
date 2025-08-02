@@ -14,12 +14,14 @@ import { useCare } from "../../../hooks/useCare";
 import { usePlant } from "../../../hooks/usePlant";
 import type { CareTask, Plant } from "../../../store/types";
 import styles from "./add.module.css";
+import { useTitle } from "../../../hooks";
 
 /**
  * 添加养护任务页面
  * 提供完整的任务创建功能
  */
 const AddCareTask: React.FC = () => {
+  useTitle();
   const navigate = useNavigate();
   const { addCareTask } = useCare();
   const { plants, fetchPlants } = usePlant();

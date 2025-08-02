@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, Button, Tag, Progress, Cell, Divider } from "react-vant";
 import { ArrowLeft, Edit, Delete, CalendarO, StarO } from "@react-vant/icons";
 import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
 import type { Plant } from "../../../store/types";
 import { PlantImage } from "../../../components/common";
 import styles from "./detail.module.css";
@@ -33,6 +34,10 @@ const PlantDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { plants, deletePlant } = useStore() as any;
+  
+  // 设置页面标题
+  useTitle();
+  
   const [plant, setPlant] = useState<PlantDetail | null>(null);
   const [loading, setLoading] = useState(true);
 

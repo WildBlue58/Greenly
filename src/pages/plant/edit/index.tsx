@@ -11,6 +11,7 @@ import {
 } from "react-vant";
 import { ArrowLeft, PhotoO } from "@react-vant/icons";
 import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
 // import { showToast } from "../../../components/common"; // 暂时注释掉，使用 alert 替代
 import styles from "./edit.module.css";
 
@@ -18,6 +19,9 @@ const EditPlant: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { plants, updatePlant } = useStore() as any;
+
+  // 设置页面标题
+  useTitle();
 
   const [formData, setFormData] = useState({
     name: "",

@@ -15,8 +15,10 @@ import { useCare } from "../../../hooks/useCare";
 import { AvatarUpload } from "../../../components/common";
 import { formatRelativeDate } from "../../../utils/date";
 import styles from "./profile.module.css";
+import { useTitle } from "../../../hooks";
 
 const UserProfile: React.FC = () => {
+  useTitle();
   const { user, plants, updateProfile } = useStore();
   const { careTasks, careRecords, fetchCareTasks, fetchCareRecords } =
     useCare();

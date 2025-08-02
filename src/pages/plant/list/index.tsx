@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Card, Button, Search, Empty, PullRefresh } from "react-vant";
 import { Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
 import { PlantImage } from "../../../components/common";
 import styles from "./list.module.css";
 
@@ -10,6 +11,10 @@ const PlantList: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { plants, fetchPlants } = useStore() as any;
+  
+  // 设置页面标题
+  useTitle();
+  
   const [searchValue, setSearchValue] = useState("");
   const [filterStatus, setFilterStatus] = useState<
     "all" | "healthy" | "needs_care"

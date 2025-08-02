@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Card, Button, Field, Loading, Empty } from "react-vant";
-import { useAI } from "../../../hooks/useAI";
+import { useAI, useTitle } from "../../../hooks";
 import styles from "./chat.module.css";
 
 interface Message {
@@ -12,6 +12,7 @@ interface Message {
 }
 
 const AIChat: React.FC = () => {
+  useTitle();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",

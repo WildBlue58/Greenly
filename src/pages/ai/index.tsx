@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, Field, Loading } from "react-vant";
 import { PhotoO, Search, Setting, Arrow, Add } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
-import { useAI } from "../../hooks/useAI";
+import { useAI, useTitle } from "../../hooks";
 import styles from "./ai.module.css";
 
 interface Message {
@@ -14,6 +14,7 @@ interface Message {
 }
 
 const AIPage: React.FC = () => {
+  useTitle();
   const { sendChatMessage, aiLoading, chatMessages } = useAI();
   const navigate = useNavigate();
 

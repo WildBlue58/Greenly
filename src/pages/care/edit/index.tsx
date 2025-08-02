@@ -12,7 +12,7 @@ import {
   Loading,
 } from "react-vant";
 import { Arrow, CalendarO, Delete } from "@react-vant/icons";
-import { useCare } from "../../../hooks/useCare";
+import { useCare, useTitle } from "../../../hooks";
 import { usePlant } from "../../../hooks/usePlant";
 import type { CareTask } from "../../../store/types";
 import { formatCareReminderTime } from "../../../utils/date";
@@ -25,6 +25,10 @@ import styles from "./edit.module.css";
 const EditCareTask: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  
+  // 设置页面标题
+  useTitle();
+  
   const {
     careTasks,
     updateCareTask,
