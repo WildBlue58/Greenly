@@ -21,8 +21,7 @@ const initializeApp = () => {
       id: "1",
       name: "植物爱好者",
       email: "user@example.com",
-      avatar:
-        "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=100&h=100&fit=crop",
+      avatar: "", // 默认无头像，让用户自己上传
       phone: "13800138000",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

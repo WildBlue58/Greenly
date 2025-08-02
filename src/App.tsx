@@ -10,6 +10,7 @@ import { ConfigProvider } from "react-vant";
 import { Layout, BlankLayout } from "./components/layout";
 import Loading from "./components/common/Loading";
 import { useStore } from "./store";
+import { initializeMockCareData } from "./utils/initializeMockData";
 import "./App.css";
 
 // 懒加载页面组件
@@ -18,11 +19,13 @@ const PlantList = React.lazy(() => import("./pages/plant/list"));
 const PlantDetail = React.lazy(() => import("./pages/plant/detail"));
 const PlantAdd = React.lazy(() => import("./pages/plant/add"));
 const PlantEdit = React.lazy(() => import("./pages/plant/edit"));
-const CarePlan = React.lazy(() => import("./pages/care/plan"));
+const Care = React.lazy(() => import("./pages/care"));
+// const AddCareTask = React.lazy(() => import("./pages/care/add"));
+const EditCareTask = React.lazy(() => import("./pages/care/edit"));
 // const CareRecord = React.lazy(() => import("./pages/care/record"));
 // const CareReminder = React.lazy(() => import("./pages/care/reminder"));
 // const CareStats = React.lazy(() => import("./pages/care/stats"));
-const AIChat = React.lazy(() => import("./pages/ai/chat"));
+const AIPage = React.lazy(() => import("./pages/ai"));
 // const AIRecognition = React.lazy(() => import("./pages/ai/recognition"));
 // const AIGenerate = React.lazy(() => import("./pages/ai/generate"));
 // const AIDiagnosis = React.lazy(() => import("./pages/ai/diagnosis"));
@@ -147,6 +150,9 @@ function App() {
   useEffect(() => {
     const initApp = async () => {
       try {
+        // 初始化模拟数据（仅在开发环境）
+        initializeMockCareData();
+
         // 初始化应用设置
         initializeApp();
 
@@ -187,21 +193,18 @@ function App() {
 
                 {/* 养护管理路由 */}
                 <Route path="care">
-                  <Route index element={<CarePlan />} />
-                  <Route path="plan" element={<CarePlan />} />
-                  {/* <Route path="record" element={<CareRecord />} />
-                  <Route path="reminder" element={<CareReminder />} />
-                  <Route path="stats" element={<CareStats />} /> */}
+                  <Route index element={<Care />} />
+                  {/* <Route path="add" element={<AddCareTask />} /> */}
+                  <Route path="edit/:id" element={<EditCareTask />} />
                 </Route>
 
                 {/* AI功能路由 */}
-                <Route path="ai">
-                  <Route index element={<AIChat />} />
-                  <Route path="chat" element={<AIChat />} />
-                  {/* <Route path="recognition" element={<AIRecognition />} />
-                  <Route path="generate" element={<AIGenerate />} />
-                  <Route path="diagnosis" element={<AIDiagnosis />} /> */}
-                </Route>
+                <Route path="ai" element={<AIPage />} />
+                {/* 暂时保留chat路由作为重定向 */}
+                <Route path="ai/chat" element={<AIPage />} />
+                {/* <Route path="ai/recognition" element={<AIRecognition />} />
+                <Route path="ai/generate" element={<AIGenerate />} />
+                <Route path="ai/diagnosis" element={<AIDiagnosis />} /> */}
 
                 {/* 用户中心路由 */}
                 <Route path="user">
