@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useStore } from '../store';
-import type { CarePlan, CareRecord, CareTask } from '../store/types';
+import type { CareRecord, CareTask } from '../store/types';
 
 /**
  * 养护相关Hook
@@ -22,6 +22,7 @@ export const useCare = () => {
   const deleteCareTask = store.deleteCareTask;
   const completeCareTask = store.completeCareTask;
   const addCareRecord = store.addCareRecord;
+  const deleteCareRecord = store.deleteCareRecord;
   const generateCarePlan = store.generateCarePlan;
 
   /**
@@ -65,8 +66,8 @@ export const useCare = () => {
    */
   const handleAddCareTask = useCallback(async (taskData: Partial<CareTask>) => {
     try {
-      const newTask = await addCareTask(taskData);
-      return { success: true, data: newTask };
+      const result = await addCareTask(taskData);
+      return result; // 直接返回store的结果
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : '添加养护任务失败' };
     }
@@ -89,8 +90,8 @@ export const useCare = () => {
    */
   const handleDeleteCareTask = useCallback(async (id: string) => {
     try {
-      await deleteCareTask(id);
-      return { success: true };
+      const result = await deleteCareTask(id);
+      return result;
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : '删除养护任务失败' };
     }
@@ -101,8 +102,8 @@ export const useCare = () => {
    */
   const handleCompleteCareTask = useCallback(async (id: string) => {
     try {
-      await completeCareTask(id);
-      return { success: true };
+      const result = await completeCareTask(id);
+      return result;
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : '完成养护任务失败' };
     }
@@ -113,12 +114,24 @@ export const useCare = () => {
    */
   const handleAddCareRecord = useCallback(async (recordData: Partial<CareRecord>) => {
     try {
-      const newRecord = await addCareRecord(recordData);
-      return { success: true, data: newRecord };
+      const result = await addCareRecord(recordData);
+      return result; // 直接返回store的结果
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : '添加养护记录失败' };
     }
   }, [addCareRecord]);
+
+  /**
+   * 删除养护记录
+   */
+  const handleDeleteCareRecord = useCallback(async (id: string) => {
+    try {
+      await deleteCareRecord(id);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : '删除养护记录失败' };
+    }
+  }, [deleteCareRecord]);
 
   /**
    * 生成养护计划
@@ -216,6 +229,7 @@ export const useCare = () => {
     deleteCareTask: handleDeleteCareTask,
     completeCareTask: handleCompleteCareTask,
     addCareRecord: handleAddCareRecord,
+    deleteCareRecord: handleDeleteCareRecord,
     generateCarePlan: handleGenerateCarePlan,
     
     // 筛选数据
