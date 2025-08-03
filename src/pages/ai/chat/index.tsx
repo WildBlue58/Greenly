@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Card, Button, Field, Loading, Empty } from "react-vant";
+import { Button, Field, Loading } from "react-vant";
 import { useAI, useTitle } from "../../../hooks";
 import styles from "./chat.module.css";
 
@@ -25,7 +25,7 @@ const AIChat: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { sendChatMessage, aiLoading } = useAI();
+  const { sendChatMessage } = useAI();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

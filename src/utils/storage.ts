@@ -50,7 +50,7 @@ const encryptData = (data: string, encrypt: boolean = false): string => {
   
   try {
     // 简单的Base64编码，实际项目中可以使用更安全的加密方式
-    return encrypt ? btoa(data) : atob(data);
+    return btoa(data);
   } catch {
     return data;
   }
@@ -97,7 +97,7 @@ export const getStorageItem = <T>(
   key: string,
   config: StorageConfig = {}
 ): T | null => {
-  const { type = 'localStorage', prefix = '', encrypt = false } = config;
+  const { type = 'localStorage', prefix = '' } = config;
   const storage = getStorageInstance(type);
   const fullKey = generateKey(key, prefix);
   

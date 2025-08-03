@@ -42,7 +42,7 @@ const PAGE_TITLES: Record<string, string> = {
 };
 
 // 动态标题生成规则
-const getDynamicTitle = (pathname: string, params?: Record<string, string>): string => {
+const getDynamicTitle = (pathname: string): string => {
   // 处理带参数的路径
   if (pathname.includes('/plant/detail/')) {
     return '植物详情 - 小养';
@@ -63,9 +63,8 @@ const getDynamicTitle = (pathname: string, params?: Record<string, string>): str
  * 根据当前路由动态设置页面标题
  * 
  * @param customTitle - 可选的自定义标题，会覆盖默认标题
- * @param params - 可选的参数对象，用于动态标题生成
  */
-export const useTitle = (customTitle?: string, params?: Record<string, string>) => {
+export const useTitle = (customTitle?: string) => {
   const location = useLocation();
   
   useEffect(() => {
@@ -76,9 +75,9 @@ export const useTitle = (customTitle?: string, params?: Record<string, string>) 
     }
     
     // 否则根据当前路径生成标题
-    const title = getDynamicTitle(location.pathname, params);
+    const title = getDynamicTitle(location.pathname);
     document.title = title;
-  }, [location.pathname, customTitle, params]);
+  }, [location.pathname, customTitle]);
 };
 
 /**

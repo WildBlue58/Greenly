@@ -1,5 +1,5 @@
 import { api } from '../utils/request';
-import type { User, LoginCredentials, RegisterData, ApiResponse } from '../store/types';
+import type { User, LoginCredentials, RegisterData } from '../store/types';
 
 // 用户认证相关 API
 export const authAPI = {

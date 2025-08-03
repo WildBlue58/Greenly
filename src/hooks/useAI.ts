@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useStore } from '../store';
-import type { ChatMessage, PlantRecognitionResult, ImageGenerationResult } from '../store/types';
+import type { ChatMessage } from '../store/types';
 
 /**
  * AI相关Hook

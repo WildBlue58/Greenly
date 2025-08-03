@@ -1,5 +1,5 @@
 import { api } from '../utils/request';
-import type { Plant, ApiResponse, PaginatedResponse } from '../store/types';
+import type { Plant, PaginatedResponse } from '../store/types';
 
 // 植物基础操作 API
 export const plantAPI = {

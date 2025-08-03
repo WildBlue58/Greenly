@@ -1,5 +1,5 @@
 import { api } from '../utils/request';
-import type { CarePlan, CareRecord, CareTask, ApiResponse, PaginatedResponse } from '../store/types';
+import type { CarePlan, CareRecord, CareTask, PaginatedResponse } from '../store/types';
 
 // 养护计划相关 API
 export const carePlanAPI = {

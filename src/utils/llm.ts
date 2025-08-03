@@ -173,14 +173,14 @@ export const plantCareChat = async (
 
 /**
  * 流式聊天（暂未实现）
- * @param messages 消息历史
- * @param onMessage 消息回调
- * @param model 模型名称
+ * @param _messages 消息历史
+ * @param _onMessage 消息回调
+ * @param _model 模型名称
  */
 export const streamChat = async (
-  messages: LLMMessage[],
-  onMessage: (chunk: string) => void,
-  model: string = "deepseek"
+  _messages: LLMMessage[],
+  _onMessage: (chunk: string) => void,
+  _model: string = "deepseek"
 ): Promise<void> => {
   // TODO: 实现流式聊天
   throw new Error("流式聊天功能暂未实现");

@@ -18,7 +18,7 @@ export const userStore = (set: any, get: any) => ({
   loading: false,
 
   // 登录
-  login: async (credentials: LoginCredentials) => {
+  login: async (_credentials: LoginCredentials) => {
     set({ loading: true });
     try {
       // 模拟登录成功

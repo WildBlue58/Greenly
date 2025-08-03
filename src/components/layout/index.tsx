@@ -7,7 +7,6 @@ import {
   ServiceO,
   ChatO,
   UserO,
-  ArrowLeft,
   Search,
   Plus,
 } from "@react-vant/icons";
@@ -135,7 +134,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <TabbarItem
           key={tab.key}
           name={tab.key}
-          icon={(active) => <tab.icon />}
+          icon={<tab.icon />}
           className={styles.tabItem}
         >
           {tab.title}

@@ -20,7 +20,7 @@ const PlantDetail = React.lazy(() => import("./pages/plant/detail"));
 const PlantAdd = React.lazy(() => import("./pages/plant/add"));
 const PlantEdit = React.lazy(() => import("./pages/plant/edit"));
 const Care = React.lazy(() => import("./pages/care"));
-const CarePlan = React.lazy(() => import("./pages/care/plan"));
+// const CarePlan = React.lazy(() => import("./pages/care/plan"));
 // const AddCareTask = React.lazy(() => import("./pages/care/add"));
 const EditCareTask = React.lazy(() => import("./pages/care/edit"));
 // const CareRecord = React.lazy(() => import("./pages/care/record"));

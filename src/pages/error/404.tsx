@@ -1,16 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Empty } from 'react-vant';
-import { ArrowLeft, HomeO } from '@react-vant/icons';
-import styles from './404.module.css';
-import { useTitle } from '../../hooks';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-vant";
+import { ArrowLeft, HomeO } from "@react-vant/icons";
+import styles from "./404.module.css";
+import { useTitle } from "../../hooks";
 
 const Error404: React.FC = () => {
   useTitle();
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleGoBack = () => {
@@ -26,7 +26,7 @@ const Error404: React.FC = () => {
         <p className={styles.errorDesc}>
           看起来您要找的页面已经搬家了，或者被植物们藏起来了 🌿
         </p>
-        
+
         <div className={styles.errorActions}>
           <Button
             type="primary"
@@ -46,7 +46,7 @@ const Error404: React.FC = () => {
             返回上页
           </Button>
         </div>
-        
+
         <div className={styles.errorTips}>
           <h3 className={styles.tipsTitle}>小贴士</h3>
           <ul className={styles.tipsList}>
@@ -60,4 +60,4 @@ const Error404: React.FC = () => {
   );
 };
 
-export default Error404; 
+export default Error404;
