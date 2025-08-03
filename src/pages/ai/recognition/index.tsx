@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Card, Field, Loading, Image, Toast } from "react-vant";
+import { Button, Card, Field, Loading, Image } from "react-vant";
 import { PhotoO, Arrow, Delete, ArrowLeft } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { streamPlantCareChat } from "../../../utils/llm";
