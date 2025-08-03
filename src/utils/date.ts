@@ -347,6 +347,11 @@ export const isTomorrow = (date: Date): boolean => {
  */
 export const formatCareReminderTime = (dateString: string | Date): string => {
   try {
+    // 检查输入是否为空
+    if (!dateString) {
+      return '无效时间';
+    }
+    
     const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     
     // 检查日期是否有效

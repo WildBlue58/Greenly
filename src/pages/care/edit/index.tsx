@@ -25,10 +25,10 @@ import styles from "./edit.module.css";
 const EditCareTask: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  
+
   // 设置页面标题
   useTitle();
-  
+
   const {
     careTasks,
     updateCareTask,
@@ -115,10 +115,19 @@ const EditCareTask: React.FC = () => {
     const initData = async () => {
       try {
         setLoading(true);
-        await Promise.all([fetchCareTasks(), fetchPlants()]);
+        await Promise.all([
+          fetchCareTasks().catch((error) => {
+            console.error("获取养护任务失败:", error);
+            return { success: false, error: error.message };
+          }),
+          fetchPlants().catch((error) => {
+            console.error("获取植物列表失败:", error);
+            return { success: false, error: error.message };
+          }),
+        ]);
       } catch (error) {
         console.error("初始化数据失败:", error);
-        Toast.fail("加载数据失败");
+        alert("加载数据失败");
       } finally {
         setLoading(false);
       }
@@ -130,20 +139,27 @@ const EditCareTask: React.FC = () => {
   // 查找并设置当前任务
   useEffect(() => {
     if (id && careTasks.length > 0) {
-      const task = careTasks.find((t: any) => t.id === id);
-      if (task) {
-        setCurrentTask(task);
-        setFormData({
-          plantId: task.plantId,
-          plantName: task.plantName,
-          type: task.type,
-          title: task.title,
-          description: task.description,
-          dueDate: task.dueDate,
-          priority: task.priority,
-        });
-      } else {
-        Toast.fail("任务不存在");
+      try {
+        const task = careTasks.find((t: any) => t.id === id);
+        if (task && task.id && task.createdAt) {
+          setCurrentTask(task);
+          setFormData({
+            plantId: task.plantId || "",
+            plantName: task.plantName || "",
+            type: task.type || "water",
+            title: task.title || "",
+            description: task.description || "",
+            dueDate: task.dueDate || "",
+            priority: task.priority || "medium",
+          });
+        } else {
+          console.error("任务数据不完整:", task);
+          alert("任务数据不完整");
+          navigate("/care", { replace: true });
+        }
+      } catch (error) {
+        console.error("查找任务失败:", error);
+        alert("查找任务失败");
         navigate("/care", { replace: true });
       }
     }
@@ -151,9 +167,10 @@ const EditCareTask: React.FC = () => {
 
   // 准备植物选择器数据
   const plantPickerColumns = useMemo(() => {
+    if (!plants || plants.length === 0) return [[]];
     return [
       plants.map((plant: any) => ({
-        text: plant.name,
+        text: plant.name || "未知植物",
         value: plant.id,
         plantData: plant,
       })),
@@ -162,6 +179,7 @@ const EditCareTask: React.FC = () => {
 
   // 准备任务类型选择器数据
   const typePickerColumns = useMemo(() => {
+    if (!taskTypes || taskTypes.length === 0) return [[]];
     return [
       taskTypes.map((type) => ({
         text: `${type.icon} ${type.label}`,
@@ -169,10 +187,11 @@ const EditCareTask: React.FC = () => {
         typeData: type,
       })),
     ];
-  }, []);
+  }, [taskTypes]);
 
   // 准备优先级选择器数据
   const priorityPickerColumns = useMemo(() => {
+    if (!priorities || priorities.length === 0) return [[]];
     return [
       priorities.map((priority) => ({
         text: priority.label,
@@ -180,26 +199,26 @@ const EditCareTask: React.FC = () => {
         priorityData: priority,
       })),
     ];
-  }, []);
+  }, [priorities]);
 
   // 获取当前选中的任务类型信息
   const currentTaskType = useMemo(() => {
-    return (
-      taskTypes.find((type) => type.value === formData.type) || taskTypes[0]
-    );
-  }, [formData.type]);
+    const found = taskTypes.find((type) => type.value === formData.type);
+    return found || taskTypes[0] || null;
+  }, [formData.type, taskTypes]);
 
   // 获取当前选中的优先级信息
   const currentPriority = useMemo(() => {
-    return (
-      priorities.find((priority) => priority.value === formData.priority) ||
-      priorities[1]
+    const found = priorities.find(
+      (priority) => priority.value === formData.priority
     );
-  }, [formData.priority]);
+    return found || priorities[1] || priorities[0] || null;
+  }, [formData.priority, priorities]);
 
   // 获取当前选中的植物信息
   const currentPlant = useMemo(() => {
-    return plants.find((plant: any) => plant.id === formData.plantId);
+    if (!formData.plantId || !plants || plants.length === 0) return null;
+    return plants.find((plant: any) => plant.id === formData.plantId) || null;
   }, [plants, formData.plantId]);
 
   // 检查是否有变更
@@ -233,7 +252,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowPlantPicker(false);
     },
-    [plants, updateFormData]
+    [plants, updateFormData, setShowPlantPicker]
   );
 
   // 处理任务类型选择
@@ -247,7 +266,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowTypePicker(false);
     },
-    [updateFormData]
+    [updateFormData, taskTypes, setShowTypePicker]
   );
 
   // 处理优先级选择
@@ -258,7 +277,7 @@ const EditCareTask: React.FC = () => {
       });
       setShowPriorityPicker(false);
     },
-    [updateFormData]
+    [updateFormData, setShowPriorityPicker]
   );
 
   // 处理日期选择
@@ -269,55 +288,32 @@ const EditCareTask: React.FC = () => {
       });
       setShowDatePicker(false);
     },
-    [updateFormData]
+    [updateFormData, setShowDatePicker]
   );
 
   // 格式化显示日期
   const formatDisplayDate = useCallback((dateString: string) => {
-    if (!dateString) return "请选择截止日期";
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-    const targetDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-
-    if (targetDate.getTime() === today.getTime()) {
-      return `今天 ${date.toLocaleTimeString("zh-CN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`;
-    } else if (targetDate.getTime() === tomorrow.getTime()) {
-      return `明天 ${date.toLocaleTimeString("zh-CN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`;
-    } else {
-      return date.toLocaleString("zh-CN", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+    if (!dateString || dateString.trim() === "") return "请选择截止日期";
+    try {
+      return formatCareReminderTime(dateString);
+    } catch (error) {
+      console.error("日期格式化失败:", error);
+      return "日期格式错误";
     }
   }, []);
 
   // 验证表单
   const validateForm = useCallback(() => {
     if (!formData.plantId) {
-      Toast.fail("请选择植物");
+      alert("请选择植物");
       return false;
     }
     if (!formData.title.trim()) {
-      Toast.fail("请输入任务标题");
+      alert("请输入任务标题");
       return false;
     }
     if (!formData.dueDate) {
-      Toast.fail("请选择截止日期");
+      alert("请选择截止日期");
       return false;
     }
     return true;
@@ -334,14 +330,15 @@ const EditCareTask: React.FC = () => {
       });
 
       if (result.success) {
-        Toast.success("更新任务成功");
+        // 使用原生 alert 避免 react-vant Toast 的问题
+        alert("更新任务成功");
         navigate("/care", { replace: true });
       } else {
-        Toast.fail(result.error || "更新任务失败");
+        alert(result.error || "更新任务失败");
       }
     } catch (error) {
       console.error("更新任务失败:", error);
-      Toast.fail("更新任务失败");
+      alert("更新任务失败");
     }
   }, [
     currentTask,
@@ -365,14 +362,15 @@ const EditCareTask: React.FC = () => {
     try {
       const result = await deleteCareTask(currentTask.id);
       if (result.success) {
-        Toast.success("删除任务成功");
+        // 使用原生 alert 避免 react-vant Toast 的问题
+        alert("删除任务成功");
         navigate("/care", { replace: true });
       } else {
-        Toast.fail(result.error || "删除任务失败");
+        alert(result.error || "删除任务失败");
       }
     } catch (error) {
       console.error("删除任务失败:", error);
-      Toast.fail("删除任务失败");
+      alert("删除任务失败");
     }
   }, [currentTask, deleteCareTask, navigate]);
 
@@ -388,6 +386,37 @@ const EditCareTask: React.FC = () => {
       navigate(-1);
     }
   }, [hasChanges, navigate]);
+
+  // ====== 调试日志和兜底渲染 ======
+  // console.log(
+  //   "【调试】currentTask:",
+  //   currentTask,
+  //   "\ncareTasks:",
+  //   careTasks,
+  //   "\nplants:",
+  //   plants,
+  //   "\nloading:",
+  //   loading,
+  //   "\nid:",
+  //   id
+  // );
+
+  if (!loading && !currentTask) {
+    return (
+      <div className={styles.errorContainer}>
+        <div className={styles.errorText}>
+          任务不存在或数据未加载
+          <br />
+          当前id: {id}
+          <br />
+          careTasks: {JSON.stringify(careTasks)}
+        </div>
+        <Button type="primary" onClick={() => navigate("/care")}>
+          返回
+        </Button>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -409,25 +438,64 @@ const EditCareTask: React.FC = () => {
     );
   }
 
+  if (!currentTask.id || !currentTask.createdAt) {
+    return (
+      <div className={styles.errorContainer}>
+        <div className={styles.errorText}>任务数据不完整</div>
+        <Button type="primary" onClick={() => navigate("/care")}>
+          返回
+        </Button>
+      </div>
+    );
+  }
+
+  // 兜底 currentTaskType
+  const safeTaskType = currentTaskType || { icon: "", label: "未知类型" };
+  // 兜底 currentPriority
+  const safePriority = currentPriority || {
+    label: "未知优先级",
+    color: "#ccc",
+  };
+  // 兜底 currentPlant
+  const safePlant = currentPlant || { name: "未知植物" };
+
+  // 兜底选择器 columns
+  const safePlantPickerColumns =
+    plantPickerColumns &&
+    plantPickerColumns[0] &&
+    plantPickerColumns[0].length > 0
+      ? plantPickerColumns
+      : [[{ text: "无植物", value: "" }]];
+  const safeTypePickerColumns =
+    typePickerColumns && typePickerColumns[0] && typePickerColumns[0].length > 0
+      ? typePickerColumns
+      : [[{ text: "无类型", value: "" }]];
+  const safePriorityPickerColumns =
+    priorityPickerColumns &&
+    priorityPickerColumns[0] &&
+    priorityPickerColumns[0].length > 0
+      ? priorityPickerColumns
+      : [[{ text: "无优先级", value: "" }]];
+
   return (
     <div className={styles.editTaskPage}>
       {/* 导航栏 */}
       <NavBar
         title="编辑养护任务"
-        leftArrow
+        left-arrow
         onClickLeft={handleCancel}
         rightText={hasChanges ? "保存" : ""}
-        onClickRight={hasChanges ? handleSave : undefined}
+        {...(hasChanges ? { onClickRight: handleSave } : {})}
         className={styles.navbar}
       />
 
       <div className={styles.content}>
-        {/* 任务状态 */}
-        {currentTask.completed && (
+        {/* 任务状态横幅 */}
+        {currentTask.completed && currentTask.completedAt && (
           <div className={styles.completedBanner}>
             <div className={styles.bannerText}>
               ✅ 此任务已完成于{" "}
-              {formatCareReminderTime(currentTask.completedAt || "")}
+              {formatCareReminderTime(currentTask.completedAt)}
             </div>
           </div>
         )}
@@ -436,7 +504,7 @@ const EditCareTask: React.FC = () => {
           {/* 选择植物 */}
           <Field
             label="选择植物"
-            value={currentPlant ? currentPlant.name : "请选择植物"}
+            value={safePlant.name}
             placeholder="请选择植物"
             rightIcon={<Arrow />}
             readOnly
@@ -448,7 +516,7 @@ const EditCareTask: React.FC = () => {
           {/* 任务类型 */}
           <Field
             label="任务类型"
-            value={`${currentTaskType.icon} ${currentTaskType.label}`}
+            value={`${safeTaskType.icon} ${safeTaskType.label}`}
             placeholder="请选择任务类型"
             rightIcon={<Arrow />}
             readOnly
@@ -460,7 +528,7 @@ const EditCareTask: React.FC = () => {
           {/* 任务标题 */}
           <Field
             label="任务标题"
-            value={formData.title}
+            value={formData.title || ""}
             placeholder="请输入任务标题"
             onChange={(value) => updateFormData({ title: value })}
             required
@@ -470,7 +538,7 @@ const EditCareTask: React.FC = () => {
           {/* 任务描述 */}
           <Field
             label="任务描述"
-            value={formData.description}
+            value={formData.description || ""}
             placeholder="请输入任务描述（可选）"
             type="textarea"
             rows={3}
@@ -493,7 +561,7 @@ const EditCareTask: React.FC = () => {
           {/* 优先级 */}
           <Field
             label="优先级"
-            value={currentPriority.label}
+            value={safePriority.label}
             placeholder="请选择优先级"
             rightIcon={<Arrow />}
             readOnly
@@ -502,7 +570,7 @@ const EditCareTask: React.FC = () => {
           >
             <div
               className={styles.priorityIndicator}
-              style={{ backgroundColor: currentPriority.color }}
+              style={{ backgroundColor: safePriority.color }}
             />
           </Field>
         </Form>
@@ -566,7 +634,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择植物"
-          columns={plantPickerColumns}
+          columns={safePlantPickerColumns}
           value={[formData.plantId]}
           onConfirm={handlePlantSelect}
           onCancel={() => setShowPlantPicker(false)}
@@ -581,7 +649,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择任务类型"
-          columns={typePickerColumns}
+          columns={safeTypePickerColumns}
           value={[formData.type]}
           onConfirm={handleTypeSelect}
           onCancel={() => setShowTypePicker(false)}
@@ -596,7 +664,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择优先级"
-          columns={priorityPickerColumns}
+          columns={safePriorityPickerColumns}
           value={[formData.priority]}
           onConfirm={handlePrioritySelect}
           onCancel={() => setShowPriorityPicker(false)}

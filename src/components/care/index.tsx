@@ -157,7 +157,7 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
               </p>
               <div className={styles.taskMeta}>
                 <span className={styles.taskDue}>
-                  截止: {plan.nextTask.dueDate}
+                  截止: {formatCareReminderTime(plan.nextTask.dueDate)}
                 </span>
                 <CustomTag
                   type={priorityColor(plan.nextTask.priority)}
@@ -194,7 +194,9 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                   <h6 className={styles.taskTitle}>{task.title}</h6>
                   <p className={styles.taskDescription}>{task.description}</p>
                   <div className={styles.taskMeta}>
-                    <span className={styles.taskDue}>截止: {task.dueDate}</span>
+                    <span className={styles.taskDue}>
+                      截止: {formatCareReminderTime(task.dueDate)}
+                    </span>
                     <CustomTag type={priorityColor(task.priority)} size="small">
                       {priorityText(task.priority)}优先级
                     </CustomTag>
@@ -732,12 +734,7 @@ export const CareForm: React.FC<CareFormProps> = ({
               label="截止日期"
               value={
                 formData.dueDate
-                  ? new Date(formData.dueDate).toLocaleString("zh-CN", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
+                  ? formatCareReminderTime(formData.dueDate)
                   : "请选择截止日期"
               }
               placeholder="请选择截止日期"

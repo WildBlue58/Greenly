@@ -13,6 +13,7 @@ import { Arrow, CalendarO } from "@react-vant/icons";
 import { useCare } from "../../../hooks/useCare";
 import { usePlant } from "../../../hooks/usePlant";
 import type { CareTask, Plant } from "../../../store/types";
+import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./add.module.css";
 import { useTitle } from "../../../hooks";
 
@@ -215,35 +216,7 @@ const AddCareTask: React.FC = () => {
   // 格式化显示日期
   const formatDisplayDate = useCallback((dateString: string) => {
     if (!dateString) return "请选择截止日期";
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-    const targetDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-
-    if (targetDate.getTime() === today.getTime()) {
-      return `今天 ${date.toLocaleTimeString("zh-CN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`;
-    } else if (targetDate.getTime() === tomorrow.getTime()) {
-      return `明天 ${date.toLocaleTimeString("zh-CN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`;
-    } else {
-      return date.toLocaleString("zh-CN", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    }
+    return formatCareReminderTime(dateString);
   }, []);
 
   // 验证表单

@@ -114,9 +114,10 @@ export const careStore = (set: any, get: any) => ({
         localStorage.setItem("careTasks", JSON.stringify(updatedTasks));
         return { careTasks: updatedTasks };
       });
+      return { success: true };
     } catch (error) {
       console.error("更新养护任务失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '更新任务失败' };
     }
   },
 
@@ -188,9 +189,10 @@ export const careStore = (set: any, get: any) => ({
         localStorage.setItem("careRecords", JSON.stringify(filteredRecords));
         return { careRecords: filteredRecords };
       });
+      return { success: true };
     } catch (error) {
       console.error("删除养护记录失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '删除记录失败' };
     }
   },
 
@@ -221,7 +223,7 @@ export const careStore = (set: any, get: any) => ({
       return newPlan;
     } catch (error) {
       console.error("生成养护计划失败:", error);
-      throw error;
+      return { success: false, error: error instanceof Error ? error.message : '生成计划失败' };
     }
   },
 
