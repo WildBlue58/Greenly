@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, Field, Loading, Image, Toast } from "react-vant";
 import { PhotoO, Arrow, Delete, ArrowLeft } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
-import { plantCareChat } from "../../../utils/llm";
+import { streamPlantCareChat } from "../../../utils/llm";
 import styles from "./recognition.module.css";
 import { useTitle } from "../../../hooks";
 
@@ -74,13 +74,13 @@ const PlantRecognition: React.FC = () => {
 
     // 检查文件类型
     if (!file.type.startsWith("image/")) {
-      Toast.fail("请选择图片文件");
+      alert("请选择图片文件");
       return;
     }
 
     // 检查文件大小 (10MB)
     if (file.size > 10 * 1024 * 1024) {
-      Toast.fail("图片大小不能超过10MB");
+      alert("图片大小不能超过10MB");
       return;
     }
 
@@ -97,7 +97,7 @@ const PlantRecognition: React.FC = () => {
   // 执行植物识别
   const recognizePlant = async () => {
     if (!imageFile || !hasAPIKey) {
-      Toast.fail("请先上传图片并确保API密钥已配置");
+      alert("请先上传图片并确保API密钥已配置");
       return;
     }
 
@@ -180,7 +180,7 @@ ${result.careAdvice}`;
             };
 
             setMessages([recognitionMessage]);
-            Toast.success("识别成功！");
+            alert("识别成功！");
           } catch (parseError) {
             // 如果JSON解析失败，格式化原始文本
             const formattedContent = `🌿 **植物识别结果**
@@ -199,20 +199,18 @@ ${resultText}
             };
 
             setMessages([recognitionMessage]);
-            Toast.success("识别完成！");
+            alert("识别完成！");
           }
         } catch (error) {
           console.error("植物识别失败:", error);
-          Toast.fail(
-            error instanceof Error ? error.message : "识别失败，请重试"
-          );
+          alert(error instanceof Error ? error.message : "识别失败，请重试");
         }
       };
 
       reader.readAsDataURL(imageFile);
     } catch (error) {
       console.error("植物识别失败:", error);
-      Toast.fail("识别失败，请重试");
+      alert("识别失败，请重试");
     } finally {
       setIsRecognizing(false);
     }
@@ -249,47 +247,53 @@ ${resultText}
         contextMessage = `基于之前识别的植物：${recognitionResult.plantName}（${recognitionResult.scientificName}），用户问：${currentInput}`;
       }
 
-      const response = await plantCareChat(contextMessage, chatHistory, "kimi");
+      // 创建助手消息占位符
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: "",
+        role: "assistant",
+        timestamp: new Date(),
+        type: "text",
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+
+      // 使用流式聊天
+      const response = await streamPlantCareChat(
+        contextMessage,
+        (chunk: string) => {
+          // 实时更新流式文本
+          setStreamingText((prev) => prev + chunk);
+        },
+        chatHistory,
+        "kimi"
+      );
 
       if (response.code === 0 && response.data) {
-        // 模拟流式输出
-        const fullText = response.data.content;
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content: "",
-          role: "assistant",
-          timestamp: new Date(),
-          type: "text",
-        };
-
-        setMessages((prev) => [...prev, assistantMessage]);
-
-        // 逐字显示效果
-        let currentText = "";
-        for (let i = 0; i < fullText.length; i++) {
-          currentText += fullText[i];
-          setStreamingText(currentText);
-          await new Promise((resolve) => setTimeout(resolve, 30));
-        }
-
-        // 更新消息内容
+        // 更新最终消息内容
         setMessages((prev) =>
           prev.map((msg) =>
-            msg.id === assistantMessage.id ? { ...msg, content: fullText } : msg
+            msg.id === assistantMessage.id
+              ? { ...msg, content: response.data!.content }
+              : msg
           )
         );
         setStreamingText("");
       } else {
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content:
-            response.msg ||
-            "抱歉，我现在无法回答您的问题。请检查API配置后重试。",
-          role: "assistant",
-          timestamp: new Date(),
-          type: "text",
-        };
-        setMessages((prev) => [...prev, errorMessage]);
+        // 如果流式输出失败，显示错误消息
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === assistantMessage.id
+              ? {
+                  ...msg,
+                  content:
+                    response.msg ||
+                    "抱歉，我现在无法回答您的问题。请检查API配置后重试。",
+                }
+              : msg
+          )
+        );
+        setStreamingText("");
       }
     } catch (error) {
       console.error("聊天发送失败:", error);

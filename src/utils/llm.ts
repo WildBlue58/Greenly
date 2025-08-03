@@ -79,6 +79,106 @@ export const chat = async (
 };
 
 /**
+ * 流式LLM聊天接口
+ * @param messages 消息历史
+ * @param onChunk 流式数据回调
+ * @param api_url API地址
+ * @param api_key API密钥
+ * @param model 模型名称
+ * @returns 
+ */
+export const streamChat = async (
+  messages: LLMMessage[],
+  onChunk: (chunk: string) => void,
+  api_url: string = DEEPSEEK_CHAT_API_URL,
+  api_key?: string,
+  model: string = "deepseek-chat"
+): Promise<LLMResponse> => {
+  try {
+    if (!api_key) {
+      throw new Error("API密钥未配置");
+    }
+
+    const response = await fetch(api_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${api_key}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: true,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API请求失败: ${response.status} ${response.statusText}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error("无法读取响应流");
+    }
+
+    const decoder = new TextDecoder();
+    let fullContent = "";
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              return {
+                code: 0,
+                data: {
+                  role: "assistant",
+                  content: fullContent,
+                },
+              };
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
+                const content = parsed.choices[0].delta.content;
+                fullContent += content;
+                onChunk(content);
+              }
+            } catch (e) {
+              // 忽略解析错误，继续处理下一个chunk
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+
+    return {
+      code: 0,
+      data: {
+        role: "assistant",
+        content: fullContent,
+      },
+    };
+  } catch (err) {
+    console.error("流式LLM API调用失败:", err);
+    return {
+      code: 1,
+      msg: err instanceof Error ? err.message : "LLM调用出错",
+    };
+  }
+};
+
+/**
  * DeepSeek 聊天
  * @param messages 消息历史
  * @returns 
@@ -172,16 +272,55 @@ export const plantCareChat = async (
 };
 
 /**
- * 流式聊天（暂未实现）
- * @param _messages 消息历史
- * @param _onMessage 消息回调
- * @param _model 模型名称
+ * 流式植物养护聊天函数
+ * @param userMessage 用户消息
+ * @param onChunk 流式数据回调
+ * @param chatHistory 聊天历史（可选）
+ * @param model 模型名称
+ * @returns 
  */
-export const streamChat = async (
-  _messages: LLMMessage[],
-  _onMessage: (chunk: string) => void,
-  _model: string = "deepseek"
-): Promise<void> => {
-  // TODO: 实现流式聊天
-  throw new Error("流式聊天功能暂未实现");
+export const streamPlantCareChat = async (
+  userMessage: string,
+  onChunk: (chunk: string) => void,
+  chatHistory: LLMMessage[] = [],
+  model: string = "deepseek"
+): Promise<LLMResponse> => {
+  // 为植物养护添加系统提示
+  const systemPrompt: LLMMessage = {
+    role: "system",
+    content: `你是一个专业的植物养护AI助手，名叫"小养"。你的任务是帮助用户解决植物养护相关问题。
+
+请遵循以下原则：
+1. 提供专业、准确的植物养护建议
+2. 回答要简洁明了，易于理解
+3. 如果涉及植物疾病诊断，建议用户提供更多信息或寻求专业帮助
+4. 多使用友好、关怀的语调
+5. 可以适当使用植物相关的emoji来让回答更生动
+6. 如果问题不在你的专业范围内，礼貌地引导用户咨询相关专家
+
+当前对话是关于植物养护的咨询。`
+  };
+
+  const messages: LLMMessage[] = [
+    systemPrompt,
+    ...chatHistory,
+    {
+      role: "user",
+      content: userMessage,
+    },
+  ];
+
+  // 根据模型选择对应的API
+  let api_url = DEEPSEEK_CHAT_API_URL;
+  let api_key = import.meta.env.VITE_DEEPSEEK_API_KEY;
+  let model_name = "deepseek-chat";
+
+  if (model.toLowerCase() === "kimi" || model.toLowerCase() === "moonshot") {
+    api_url = KIMI_CHAT_API_URL;
+    api_key = import.meta.env.VITE_KIMI_API_KEY;
+    model_name = "moonshot-v1-auto";
+  }
+
+  return await streamChat(messages, onChunk, api_url, api_key, model_name);
 };
+

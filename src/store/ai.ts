@@ -1,5 +1,5 @@
 import type { ChatMessage, PlantRecognitionResult, ImageGenerationResult } from "./types";
-import { plantCareChat, type LLMMessage } from "../utils/llm";
+import { streamPlantCareChat, type LLMMessage } from "../utils/llm";
 
 // AI状态管理
 export const aiStore = (set: any, get: any) => ({
@@ -22,6 +22,15 @@ export const aiStore = (set: any, get: any) => ({
       aiLoading: true 
     }));
 
+    // 创建AI消息占位符
+    const aiMessage: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      content: "",
+      role: "assistant",
+      timestamp: new Date(),
+      model,
+    };
+
     try {
       // 获取当前聊天历史，转换为LLM格式
       const currentMessages = get().chatMessages;
@@ -32,42 +41,51 @@ export const aiStore = (set: any, get: any) => ({
           content: msg.content,
         }));
 
-      // 调用真实的LLM API
-      const response = await plantCareChat(message, chatHistory, model);
+      // 先添加空的AI消息
+      set((state: any) => ({ 
+        chatMessages: [...state.chatMessages, aiMessage]
+      }));
+
+      // 使用流式聊天
+      const response = await streamPlantCareChat(
+        message,
+        (chunk: string) => {
+          // 实时更新AI消息内容
+          set((state: any) => ({
+            chatMessages: state.chatMessages.map((msg: ChatMessage) =>
+              msg.id === aiMessage.id ? { ...msg, content: msg.content + chunk } : msg
+            )
+          }));
+        },
+        chatHistory,
+        model
+      );
       
       if (response.code !== 0 || !response.data) {
         throw new Error(response.msg || "AI响应失败");
       }
 
-      const aiMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        content: response.data.content,
-        role: "assistant",
-        timestamp: new Date(),
-        model,
-      };
-
-      set((state: any) => ({ 
-        chatMessages: [...state.chatMessages, aiMessage],
-        aiLoading: false 
+      // 最终更新AI消息内容
+      set((state: any) => ({
+        chatMessages: state.chatMessages.map((msg: ChatMessage) =>
+          msg.id === aiMessage.id ? { ...msg, content: response.data!.content } : msg
+        ),
+        aiLoading: false
       }));
     } catch (error) {
       console.error("AI聊天失败:", error);
       
-      // 添加错误消息到聊天记录
-      const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        content: error instanceof Error 
-          ? `抱歉，AI服务暂时不可用：${error.message}。请检查网络连接或稍后重试。` 
-          : "抱歉，AI服务暂时不可用，请稍后重试。",
-        role: "assistant",
-        timestamp: new Date(),
-        model,
-      };
-
-      set((state: any) => ({ 
-        chatMessages: [...state.chatMessages, errorMessage],
-        aiLoading: false 
+      // 更新错误消息
+      set((state: any) => ({
+        chatMessages: state.chatMessages.map((msg: ChatMessage) =>
+          msg.id === aiMessage.id ? {
+            ...msg,
+            content: error instanceof Error 
+              ? `抱歉，AI服务暂时不可用：${error.message}。请检查网络连接或稍后重试。` 
+              : "抱歉，AI服务暂时不可用，请稍后重试。"
+          } : msg
+        ),
+        aiLoading: false
       }));
       
       throw error;
