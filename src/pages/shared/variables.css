@@ -188,7 +188,8 @@
 }
 
 .hover-lift {
-  transition: transform var(--transition-normal),
+  transition:
+    transform var(--transition-normal),
     box-shadow var(--transition-normal);
 }
 

@@ -26,13 +26,13 @@ export interface LLMResponse {
  * @param api_url API地址
  * @param api_key API密钥
  * @param model 模型名称
- * @returns 
+ * @returns
  */
 export const chat = async (
   messages: LLMMessage[],
   api_url: string = DEEPSEEK_CHAT_API_URL,
   api_key?: string,
-  model: string = "deepseek-chat"
+  model: string = "deepseek-chat",
 ): Promise<LLMResponse> => {
   try {
     if (!api_key) {
@@ -57,7 +57,7 @@ export const chat = async (
     }
 
     const data = await response.json();
-    
+
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
       throw new Error("API响应格式不正确");
     }
@@ -85,14 +85,14 @@ export const chat = async (
  * @param api_url API地址
  * @param api_key API密钥
  * @param model 模型名称
- * @returns 
+ * @returns
  */
 export const streamChat = async (
   messages: LLMMessage[],
   onChunk: (chunk: string) => void,
   api_url: string = DEEPSEEK_CHAT_API_URL,
   api_key?: string,
-  model: string = "deepseek-chat"
+  model: string = "deepseek-chat",
 ): Promise<LLMResponse> => {
   try {
     if (!api_key) {
@@ -130,12 +130,12 @@ export const streamChat = async (
         if (done) break;
 
         const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
+        const lines = chunk.split("\n");
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
+          if (line.startsWith("data: ")) {
             const data = line.slice(6);
-            if (data === '[DONE]') {
+            if (data === "[DONE]") {
               return {
                 code: 0,
                 data: {
@@ -147,7 +147,12 @@ export const streamChat = async (
 
             try {
               const parsed = JSON.parse(data);
-              if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
+              if (
+                parsed.choices &&
+                parsed.choices[0] &&
+                parsed.choices[0].delta &&
+                parsed.choices[0].delta.content
+              ) {
                 const content = parsed.choices[0].delta.content;
                 fullContent += content;
                 onChunk(content);
@@ -181,14 +186,16 @@ export const streamChat = async (
 /**
  * DeepSeek 聊天
  * @param messages 消息历史
- * @returns 
+ * @returns
  */
-export const deepSeekChat = async (messages: LLMMessage[]): Promise<LLMResponse> => {
+export const deepSeekChat = async (
+  messages: LLMMessage[],
+): Promise<LLMResponse> => {
   const api_key = import.meta.env.VITE_DEEPSEEK_API_KEY;
   if (!api_key) {
     return {
       code: 1,
-      msg: "DeepSeek API密钥未配置。请在项目根目录创建.env.local文件并添加: VITE_DEEPSEEK_API_KEY=您的密钥"
+      msg: "DeepSeek API密钥未配置。请在项目根目录创建.env.local文件并添加: VITE_DEEPSEEK_API_KEY=您的密钥",
     };
   }
   return await chat(messages, DEEPSEEK_CHAT_API_URL, api_key, "deepseek-chat");
@@ -197,14 +204,16 @@ export const deepSeekChat = async (messages: LLMMessage[]): Promise<LLMResponse>
 /**
  * Kimi 聊天
  * @param messages 消息历史
- * @returns 
+ * @returns
  */
-export const kimiChat = async (messages: LLMMessage[]): Promise<LLMResponse> => {
+export const kimiChat = async (
+  messages: LLMMessage[],
+): Promise<LLMResponse> => {
   const api_key = import.meta.env.VITE_KIMI_API_KEY;
   if (!api_key) {
     return {
       code: 1,
-      msg: "Kimi API密钥未配置。请在项目根目录创建.env.local文件并添加: VITE_KIMI_API_KEY=您的密钥"
+      msg: "Kimi API密钥未配置。请在项目根目录创建.env.local文件并添加: VITE_KIMI_API_KEY=您的密钥",
     };
   }
   return await chat(messages, KIMI_CHAT_API_URL, api_key, "moonshot-v1-auto");
@@ -214,11 +223,11 @@ export const kimiChat = async (messages: LLMMessage[]): Promise<LLMResponse> => 
  * 根据模型名称选择对应的聊天函数
  * @param model 模型名称
  * @param messages 消息历史
- * @returns 
+ * @returns
  */
 export const chatWithModel = async (
   model: string,
-  messages: LLMMessage[]
+  messages: LLMMessage[],
 ): Promise<LLMResponse> => {
   switch (model.toLowerCase()) {
     case "kimi":
@@ -236,12 +245,12 @@ export const chatWithModel = async (
  * @param userMessage 用户消息
  * @param chatHistory 聊天历史（可选）
  * @param model 模型名称
- * @returns 
+ * @returns
  */
 export const plantCareChat = async (
   userMessage: string,
   chatHistory: LLMMessage[] = [],
-  model: string = "deepseek"
+  model: string = "deepseek",
 ): Promise<LLMResponse> => {
   // 为植物养护添加系统提示
   const systemPrompt: LLMMessage = {
@@ -256,7 +265,7 @@ export const plantCareChat = async (
 5. 可以适当使用植物相关的emoji来让回答更生动
 6. 如果问题不在你的专业范围内，礼貌地引导用户咨询相关专家
 
-当前对话是关于植物养护的咨询。`
+当前对话是关于植物养护的咨询。`,
   };
 
   const messages: LLMMessage[] = [
@@ -283,7 +292,7 @@ export const streamPlantCareChat = async (
   userMessage: string,
   onChunk: (chunk: string) => void,
   chatHistory: LLMMessage[] = [],
-  model: string = "deepseek"
+  model: string = "deepseek",
 ): Promise<LLMResponse> => {
   // 为植物养护添加系统提示
   const systemPrompt: LLMMessage = {
@@ -298,7 +307,7 @@ export const streamPlantCareChat = async (
 5. 可以适当使用植物相关的emoji来让回答更生动
 6. 如果问题不在你的专业范围内，礼貌地引导用户咨询相关专家
 
-当前对话是关于植物养护的咨询。`
+当前对话是关于植物养护的咨询。`,
   };
 
   const messages: LLMMessage[] = [
@@ -347,7 +356,7 @@ const PLANT_RECOGNITION_PROMPT = `请分析这张植物图片，识别植物种�
  * @param imageDataUrl 图片的 data URL（base64）
  */
 export const recognizePlantImage = async (
-  imageDataUrl: string
+  imageDataUrl: string,
 ): Promise<{ code: number; data?: PlantVisionResult; msg?: string }> => {
   const api_key = import.meta.env.VITE_KIMI_API_KEY;
   if (!api_key) {
@@ -380,7 +389,9 @@ export const recognizePlantImage = async (
 
     const payload = await response.json();
     if (!response.ok) {
-      throw new Error(payload.error?.message || `识别请求失败: ${response.status}`);
+      throw new Error(
+        payload.error?.message || `识别请求失败: ${response.status}`,
+      );
     }
 
     const resultText: string = payload.choices?.[0]?.message?.content ?? "";
@@ -400,4 +411,3 @@ export const recognizePlantImage = async (
     };
   }
 };
-

@@ -10,25 +10,33 @@
 
 /* 护理主题背景装饰 */
 .carePage::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -30%;
   right: -30%;
   width: 60%;
   height: 60%;
-  background: radial-gradient(circle, rgba(76, 175, 80, 0.04) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(76, 175, 80, 0.04) 0%,
+    transparent 70%
+  );
   animation: floating 12s ease-in-out infinite;
   pointer-events: none;
 }
 
 .carePage::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -20%;
   left: -20%;
   width: 40%;
   height: 40%;
-  background: radial-gradient(circle, rgba(139, 195, 74, 0.03) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(139, 195, 74, 0.03) 0%,
+    transparent 70%
+  );
   animation: floating 8s ease-in-out infinite reverse;
   pointer-events: none;
 }
@@ -59,13 +67,18 @@
 }
 
 .tabButtons button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(76, 175, 80, 0.1),
+    transparent
+  );
   transition: left var(--transition-slow);
 }
 
@@ -81,7 +94,11 @@
 }
 
 .tabButtons button.active {
-  background: linear-gradient(135deg, var(--primary-500) 0%, var(--green-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
   color: white;
   border-color: var(--primary-600);
   box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
@@ -127,13 +144,17 @@
 }
 
 .taskSection::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary-500) 0%, var(--green-light) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--primary-500) 0%,
+    var(--green-light) 100%
+  );
   opacity: 0;
   transition: opacity var(--transition-normal);
 }
@@ -163,13 +184,18 @@
 }
 
 .taskItem::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.05), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(76, 175, 80, 0.05),
+    transparent
+  );
   transition: left var(--transition-slow);
 }
 
@@ -194,7 +220,7 @@
 }
 
 .taskItem.completed::after {
-  content: '✓';
+  content: "✓";
   position: absolute;
   top: var(--space-md);
   right: var(--space-md);

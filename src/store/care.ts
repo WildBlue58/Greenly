@@ -15,7 +15,7 @@ export const createCareSlice: SliceCreator<CareSlice> = (set) => ({
   careTasks: seedCareTasks,
 
   addCareTask: async (
-    taskData: Partial<CareTask>
+    taskData: Partial<CareTask>,
   ): Promise<CareActionResult<CareTask>> => {
     try {
       const newTask: CareTask = {
@@ -47,7 +47,7 @@ export const createCareSlice: SliceCreator<CareSlice> = (set) => ({
     try {
       set((state) => ({
         careTasks: state.careTasks.map((task) =>
-          task.id === id ? { ...task, ...taskData } : task
+          task.id === id ? { ...task, ...taskData } : task,
         ),
       }));
       return { success: true };
@@ -65,8 +65,12 @@ export const createCareSlice: SliceCreator<CareSlice> = (set) => ({
       set((state) => ({
         careTasks: state.careTasks.map((task) =>
           task.id === id
-            ? { ...task, completed: true, completedAt: new Date().toISOString() }
-            : task
+            ? {
+                ...task,
+                completed: true,
+                completedAt: new Date().toISOString(),
+              }
+            : task,
         ),
       }));
       return { success: true };
@@ -95,7 +99,7 @@ export const createCareSlice: SliceCreator<CareSlice> = (set) => ({
   },
 
   addCareRecord: async (
-    recordData: Partial<CareRecord>
+    recordData: Partial<CareRecord>,
   ): Promise<CareActionResult<CareRecord>> => {
     try {
       const newRecord: CareRecord = {

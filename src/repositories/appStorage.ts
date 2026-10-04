@@ -51,7 +51,7 @@ export const installLegacyMigration = (): void => {
   try {
     localStorage.setItem(
       APP_STORAGE_KEY,
-      JSON.stringify({ state: legacy, version: STORAGE_VERSION })
+      JSON.stringify({ state: legacy, version: STORAGE_VERSION }),
     );
   } catch (error) {
     console.error("旧数据迁移失败:", error);

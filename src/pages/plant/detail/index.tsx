@@ -136,7 +136,7 @@ const PlantDetail: React.FC = () => {
 
   const daysUntilWatering = Math.ceil(
     (new Date(plant.nextWatering).getTime() - new Date().getTime()) /
-      (1000 * 60 * 60 * 24)
+      (1000 * 60 * 60 * 24),
   );
 
   return (
@@ -228,7 +228,8 @@ const PlantDetail: React.FC = () => {
             <div className={styles.careInfo}>
               <div className={styles.careLabel}>适宜温度</div>
               <div className={styles.careValue}>
-                {plant.temperature?.min ?? 15}°C - {plant.temperature?.max ?? 30}°C
+                {plant.temperature?.min ?? 15}°C -{" "}
+                {plant.temperature?.max ?? 30}°C
               </div>
             </div>
           </div>

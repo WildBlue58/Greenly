@@ -42,12 +42,12 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
 }) => {
   const completedTasks = useMemo(
     () => plan.tasks.filter((task) => task.completed),
-    [plan.tasks]
+    [plan.tasks],
   );
 
   const pendingTasks = useMemo(
     () => plan.tasks.filter((task) => !task.completed),
-    [plan.tasks]
+    [plan.tasks],
   );
 
   const priorityColor = useCallback((priority: string) => {
@@ -125,9 +125,7 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                 <span className={styles.taskDue}>
                   截止: {formatCareReminderTime(plan.nextTask.dueDate)}
                 </span>
-                <CustomTag
-                  type={priorityColor(plan.nextTask.priority)}
-                >
+                <CustomTag type={priorityColor(plan.nextTask.priority)}>
                   {priorityText(plan.nextTask.priority)}优先级
                 </CustomTag>
               </div>
@@ -580,7 +578,7 @@ export const CareForm: React.FC<CareFormProps> = ({
       }
       setShowPlantPicker(false);
     },
-    [plants]
+    [plants],
   );
 
   const handleTypeConfirm = useCallback((values: string[]) => {
@@ -712,8 +710,8 @@ export const CareForm: React.FC<CareFormProps> = ({
             <Field
               label="优先级"
               value={
-                FORM_PRIORITIES.find((p) => p.value === formData.priority)?.label ||
-                "请选择优先级"
+                FORM_PRIORITIES.find((p) => p.value === formData.priority)
+                  ?.label || "请选择优先级"
               }
               placeholder="请选择优先级"
               required

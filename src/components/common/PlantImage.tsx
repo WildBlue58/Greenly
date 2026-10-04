@@ -25,7 +25,8 @@ const PlantImage: React.FC<PlantImageProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const defaultImage = "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400&h=400&fit=crop";
+  const defaultImage =
+    "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400&h=400&fit=crop";
 
   const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setIsLoading(false);
@@ -36,7 +37,7 @@ const PlantImage: React.FC<PlantImageProps> = ({
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
     setIsLoading(false);
-    
+
     // 防止无限循环，只有在不是默认图片时才切换
     if (!target.src.includes("photo-1593691509543-c55fb32e5cee")) {
       target.src = defaultImage;
@@ -44,7 +45,7 @@ const PlantImage: React.FC<PlantImageProps> = ({
     } else {
       setHasError(true);
     }
-    
+
     onError?.(e);
   };
 

@@ -34,7 +34,10 @@ const PlantList: React.FC = () => {
     return matchesSearch && matchesFilter;
   });
 
-  const statusOptions: { label: string; value: "all" | "healthy" | "needs_care" }[] = [
+  const statusOptions: {
+    label: string;
+    value: "all" | "healthy" | "needs_care";
+  }[] = [
     { label: "全部", value: "all" },
     { label: "健康", value: "healthy" },
     { label: "需要养护", value: "needs_care" },

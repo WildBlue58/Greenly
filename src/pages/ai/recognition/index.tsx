@@ -195,7 +195,7 @@ ${result.careAdvice}`;
           setStreamingText((prev) => prev + chunk);
         },
         chatHistory,
-        "kimi"
+        "kimi",
       );
 
       if (response.code === 0 && response.data) {
@@ -204,8 +204,8 @@ ${result.careAdvice}`;
           prev.map((msg) =>
             msg.id === assistantMessage.id
               ? { ...msg, content: response.data!.content }
-              : msg
-          )
+              : msg,
+          ),
         );
         setStreamingText("");
       } else {
@@ -219,8 +219,8 @@ ${result.careAdvice}`;
                     response.msg ||
                     "抱歉，我现在无法回答您的问题。请检查API配置后重试。",
                 }
-              : msg
-          )
+              : msg,
+          ),
         );
         setStreamingText("");
       }

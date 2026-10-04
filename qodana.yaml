@@ -3,7 +3,7 @@
 ####################################################################################################################
 
 version: "1.0"
-linter: jetbrains/qodana-jvm:2026.1
+linter: jetbrains/qodana-js:2026.1
 profile:
   name: qodana.recommended
 include:

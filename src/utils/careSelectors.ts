@@ -27,13 +27,13 @@ export const selectTodayPendingTasks = (tasks: CareTask[]): CareTask[] =>
 export const selectOverdueTasks = (tasks: CareTask[]): CareTask[] => {
   const now = new Date();
   return tasks.filter(
-    (task) => !task.completed && new Date(task.dueDate) < now
+    (task) => !task.completed && new Date(task.dueDate) < now,
   );
 };
 
 /** 今日养护进度：今天到期的任务总数与其中已完成数 */
 export const selectTodayProgress = (
-  tasks: CareTask[]
+  tasks: CareTask[],
 ): { total: number; completed: number; rate: number } => {
   const todayTasks = selectTodayTasks(tasks);
   const completed = todayTasks.filter((task) => task.completed).length;

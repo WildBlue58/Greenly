@@ -1,4 +1,10 @@
-import type { User, Plant, CarePlan, CareRecord, CareTask } from "../store/types";
+import type {
+  User,
+  Plant,
+  CarePlan,
+  CareRecord,
+  CareTask,
+} from "../store/types";
 
 /**
  * 应用种子数据（首次运行时的演示数据）

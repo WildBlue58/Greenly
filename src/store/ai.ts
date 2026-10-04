@@ -48,12 +48,12 @@ export const createAiSlice: SliceCreator<AiSlice> = (set, get) => ({
             chatMessages: state.chatMessages.map((msg) =>
               msg.id === aiMessage.id
                 ? { ...msg, content: msg.content + chunk }
-                : msg
+                : msg,
             ),
           }));
         },
         chatHistory,
-        model
+        model,
       );
 
       if (response.code !== 0 || !response.data) {
@@ -64,7 +64,7 @@ export const createAiSlice: SliceCreator<AiSlice> = (set, get) => ({
         chatMessages: state.chatMessages.map((msg) =>
           msg.id === aiMessage.id
             ? { ...msg, content: response.data!.content }
-            : msg
+            : msg,
         ),
         aiLoading: false,
       }));
@@ -81,7 +81,7 @@ export const createAiSlice: SliceCreator<AiSlice> = (set, get) => ({
                     ? `抱歉，AI服务暂时不可用：${error.message}。请检查 .env.local 中的 API 密钥配置或稍后重试。`
                     : "抱歉，AI服务暂时不可用，请稍后重试。",
               }
-            : msg
+            : msg,
         ),
         aiLoading: false,
       }));

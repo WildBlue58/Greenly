@@ -12,7 +12,7 @@
 }
 
 .avatarUpload:hover {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   transform: scale(1.05);
 }
 
@@ -39,7 +39,7 @@
 
 .placeholderIcon {
   font-size: 30px;
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .uploadOverlay {
@@ -79,14 +79,18 @@
   width: 20px;
   height: 20px;
   border: 2px solid #e0e0e0;
-  border-top: 2px solid #4CAF50;
+  border-top: 2px solid #4caf50;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 预览对话框样式 */
@@ -129,16 +133,16 @@
   .uploadIcon {
     font-size: 16px;
   }
-  
+
   .placeholderIcon {
     font-size: 24px;
   }
-  
+
   .previewAvatar {
     width: 100px;
     height: 100px;
   }
-  
+
   .previewContainer {
     padding: 16px;
   }
@@ -146,7 +150,7 @@
 
 /* 无障碍和交互增强 */
 .avatarUpload:focus {
-  outline: 2px solid #4CAF50;
+  outline: 2px solid #4caf50;
   outline-offset: 2px;
 }
 
@@ -156,7 +160,7 @@
 
 /* 悬停提示 */
 .avatarUpload::before {
-  content: '点击更换头像';
+  content: "点击更换头像";
   position: absolute;
   bottom: -30px;
   left: 50%;

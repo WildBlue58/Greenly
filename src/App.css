@@ -12,12 +12,12 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%);
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
   color: #333;
   line-height: 1.6;
 }
@@ -30,40 +30,40 @@ body {
 
 /* 绿色主题变量 */
 :root {
-  --primary-color: #4CAF50;
-  --primary-light: #8BC34A;
-  --primary-dark: #388E3C;
-  --success-color: #8BC34A;
-  --warning-color: #FF9800;
-  --danger-color: #F44336;
-  --info-color: #2196F3;
-  
-  --background-primary: #F5F5F5;
-  --background-secondary: #E8F5E8;
-  --background-white: #FFFFFF;
-  --background-light: #FAFAFA;
-  
+  --primary-color: #4caf50;
+  --primary-light: #8bc34a;
+  --primary-dark: #388e3c;
+  --success-color: #8bc34a;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --info-color: #2196f3;
+
+  --background-primary: #f5f5f5;
+  --background-secondary: #e8f5e8;
+  --background-white: #ffffff;
+  --background-light: #fafafa;
+
   --text-primary: #333333;
   --text-secondary: #666666;
   --text-disabled: #999999;
-  --text-white: #FFFFFF;
-  
-  --border-color: #E0E0E0;
-  --border-light: #F0F0F0;
-  
+  --text-white: #ffffff;
+
+  --border-color: #e0e0e0;
+  --border-light: #f0f0f0;
+
   --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
   --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
   --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.2);
-  
+
   --border-radius: 8px;
   --border-radius-small: 4px;
   --border-radius-large: 16px;
   --border-radius-round: 50%;
-  
+
   --transition: all 0.3s ease;
   --transition-fast: all 0.15s ease;
   --transition-slow: all 0.5s ease;
-  
+
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -99,7 +99,9 @@ button:disabled {
 }
 
 /* 全局输入框样式 */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   font-size: inherit;
   border: 1px solid var(--border-color);
@@ -109,7 +111,9 @@ input, textarea, select {
   background: var(--background-white);
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
@@ -130,11 +134,19 @@ input:focus, textarea:focus, select:focus {
 
 /* 全局渐变背景 */
 .gradient-bg {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-light) 100%
+  );
 }
 
 .gradient-bg-light {
-  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--background-primary) 0%,
+    var(--background-secondary) 100%
+  );
 }
 
 /* 全局动画 */
@@ -246,7 +258,7 @@ input:focus, textarea:focus, select:focus {
   html {
     font-size: 14px;
   }
-  
+
   .card {
     border-radius: var(--border-radius);
   }
@@ -299,7 +311,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .loading::after {
-  content: '';
+  content: "";
   width: 20px;
   height: 20px;
   border: 2px solid var(--border-color);
@@ -310,8 +322,12 @@ input:focus, textarea:focus, select:focus {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 全局空状态 */
@@ -376,19 +392,19 @@ input:focus, textarea:focus, select:focus {
   .card {
     margin: var(--spacing-sm);
   }
-  
+
   .empty {
     padding: var(--spacing-xl) var(--spacing-md);
   }
-  
+
   .empty-icon {
     font-size: 36px;
   }
-  
+
   .empty-text {
     font-size: 14px;
   }
-  
+
   .empty-subtext {
     font-size: 12px;
   }
@@ -401,15 +417,15 @@ input:focus, textarea:focus, select:focus {
     --background-secondary: #2d2d2d;
     --background-white: #333333;
     --background-light: #404040;
-    
+
     --text-primary: #ffffff;
     --text-secondary: #cccccc;
     --text-disabled: #888888;
-    
+
     --border-color: #555555;
     --border-light: #666666;
   }
-  
+
   body {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   }
@@ -420,12 +436,12 @@ input:focus, textarea:focus, select:focus {
   .no-print {
     display: none !important;
   }
-  
+
   body {
     background: white !important;
     color: black !important;
   }
-  
+
   .card {
     box-shadow: none !important;
     border: 1px solid #ccc !important;

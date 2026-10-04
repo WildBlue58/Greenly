@@ -42,8 +42,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 错误状态 */
@@ -76,11 +80,11 @@
   .errorIcon {
     font-size: 20px;
   }
-  
+
   .errorText {
     font-size: 10px;
   }
-  
+
   .loadingSpinner {
     width: 16px;
     height: 16px;

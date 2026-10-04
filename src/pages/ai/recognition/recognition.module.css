@@ -18,7 +18,8 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 20% 20%,
       rgba(76, 175, 80, 0.05) 0%,
       transparent 50%
@@ -199,7 +200,9 @@
 
 .uploadCard {
   border-radius: 0.4rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
@@ -245,7 +248,8 @@
   border-color: #4caf50;
   background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.15),
+  box-shadow:
+    0 12px 40px rgba(76, 175, 80, 0.15),
     0 4px 16px rgba(76, 175, 80, 0.1);
 }
 
@@ -329,14 +333,16 @@
   font-weight: 700;
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   border: none;
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3),
+  box-shadow:
+    0 6px 20px rgba(76, 175, 80, 0.3),
     0 2px 8px rgba(76, 175, 80, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .recognizeButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(76, 175, 80, 0.4),
+  box-shadow:
+    0 8px 28px rgba(76, 175, 80, 0.4),
     0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
@@ -355,7 +361,9 @@
 
 .chatCard {
   border-radius: 0.4rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   border: 1px solid #e0e0e0;
   background: #ffffff;
@@ -472,7 +480,7 @@
 
 /* 优化识别结果的文字显示 */
 .assistantMessage .messageText {
-  color: #2196F3;
+  color: #2196f3;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
   font-weight: 500;
 }
@@ -497,7 +505,8 @@
 
 /* 优化emoji和特殊字符显示 */
 .messageText {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -767,14 +776,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(
-      1px 1px at 20px 30px,
-      rgba(76, 175, 80, 0.3),
-      transparent
-    ),
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(76, 175, 80, 0.3), transparent),
     radial-gradient(1px 1px at 40px 70px, rgba(139, 195, 74, 0.2), transparent),
     radial-gradient(1px 1px at 90px 40px, rgba(76, 175, 80, 0.3), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(139, 195, 74, 0.2), transparent),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(139, 195, 74, 0.2),
+      transparent
+    ),
     radial-gradient(1px 1px at 160px 30px, rgba(76, 175, 80, 0.3), transparent);
   background-repeat: repeat;
   background-size: 200px 100px;

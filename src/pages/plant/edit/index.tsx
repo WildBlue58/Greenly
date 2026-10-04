@@ -23,7 +23,11 @@ const EditPlant: React.FC = () => {
             <p style={{ textAlign: "center", padding: "24px 0" }}>
               植物不存在或已被删除
             </p>
-            <Button block type="primary" onClick={() => navigate("/plant/list")}>
+            <Button
+              block
+              type="primary"
+              onClick={() => navigate("/plant/list")}
+            >
               返回列表
             </Button>
           </div>

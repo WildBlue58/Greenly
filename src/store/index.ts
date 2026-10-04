@@ -35,6 +35,6 @@ export const useStore = create<AppStore>()(
         careTasks: state.careTasks,
         theme: state.theme,
       }),
-    }
-  )
+    },
+  ),
 );

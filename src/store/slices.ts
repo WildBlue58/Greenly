@@ -52,11 +52,18 @@ export interface CareSlice {
   carePlans: CarePlan[];
   careRecords: CareRecord[];
   careTasks: CareTask[];
-  addCareTask: (taskData: Partial<CareTask>) => Promise<CareActionResult<CareTask>>;
-  updateCareTask: (id: string, taskData: Partial<CareTask>) => Promise<CareActionResult>;
+  addCareTask: (
+    taskData: Partial<CareTask>,
+  ) => Promise<CareActionResult<CareTask>>;
+  updateCareTask: (
+    id: string,
+    taskData: Partial<CareTask>,
+  ) => Promise<CareActionResult>;
   completeCareTask: (id: string) => Promise<CareActionResult>;
   deleteCareTask: (id: string) => Promise<CareActionResult>;
-  addCareRecord: (recordData: Partial<CareRecord>) => Promise<CareActionResult<CareRecord>>;
+  addCareRecord: (
+    recordData: Partial<CareRecord>,
+  ) => Promise<CareActionResult<CareRecord>>;
   deleteCareRecord: (id: string) => Promise<CareActionResult>;
 }
 

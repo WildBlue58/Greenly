@@ -20,18 +20,48 @@ import styles from "./edit.module.css";
 
 // 任务类型选项
 const taskTypes = [
-  { value: "water", label: "浇水", icon: "💧", description: "给植物浇水，保持适当湿度" },
-  { value: "fertilize", label: "施肥", icon: "🌱", description: "为植物提供营养" },
-  { value: "prune", label: "修剪", icon: "✂️", description: "修剪枝叶，保持植物形状" },
+  {
+    value: "water",
+    label: "浇水",
+    icon: "💧",
+    description: "给植物浇水，保持适当湿度",
+  },
+  {
+    value: "fertilize",
+    label: "施肥",
+    icon: "🌱",
+    description: "为植物提供营养",
+  },
+  {
+    value: "prune",
+    label: "修剪",
+    icon: "✂️",
+    description: "修剪枝叶，保持植物形状",
+  },
   { value: "repot", label: "换盆", icon: "🪴", description: "更换更大的花盆" },
   { value: "other", label: "其他", icon: "📝", description: "其他养护活动" },
 ] as const;
 
 // 优先级选项
 const priorities = [
-  { value: "high", label: "高优先级", color: "#F44336", description: "紧急需要处理" },
-  { value: "medium", label: "中优先级", color: "#FF9800", description: "正常优先级" },
-  { value: "low", label: "低优先级", color: "#4CAF50", description: "不紧急，可延后" },
+  {
+    value: "high",
+    label: "高优先级",
+    color: "#F44336",
+    description: "紧急需要处理",
+  },
+  {
+    value: "medium",
+    label: "中优先级",
+    color: "#FF9800",
+    description: "正常优先级",
+  },
+  {
+    value: "low",
+    label: "低优先级",
+    color: "#4CAF50",
+    description: "不紧急，可延后",
+  },
 ] as const;
 
 /**
@@ -52,8 +82,8 @@ const EditCareTask: React.FC = () => {
 
   // 当前编辑的任务（store 数据启动时已同步恢复，直接派生即可）
   const currentTask = useMemo(
-    () => (id ? careTasks.find((t) => t.id === id) ?? null : null),
-    [id, careTasks]
+    () => (id ? (careTasks.find((t) => t.id === id) ?? null) : null),
+    [id, careTasks],
   );
 
   // 表单数据
@@ -109,7 +139,7 @@ const EditCareTask: React.FC = () => {
         value: type.value,
       })),
     ],
-    []
+    [],
   );
   // 准备优先级选择器数据
   const priorityPickerColumns = useMemo(
@@ -119,7 +149,7 @@ const EditCareTask: React.FC = () => {
         value: priority.value,
       })),
     ],
-    []
+    [],
   );
 
   // 获取当前选中的任务类型信息
@@ -131,7 +161,7 @@ const EditCareTask: React.FC = () => {
   // 获取当前选中的优先级信息
   const currentPriority = useMemo(() => {
     const found = priorities.find(
-      (priority) => priority.value === formData.priority
+      (priority) => priority.value === formData.priority,
     );
     return found || priorities[1] || priorities[0] || null;
   }, [formData.priority]);
@@ -173,7 +203,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowPlantPicker(false);
     },
-    [plants, updateFormData, setShowPlantPicker]
+    [plants, updateFormData, setShowPlantPicker],
   );
 
   // 处理任务类型选择
@@ -187,7 +217,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowTypePicker(false);
     },
-    [updateFormData, setShowTypePicker]
+    [updateFormData, setShowTypePicker],
   );
 
   // 处理优先级选择
@@ -198,7 +228,7 @@ const EditCareTask: React.FC = () => {
       });
       setShowPriorityPicker(false);
     },
-    [updateFormData, setShowPriorityPicker]
+    [updateFormData, setShowPriorityPicker],
   );
 
   // 处理日期选择
@@ -209,7 +239,7 @@ const EditCareTask: React.FC = () => {
       });
       setShowDatePicker(false);
     },
-    [updateFormData, setShowDatePicker]
+    [updateFormData, setShowDatePicker],
   );
 
   // 格式化显示日期

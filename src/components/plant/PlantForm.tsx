@@ -1,6 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CellGroup, Field, Picker, Popup, Toast } from "react-vant";
+import {
+  Button,
+  Card,
+  CellGroup,
+  Field,
+  Picker,
+  Popup,
+  Toast,
+} from "react-vant";
 import { ArrowLeft, PhotoO } from "@react-vant/icons";
 import type { Plant } from "../../store/types";
 import styles from "./PlantForm.module.css";
@@ -103,14 +111,23 @@ function PickerField<T extends string | number>({
         onClick={() => setVisible(true)}
         required
       />
-      <Popup visible={visible} position="bottom" onClose={() => setVisible(false)}>
+      <Popup
+        visible={visible}
+        position="bottom"
+        onClose={() => setVisible(false)}
+      >
         <Picker
           title={title}
-          columns={[options.map((option) => ({ text: option.label, value: String(option.value) }))]}
+          columns={[
+            options.map((option) => ({
+              text: option.label,
+              value: String(option.value),
+            })),
+          ]}
           value={String(value)}
           onConfirm={(selected: string) => {
             const matched = options.find(
-              (option) => String(option.value) === selected
+              (option) => String(option.value) === selected,
             );
             if (matched) {
               onChange(matched.value);
@@ -158,7 +175,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({
     (field: keyof PlantFormValues, value: string | number | string[]) => {
       setFormData((prev) => ({ ...prev, [field]: value }));
     },
-    []
+    [],
   );
 
   const handleCareTipChange = (index: number, value: string) => {

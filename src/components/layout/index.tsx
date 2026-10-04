@@ -1,7 +1,15 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Tabbar, TabbarItem, NavBar } from "react-vant";
-import { HomeO, FlowerO, ServiceO, ChatO, UserO, Search, Plus } from "@react-vant/icons";
+import {
+  HomeO,
+  FlowerO,
+  ServiceO,
+  ChatO,
+  UserO,
+  Search,
+  Plus,
+} from "@react-vant/icons";
 import styles from "./layout.module.css";
 
 // Header 组件（仅供 Layout 内部使用）
@@ -64,14 +72,14 @@ const Navigation: React.FC<NavigationProps> = ({
       { key: "ai", title: "AI助手", icon: ChatO },
       { key: "user", title: "我的", icon: UserO },
     ],
-    []
+    [],
   );
 
   const handleChange = useCallback(
     (name: string | number) => {
       onChange(name as string);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
@@ -156,7 +164,7 @@ export const Layout: React.FC<LayoutProps> = ({
     (value: string) => {
       navigate(`/${value === "home" ? "" : value}`);
     },
-    [navigate]
+    [navigate],
   );
 
   const handleSidebarToggle = useCallback(() => {

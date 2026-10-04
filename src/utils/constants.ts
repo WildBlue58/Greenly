@@ -4,23 +4,23 @@
 
 // 应用基本信息
 export const APP_INFO = {
-  NAME: '小养',
-  VERSION: '1.0.0',
-  DESCRIPTION: '智能植物养护助手',
-  AUTHOR: 'Greenly Team',
-  WEBSITE: 'https://greenly.app',
+  NAME: "小养",
+  VERSION: "1.0.0",
+  DESCRIPTION: "智能植物养护助手",
+  AUTHOR: "Greenly Team",
+  WEBSITE: "https://greenly.app",
 } as const;
 
 // 环境配置
 export const ENV = {
-  DEVELOPMENT: 'development',
-  PRODUCTION: 'production',
-  TEST: 'test',
+  DEVELOPMENT: "development",
+  PRODUCTION: "production",
+  TEST: "test",
 } as const;
 
 // API 配置
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || '/api',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || "/api",
   TIMEOUT: 10000,
   RETRY_TIMES: 3,
   RETRY_DELAY: 1000,
@@ -46,30 +46,30 @@ export const HTTP_STATUS = {
 export const USER_CONSTANTS = {
   // 用户状态
   STATUS: {
-    ACTIVE: 'active',
-    INACTIVE: 'inactive',
-    SUSPENDED: 'suspended',
+    ACTIVE: "active",
+    INACTIVE: "inactive",
+    SUSPENDED: "suspended",
   },
-  
+
   // 用户角色
   ROLES: {
-    ADMIN: 'admin',
-    USER: 'user',
-    GUEST: 'guest',
+    ADMIN: "admin",
+    USER: "user",
+    GUEST: "guest",
   },
-  
+
   // 性别
   GENDER: {
-    MALE: 'male',
-    FEMALE: 'female',
-    OTHER: 'other',
+    MALE: "male",
+    FEMALE: "female",
+    OTHER: "other",
   },
-  
+
   // 验证码类型
   VERIFICATION_TYPE: {
-    EMAIL: 'email',
-    PHONE: 'phone',
-    PASSWORD_RESET: 'password_reset',
+    EMAIL: "email",
+    PHONE: "phone",
+    PASSWORD_RESET: "password_reset",
   },
 } as const;
 
@@ -77,75 +77,75 @@ export const USER_CONSTANTS = {
 export const PLANT_CONSTANTS = {
   // 植物健康状态
   HEALTH_STATUS: {
-    EXCELLENT: 'excellent',
-    GOOD: 'good',
-    FAIR: 'fair',
-    POOR: 'poor',
+    EXCELLENT: "excellent",
+    GOOD: "good",
+    FAIR: "fair",
+    POOR: "poor",
   },
-  
+
   // 植物状态
   STATUS: {
-    HEALTHY: 'healthy',
-    NEEDS_CARE: 'needs_care',
-    SICK: 'sick',
+    HEALTHY: "healthy",
+    NEEDS_CARE: "needs_care",
+    SICK: "sick",
   },
-  
+
   // 植物类型
   TYPES: {
-    INDOOR: 'indoor',
-    OUTDOOR: 'outdoor',
-    SUCCULENT: 'succulent',
-    HERB: 'herb',
-    TREE: 'tree',
-    FLOWER: 'flower',
+    INDOOR: "indoor",
+    OUTDOOR: "outdoor",
+    SUCCULENT: "succulent",
+    HERB: "herb",
+    TREE: "tree",
+    FLOWER: "flower",
   },
-  
+
   // 养护类型
   CARE_TYPES: {
-    WATER: 'water',
-    FERTILIZE: 'fertilize',
-    PRUNE: 'prune',
-    REPOT: 'repot',
-    OTHER: 'other',
+    WATER: "water",
+    FERTILIZE: "fertilize",
+    PRUNE: "prune",
+    REPOT: "repot",
+    OTHER: "other",
   },
-  
+
   // 养护优先级
   PRIORITY: {
-    HIGH: 'high',
-    MEDIUM: 'medium',
-    LOW: 'low',
+    HIGH: "high",
+    MEDIUM: "medium",
+    LOW: "low",
   },
-  
+
   // 浇水频率
   WATERING_FREQUENCY: {
-    DAILY: 'daily',
-    WEEKLY: 'weekly',
-    BIWEEKLY: 'biweekly',
-    MONTHLY: 'monthly',
-    CUSTOM: 'custom',
+    DAILY: "daily",
+    WEEKLY: "weekly",
+    BIWEEKLY: "biweekly",
+    MONTHLY: "monthly",
+    CUSTOM: "custom",
   },
-  
+
   // 光照需求
   LIGHT_REQUIREMENT: {
-    FULL_SUN: 'full_sun',
-    PARTIAL_SUN: 'partial_sun',
-    SHADE: 'shade',
-    LOW_LIGHT: 'low_light',
+    FULL_SUN: "full_sun",
+    PARTIAL_SUN: "partial_sun",
+    SHADE: "shade",
+    LOW_LIGHT: "low_light",
   },
-  
+
   // 湿度需求
   HUMIDITY_REQUIREMENT: {
-    LOW: 'low',
-    MEDIUM: 'medium',
-    HIGH: 'high',
+    LOW: "low",
+    MEDIUM: "medium",
+    HIGH: "high",
   },
-  
+
   // 温度范围
   TEMPERATURE_RANGE: {
-    COLD: 'cold',
-    COOL: 'cool',
-    WARM: 'warm',
-    HOT: 'hot',
+    COLD: "cold",
+    COOL: "cool",
+    WARM: "warm",
+    HOT: "hot",
   },
 } as const;
 
@@ -153,32 +153,32 @@ export const PLANT_CONSTANTS = {
 export const AI_CONSTANTS = {
   // AI 模型类型
   MODEL_TYPES: {
-    GPT: 'gpt',
-    CLAUDE: 'claude',
-    GEMINI: 'gemini',
-    CUSTOM: 'custom',
+    GPT: "gpt",
+    CLAUDE: "claude",
+    GEMINI: "gemini",
+    CUSTOM: "custom",
   },
-  
+
   // AI 功能类型
   FUNCTION_TYPES: {
-    CHAT: 'chat',
-    RECOGNIZE: 'recognize',
-    DIAGNOSE: 'diagnose',
-    GENERATE: 'generate',
+    CHAT: "chat",
+    RECOGNIZE: "recognize",
+    DIAGNOSE: "diagnose",
+    GENERATE: "generate",
   },
-  
+
   // 聊天消息角色
   CHAT_ROLES: {
-    USER: 'user',
-    ASSISTANT: 'assistant',
-    SYSTEM: 'system',
+    USER: "user",
+    ASSISTANT: "assistant",
+    SYSTEM: "system",
   },
-  
+
   // 图片识别类型
   RECOGNITION_TYPES: {
-    PLANT: 'plant',
-    DISEASE: 'disease',
-    PEST: 'pest',
+    PLANT: "plant",
+    DISEASE: "disease",
+    PEST: "pest",
   },
 } as const;
 
@@ -186,25 +186,25 @@ export const AI_CONSTANTS = {
 export const NOTIFICATION_CONSTANTS = {
   // 通知类型
   TYPES: {
-    SUCCESS: 'success',
-    ERROR: 'error',
-    WARNING: 'warning',
-    INFO: 'info',
+    SUCCESS: "success",
+    ERROR: "error",
+    WARNING: "warning",
+    INFO: "info",
   },
-  
+
   // 通知级别
   LEVELS: {
-    LOW: 'low',
-    MEDIUM: 'medium',
-    HIGH: 'high',
-    URGENT: 'urgent',
+    LOW: "low",
+    MEDIUM: "medium",
+    HIGH: "high",
+    URGENT: "urgent",
   },
-  
+
   // 通知状态
   STATUS: {
-    UNREAD: 'unread',
-    READ: 'read',
-    ARCHIVED: 'archived',
+    UNREAD: "unread",
+    READ: "read",
+    ARCHIVED: "archived",
   },
 } as const;
 
@@ -212,21 +212,21 @@ export const NOTIFICATION_CONSTANTS = {
 export const UPLOAD_CONSTANTS = {
   // 文件类型
   FILE_TYPES: {
-    IMAGE: 'image',
-    DOCUMENT: 'document',
-    VIDEO: 'video',
-    AUDIO: 'audio',
+    IMAGE: "image",
+    DOCUMENT: "document",
+    VIDEO: "video",
+    AUDIO: "audio",
   },
-  
+
   // 图片格式
   IMAGE_FORMATS: {
-    JPEG: 'image/jpeg',
-    PNG: 'image/png',
-    WEBP: 'image/webp',
-    GIF: 'image/gif',
-    BMP: 'image/bmp',
+    JPEG: "image/jpeg",
+    PNG: "image/png",
+    WEBP: "image/webp",
+    GIF: "image/gif",
+    BMP: "image/bmp",
   },
-  
+
   // 文件大小限制（MB）
   MAX_FILE_SIZE: {
     IMAGE: 10,
@@ -234,7 +234,7 @@ export const UPLOAD_CONSTANTS = {
     VIDEO: 100,
     AUDIO: 20,
   },
-  
+
   // 图片尺寸限制
   IMAGE_DIMENSIONS: {
     MIN_WIDTH: 100,
@@ -248,14 +248,14 @@ export const UPLOAD_CONSTANTS = {
 export const STORAGE_CONSTANTS = {
   // 存储键名
   KEYS: {
-    TOKEN: 'token',
-    USER: 'user',
-    SETTINGS: 'settings',
-    THEME: 'theme',
-    LANGUAGE: 'language',
-    CACHE_PREFIX: 'cache_',
+    TOKEN: "token",
+    USER: "user",
+    SETTINGS: "settings",
+    THEME: "theme",
+    LANGUAGE: "language",
+    CACHE_PREFIX: "cache_",
   },
-  
+
   // 缓存过期时间（毫秒）
   CACHE_EXPIRE: {
     SHORT: 5 * 60 * 1000, // 5分钟
@@ -270,19 +270,19 @@ export const STORAGE_CONSTANTS = {
 export const THEME_CONSTANTS = {
   // 主题类型
   TYPES: {
-    LIGHT: 'light',
-    DARK: 'dark',
-    AUTO: 'auto',
+    LIGHT: "light",
+    DARK: "dark",
+    AUTO: "auto",
   },
-  
+
   // 主题颜色
   COLORS: {
-    PRIMARY: '#4CAF50',
-    SECONDARY: '#2196F3',
-    SUCCESS: '#4CAF50',
-    WARNING: '#FF9800',
-    ERROR: '#F44336',
-    INFO: '#2196F3',
+    PRIMARY: "#4CAF50",
+    SECONDARY: "#2196F3",
+    SUCCESS: "#4CAF50",
+    WARNING: "#FF9800",
+    ERROR: "#F44336",
+    INFO: "#2196F3",
   },
 } as const;
 
@@ -290,42 +290,42 @@ export const THEME_CONSTANTS = {
 export const LANGUAGE_CONSTANTS = {
   // 支持的语言
   SUPPORTED: {
-    ZH_CN: 'zh-CN',
-    EN_US: 'en-US',
-    JA_JP: 'ja-JP',
+    ZH_CN: "zh-CN",
+    EN_US: "en-US",
+    JA_JP: "ja-JP",
   },
-  
+
   // 默认语言
-  DEFAULT: 'zh-CN',
+  DEFAULT: "zh-CN",
 } as const;
 
 // 路由相关常量
 export const ROUTE_CONSTANTS = {
   // 路由路径
   PATHS: {
-    HOME: '/',
-    LOGIN: '/login',
-    REGISTER: '/register',
-    PROFILE: '/profile',
-    PLANTS: '/plants',
-    PLANT_DETAIL: '/plants/:id',
-    CARE: '/care',
-    CARE_PLAN: '/care',
-    AI: '/ai',
-    AI_CHAT: '/ai/chat',
-    SETTINGS: '/settings',
-    ABOUT: '/about',
-    HELP: '/help',
-    PRIVACY: '/privacy',
-    TERMS: '/terms',
+    HOME: "/",
+    LOGIN: "/login",
+    REGISTER: "/register",
+    PROFILE: "/profile",
+    PLANTS: "/plants",
+    PLANT_DETAIL: "/plants/:id",
+    CARE: "/care",
+    CARE_PLAN: "/care",
+    AI: "/ai",
+    AI_CHAT: "/ai/chat",
+    SETTINGS: "/settings",
+    ABOUT: "/about",
+    HELP: "/help",
+    PRIVACY: "/privacy",
+    TERMS: "/terms",
   },
-  
+
   // 路由参数
   PARAMS: {
-    PLANT_ID: 'id',
-    USER_ID: 'userId',
-    CATEGORY: 'category',
-    SEARCH: 'search',
+    PLANT_ID: "id",
+    USER_ID: "userId",
+    CATEGORY: "category",
+    SEARCH: "search",
   },
 } as const;
 
@@ -333,10 +333,10 @@ export const ROUTE_CONSTANTS = {
 export const PAGINATION_CONSTANTS = {
   // 默认分页大小
   DEFAULT_PAGE_SIZE: 20,
-  
+
   // 分页大小选项
   PAGE_SIZE_OPTIONS: [10, 20, 50, 100],
-  
+
   // 最大分页大小
   MAX_PAGE_SIZE: 100,
 } as const;
@@ -353,13 +353,13 @@ export const TIME_CONSTANTS = {
     MONTH: 30 * 24 * 60 * 60 * 1000,
     YEAR: 365 * 24 * 60 * 60 * 1000,
   },
-  
+
   // 日期格式
   DATE_FORMATS: {
-    DATE: 'YYYY-MM-DD',
-    TIME: 'HH:mm:ss',
-    DATETIME: 'YYYY-MM-DD HH:mm:ss',
-    ISO: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
+    DATE: "YYYY-MM-DD",
+    TIME: "HH:mm:ss",
+    DATETIME: "YYYY-MM-DD HH:mm:ss",
+    ISO: "YYYY-MM-DDTHH:mm:ss.SSSZ",
   },
 } as const;
 
@@ -374,28 +374,28 @@ export const VALIDATION_CONSTANTS = {
     REQUIRE_NUMBERS: true,
     REQUIRE_SPECIAL_CHARS: false,
   },
-  
+
   // 用户名规则
   USERNAME: {
     MIN_LENGTH: 3,
     MAX_LENGTH: 20,
     ALLOW_CHINESE: true,
   },
-  
+
   // 邮箱规则
   EMAIL: {
     MAX_LENGTH: 254,
   },
-  
+
   // 手机号规则
   PHONE: {
     PATTERN: /^1[3-9]\d{9}$/,
   },
-  
+
   // 文件上传规则
   FILE_UPLOAD: {
     MAX_SIZE: 10 * 1024 * 1024, // 10MB
-    ALLOWED_TYPES: ['image/jpeg', 'image/png', 'image/webp'],
+    ALLOWED_TYPES: ["image/jpeg", "image/png", "image/webp"],
   },
 } as const;
 
@@ -403,44 +403,44 @@ export const VALIDATION_CONSTANTS = {
 export const ERROR_CODES = {
   // 通用错误
   COMMON: {
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
-    NETWORK_ERROR: 'NETWORK_ERROR',
-    TIMEOUT_ERROR: 'TIMEOUT_ERROR',
-    VALIDATION_ERROR: 'VALIDATION_ERROR',
-    PERMISSION_DENIED: 'PERMISSION_DENIED',
-    RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
+    UNKNOWN_ERROR: "UNKNOWN_ERROR",
+    NETWORK_ERROR: "NETWORK_ERROR",
+    TIMEOUT_ERROR: "TIMEOUT_ERROR",
+    VALIDATION_ERROR: "VALIDATION_ERROR",
+    PERMISSION_DENIED: "PERMISSION_DENIED",
+    RESOURCE_NOT_FOUND: "RESOURCE_NOT_FOUND",
   },
-  
+
   // 用户相关错误
   USER: {
-    LOGIN_FAILED: 'LOGIN_FAILED',
-    REGISTER_FAILED: 'REGISTER_FAILED',
-    USER_NOT_FOUND: 'USER_NOT_FOUND',
-    EMAIL_EXISTS: 'EMAIL_EXISTS',
-    PHONE_EXISTS: 'PHONE_EXISTS',
-    INVALID_TOKEN: 'INVALID_TOKEN',
-    TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+    LOGIN_FAILED: "LOGIN_FAILED",
+    REGISTER_FAILED: "REGISTER_FAILED",
+    USER_NOT_FOUND: "USER_NOT_FOUND",
+    EMAIL_EXISTS: "EMAIL_EXISTS",
+    PHONE_EXISTS: "PHONE_EXISTS",
+    INVALID_TOKEN: "INVALID_TOKEN",
+    TOKEN_EXPIRED: "TOKEN_EXPIRED",
   },
-  
+
   // 植物相关错误
   PLANT: {
-    PLANT_NOT_FOUND: 'PLANT_NOT_FOUND',
-    INVALID_PLANT_DATA: 'INVALID_PLANT_DATA',
-    CARE_TASK_NOT_FOUND: 'CARE_TASK_NOT_FOUND',
+    PLANT_NOT_FOUND: "PLANT_NOT_FOUND",
+    INVALID_PLANT_DATA: "INVALID_PLANT_DATA",
+    CARE_TASK_NOT_FOUND: "CARE_TASK_NOT_FOUND",
   },
-  
+
   // AI 相关错误
   AI: {
-    MODEL_NOT_AVAILABLE: 'MODEL_NOT_AVAILABLE',
-    RECOGNITION_FAILED: 'RECOGNITION_FAILED',
-    GENERATION_FAILED: 'GENERATION_FAILED',
+    MODEL_NOT_AVAILABLE: "MODEL_NOT_AVAILABLE",
+    RECOGNITION_FAILED: "RECOGNITION_FAILED",
+    GENERATION_FAILED: "GENERATION_FAILED",
   },
-  
+
   // 文件上传错误
   UPLOAD: {
-    FILE_TOO_LARGE: 'FILE_TOO_LARGE',
-    INVALID_FILE_TYPE: 'INVALID_FILE_TYPE',
-    UPLOAD_FAILED: 'UPLOAD_FAILED',
+    FILE_TOO_LARGE: "FILE_TOO_LARGE",
+    INVALID_FILE_TYPE: "INVALID_FILE_TYPE",
+    UPLOAD_FAILED: "UPLOAD_FAILED",
   },
 } as const;
 
@@ -448,36 +448,36 @@ export const ERROR_CODES = {
 export const SUCCESS_CODES = {
   // 通用成功
   COMMON: {
-    OPERATION_SUCCESS: 'OPERATION_SUCCESS',
-    DATA_SAVED: 'DATA_SAVED',
-    DATA_DELETED: 'DATA_DELETED',
+    OPERATION_SUCCESS: "OPERATION_SUCCESS",
+    DATA_SAVED: "DATA_SAVED",
+    DATA_DELETED: "DATA_DELETED",
   },
-  
+
   // 用户相关成功
   USER: {
-    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-    REGISTER_SUCCESS: 'REGISTER_SUCCESS',
-    PROFILE_UPDATED: 'PROFILE_UPDATED',
-    PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+    LOGIN_SUCCESS: "LOGIN_SUCCESS",
+    REGISTER_SUCCESS: "REGISTER_SUCCESS",
+    PROFILE_UPDATED: "PROFILE_UPDATED",
+    PASSWORD_CHANGED: "PASSWORD_CHANGED",
   },
-  
+
   // 植物相关成功
   PLANT: {
-    PLANT_CREATED: 'PLANT_CREATED',
-    PLANT_UPDATED: 'PLANT_UPDATED',
-    PLANT_DELETED: 'PLANT_DELETED',
-    CARE_TASK_COMPLETED: 'CARE_TASK_COMPLETED',
+    PLANT_CREATED: "PLANT_CREATED",
+    PLANT_UPDATED: "PLANT_UPDATED",
+    PLANT_DELETED: "PLANT_DELETED",
+    CARE_TASK_COMPLETED: "CARE_TASK_COMPLETED",
   },
-  
+
   // AI 相关成功
   AI: {
-    RECOGNITION_SUCCESS: 'RECOGNITION_SUCCESS',
-    GENERATION_SUCCESS: 'GENERATION_SUCCESS',
+    RECOGNITION_SUCCESS: "RECOGNITION_SUCCESS",
+    GENERATION_SUCCESS: "GENERATION_SUCCESS",
   },
-  
+
   // 文件上传成功
   UPLOAD: {
-    FILE_UPLOADED: 'FILE_UPLOADED',
+    FILE_UPLOADED: "FILE_UPLOADED",
   },
 } as const;
 

@@ -33,7 +33,7 @@ const Home: React.FC = () => {
   const todayTasks = useMemo(() => selectTodayTasks(careTasks), [careTasks]);
   const todayProgress = useMemo(
     () => selectTodayProgress(careTasks),
-    [careTasks]
+    [careTasks],
   );
 
   const stats = useMemo(
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
       needsCare: plants.filter((p) => p.status === "needs_care").length,
       todayTasks: todayTasks.length,
     }),
-    [plants, todayTasks]
+    [plants, todayTasks],
   );
 
   const quickActions = [
@@ -238,7 +238,8 @@ const Home: React.FC = () => {
               <>
                 <div className={styles.progressInfo}>
                   <span className={styles.progressLabel}>
-                    已完成 {todayProgress.completed}/{todayProgress.total} 项任务
+                    已完成 {todayProgress.completed}/{todayProgress.total}{" "}
+                    项任务
                   </span>
                   <span className={styles.progressPercent}>
                     {Math.round(todayProgress.rate)}%

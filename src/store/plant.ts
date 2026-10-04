@@ -30,7 +30,9 @@ export const createPlantSlice: SliceCreator<PlantSlice> = (set) => ({
       location: "客厅",
       wateringFrequency,
       lastWatered: now,
-      nextWatering: new Date(Date.now() + wateringFrequency * DAY).toISOString(),
+      nextWatering: new Date(
+        Date.now() + wateringFrequency * DAY,
+      ).toISOString(),
       notes: "",
       ...plantData,
       id: createId(),
@@ -47,7 +49,7 @@ export const createPlantSlice: SliceCreator<PlantSlice> = (set) => ({
       plants: state.plants.map((plant) =>
         plant.id === id
           ? { ...plant, ...plantData, updatedAt: new Date().toISOString() }
-          : plant
+          : plant,
       ),
       currentPlant:
         state.currentPlant?.id === id

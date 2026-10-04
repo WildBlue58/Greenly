@@ -93,7 +93,7 @@ const UserProfile: React.FC = () => {
   const calculateAchievements = () => {
     const completedTasks = careTasks.filter((task) => task.completed).length;
     const healthyPlantsCount = plants.filter(
-      (p) => p.status === "healthy"
+      (p) => p.status === "healthy",
     ).length;
 
     return [
@@ -302,12 +302,12 @@ const UserProfile: React.FC = () => {
                   {record.type === "water"
                     ? "💧"
                     : record.type === "fertilize"
-                    ? "🌱"
-                    : record.type === "prune"
-                    ? "✂️"
-                    : record.type === "repot"
-                    ? "🪴"
-                    : "🌿"}
+                      ? "🌱"
+                      : record.type === "prune"
+                        ? "✂️"
+                        : record.type === "repot"
+                          ? "🪴"
+                          : "🌿"}
                 </div>
                 <div className={styles.activityContent}>
                   <div className={styles.activityTitle}>{record.title}</div>

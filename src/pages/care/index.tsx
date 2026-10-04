@@ -71,7 +71,7 @@ const CarePage: React.FC = () => {
         Toast.fail("添加任务失败");
       }
     },
-    [addCareTask]
+    [addCareTask],
   );
 
   // 编辑养护任务
@@ -79,7 +79,7 @@ const CarePage: React.FC = () => {
     (task: CareTask) => {
       navigate(`/care/edit/${task.id}`);
     },
-    [navigate]
+    [navigate],
   );
 
   // 删除养护任务
@@ -102,7 +102,7 @@ const CarePage: React.FC = () => {
         Toast.fail("删除任务失败");
       }
     },
-    [deleteCareTask]
+    [deleteCareTask],
   );
 
   // 完成养护任务
@@ -125,7 +125,7 @@ const CarePage: React.FC = () => {
         Toast.fail("操作失败");
       }
     },
-    [completeCareTask]
+    [completeCareTask],
   );
 
   // 关闭表单
@@ -159,33 +159,36 @@ const CarePage: React.FC = () => {
         Toast.fail(result.error || "删除记录失败");
       }
     },
-    [deleteCareRecord]
+    [deleteCareRecord],
   );
 
   // 派生数据
-  const pendingTasks = useMemo(() => selectPendingTasks(careTasks), [careTasks]);
+  const pendingTasks = useMemo(
+    () => selectPendingTasks(careTasks),
+    [careTasks],
+  );
   const completedTasks = useMemo(
     () => selectCompletedTasks(careTasks),
-    [careTasks]
+    [careTasks],
   );
   const todayTasks = useMemo(
     () => selectTodayPendingTasks(careTasks),
-    [careTasks]
+    [careTasks],
   );
   const overdueTasks = useMemo(
     () => selectOverdueTasks(careTasks),
-    [careTasks]
+    [careTasks],
   );
   const careStats = useMemo(() => computeCareStats(careTasks), [careTasks]);
 
   // 按植物分组
   const groupedPendingTasks = useMemo(
     () => groupTasksByPlant(pendingTasks),
-    [pendingTasks]
+    [pendingTasks],
   );
   const groupedCompletedTasks = useMemo(
     () => groupTasksByPlant(completedTasks),
-    [completedTasks]
+    [completedTasks],
   );
 
   // 准备植物选项数据
@@ -194,7 +197,7 @@ const CarePage: React.FC = () => {
       plants
         .filter((plant) => plant.id && plant.name)
         .map((plant) => ({ id: plant.id, name: plant.name })),
-    [plants]
+    [plants],
   );
 
   // 获取当前tab的任务数量
@@ -211,7 +214,7 @@ const CarePage: React.FC = () => {
           return 0;
       }
     },
-    [pendingTasks.length, completedTasks.length, careRecords.length]
+    [pendingTasks.length, completedTasks.length, careRecords.length],
   );
 
   return (
@@ -284,7 +287,7 @@ const CarePage: React.FC = () => {
                       const sortedTasks = [...plantTasks].sort(
                         (a, b) =>
                           new Date(a.dueDate || 0).getTime() -
-                          new Date(b.dueDate || 0).getTime()
+                          new Date(b.dueDate || 0).getTime(),
                       );
                       const nextTask = sortedTasks[0];
 
@@ -356,14 +359,14 @@ const CarePage: React.FC = () => {
               <div className={styles.recordList}>
                 {careRecords.length > 0 ? (
                   careRecords.map((record) => (
-                      <CareRecordComponent
-                        key={record.id}
-                        record={record}
-                        onEdit={handleEditRecord}
-                        onDelete={handleDeleteRecord}
-                        className={styles.recordItem}
-                      />
-                    ))
+                    <CareRecordComponent
+                      key={record.id}
+                      record={record}
+                      onEdit={handleEditRecord}
+                      onDelete={handleDeleteRecord}
+                      className={styles.recordItem}
+                    />
+                  ))
                 ) : (
                   <Empty text="暂无养护记录" className={styles.emptyState} />
                 )}
