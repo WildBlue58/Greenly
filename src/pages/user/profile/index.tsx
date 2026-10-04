@@ -11,7 +11,6 @@ import {
 } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../../store";
-import { useCare } from "../../../hooks/useCare";
 import { AvatarUpload } from "../../../components/common";
 import { formatRelativeDate } from "../../../utils/date";
 import styles from "./profile.module.css";
@@ -19,8 +18,11 @@ import { useTitle } from "../../../hooks";
 
 const UserProfile: React.FC = () => {
   useTitle();
-  const { user, plants, updateProfile } = useStore();
-  const { careTasks, careRecords } = useCare();
+  const user = useStore((s) => s.user);
+  const plants = useStore((s) => s.plants);
+  const updateProfile = useStore((s) => s.updateProfile);
+  const careTasks = useStore((s) => s.careTasks);
+  const careRecords = useStore((s) => s.careRecords);
   const navigate = useNavigate();
   const [showEditName, setShowEditName] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");

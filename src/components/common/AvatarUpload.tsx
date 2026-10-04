@@ -24,7 +24,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   className = "",
   onChange,
 }) => {
-  const { updateProfile } = useStore() as any;
+  const updateProfile = useStore((s) => s.updateProfile);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);

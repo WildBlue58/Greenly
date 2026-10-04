@@ -10,8 +10,8 @@ import {
   DatetimePicker,
 } from "react-vant";
 import { Arrow, CalendarO, Delete } from "@react-vant/icons";
-import { useCare, useTitle } from "../../../hooks";
-import { usePlant } from "../../../hooks/usePlant";
+import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
 import type { CareTask, Plant } from "../../../store/types";
 import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./edit.module.css";
@@ -27,8 +27,10 @@ const EditCareTask: React.FC = () => {
   // 设置页面标题
   useTitle();
 
-  const { careTasks, updateCareTask, deleteCareTask } = useCare();
-  const { plants } = usePlant();
+  const careTasks = useStore((s) => s.careTasks);
+  const updateCareTask = useStore((s) => s.updateCareTask);
+  const deleteCareTask = useStore((s) => s.deleteCareTask);
+  const plants = useStore((s) => s.plants);
 
   // 当前编辑的任务（store 数据启动时已同步恢复，直接派生即可）
   const currentTask = useMemo(

@@ -17,7 +17,7 @@ import styles from "./add.module.css";
 
 const AddPlant: React.FC = () => {
   const navigate = useNavigate();
-  const { addPlant } = useStore() as any;
+  const addPlant = useStore((s) => s.addPlant);
   
   // 设置页面标题
   useTitle();
@@ -143,9 +143,8 @@ const AddPlant: React.FC = () => {
     }
 
     try {
-      // 构造新植物数据
+      // 构造新植物数据（id/时间戳等由 store 生成）
       const newPlant = {
-        id: Date.now().toString(),
         name: formData.name.trim(),
         species: formData.species.trim(),
         location: formData.location,
@@ -154,11 +153,7 @@ const AddPlant: React.FC = () => {
         image:
           formData.image ||
           "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop",
-        health: "good",
-        lastWatered: new Date().toISOString(),
-        nextWatering: new Date(
-          Date.now() + (formData.wateringFrequency || 7) * 24 * 60 * 60 * 1000
-        ).toISOString(),
+        health: "good" as const,
         notes: formData.description,
         // 养护信息
         careLevel: formData.careLevel,
@@ -171,8 +166,6 @@ const AddPlant: React.FC = () => {
         humidity: formData.humidity,
         careTips: formData.careTips.filter((tip) => tip.trim()),
         status: formData.status,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       };
 
       // 添加植物到store

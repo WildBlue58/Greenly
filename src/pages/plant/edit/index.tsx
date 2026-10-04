@@ -18,7 +18,8 @@ import styles from "./edit.module.css";
 const EditPlant: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { plants, updatePlant } = useStore() as any;
+  const plants = useStore((s) => s.plants);
+  const updatePlant = useStore((s) => s.updatePlant);
 
   // 设置页面标题
   useTitle();
@@ -70,40 +71,34 @@ const EditPlant: React.FC = () => {
   const statusValues = ["healthy", "needs_care", "sick"];
 
   useEffect(() => {
-    // 根据ID从store中获取植物数据
-    if (id && plants.length > 0) {
-      const plant = plants.find((p: any) => p.id === id);
-      if (plant) {
-        setFormData({
-          name: plant.name || "",
-          species: plant.species || "",
-          location: plant.location || "",
-          wateringFrequency: plant.wateringFrequency || 7,
-          description: plant.description || plant.notes || "",
-          image: plant.image || "",
-          careLevel: plant.careLevel || "easy",
-          lightNeeds: plant.lightNeeds || "medium",
-          waterNeeds: plant.waterNeeds || "medium",
-          temperatureMin: plant.temperature?.min || 15,
-          temperatureMax: plant.temperature?.max || 30,
-          humidity: plant.humidity || 60,
-          careTips: plant.careTips || [
-            "保持土壤适度湿润",
-            "提供适当的光照",
-            "定期检查植物状态",
-          ],
-          status: plant.status || "healthy",
-        });
-        setLoading(false);
-      } else {
-        alert("植物不存在");
-        navigate("/plant/list");
-      }
-    } else if (plants.length === 0) {
-      // 如果植物数据还未加载，等待一下
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+    // store 数据在启动时已同步恢复，直接按 id 查找
+    if (!id) return;
+    const plant = plants.find((p) => p.id === id);
+    if (plant) {
+      setFormData({
+        name: plant.name || "",
+        species: plant.species || "",
+        location: plant.location || "",
+        wateringFrequency: plant.wateringFrequency || 7,
+        description: plant.description || plant.notes || "",
+        image: plant.image || "",
+        careLevel: plant.careLevel || "easy",
+        lightNeeds: plant.lightNeeds || "medium",
+        waterNeeds: plant.waterNeeds || "medium",
+        temperatureMin: plant.temperature?.min || 15,
+        temperatureMax: plant.temperature?.max || 30,
+        humidity: plant.humidity || 60,
+        careTips: plant.careTips || [
+          "保持土壤适度湿润",
+          "提供适当的光照",
+          "定期检查植物状态",
+        ],
+        status: plant.status || "healthy",
+      });
+      setLoading(false);
+    } else {
+      alert("植物不存在");
+      navigate("/plant/list");
     }
   }, [id, plants, navigate]);
 
@@ -179,7 +174,6 @@ const EditPlant: React.FC = () => {
 
     try {
       const updatedPlant = {
-        id: id!,
         name: formData.name.trim(),
         species: formData.species.trim(),
         location: formData.location,
@@ -200,11 +194,10 @@ const EditPlant: React.FC = () => {
         humidity: formData.humidity,
         careTips: formData.careTips.filter((tip) => tip.trim()),
         status: formData.status,
-        updatedAt: new Date().toISOString(),
       };
 
       // 更新植物信息
-      updatePlant && updatePlant(id!, updatedPlant);
+      await updatePlant(id!, updatedPlant);
 
       alert("植物信息更新成功！");
       navigate(`/plant/detail/${id}`);

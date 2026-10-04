@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Progress } from "react-vant";
 import {
@@ -12,35 +12,39 @@ import {
   ClockO,
 } from "@react-vant/icons";
 import { useStore } from "../../store";
-import { useCare, useTitle } from "../../hooks";
-import type { Plant } from "../../store/types";
+import { useTitle } from "../../hooks";
+import {
+  selectTodayTasks,
+  selectTodayProgress,
+} from "../../utils/careSelectors";
+import type { Plant, CareTask } from "../../store/types";
 import { AvatarUpload } from "../../components/common";
 import styles from "./home.module.css";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { plants, user } = useStore() as any;
-  const { todayTasks, careStats } = useCare();
+  const plants = useStore((s) => s.plants);
+  const user = useStore((s) => s.user);
+  const careTasks = useStore((s) => s.careTasks);
 
   // 设置页面标题
   useTitle();
 
-  const [stats, setStats] = useState({
-    totalPlants: 0,
-    healthyPlants: 0,
-    needsCare: 0,
-    todayTasks: 0,
-  });
+  const todayTasks = useMemo(() => selectTodayTasks(careTasks), [careTasks]);
+  const todayProgress = useMemo(
+    () => selectTodayProgress(careTasks),
+    [careTasks]
+  );
 
-  useEffect(() => {
-    // 使用真实数据更新统计
-    setStats({
+  const stats = useMemo(
+    () => ({
       totalPlants: plants.length,
-      healthyPlants: plants.filter((p: Plant) => p.status === "healthy").length,
-      needsCare: plants.filter((p: Plant) => p.status === "needs_care").length,
+      healthyPlants: plants.filter((p) => p.status === "healthy").length,
+      needsCare: plants.filter((p) => p.status === "needs_care").length,
       todayTasks: todayTasks.length,
-    });
-  }, [plants, todayTasks]);
+    }),
+    [plants, todayTasks]
+  );
 
   const quickActions = [
     {
@@ -234,19 +238,19 @@ const Home: React.FC = () => {
               <>
                 <div className={styles.progressInfo}>
                   <span className={styles.progressLabel}>
-                    已完成 {careStats.completedCount}/{todayTasks.length} 项任务
+                    已完成 {todayProgress.completed}/{todayProgress.total} 项任务
                   </span>
                   <span className={styles.progressPercent}>
-                    {Math.round(careStats.completionRate)}%
+                    {Math.round(todayProgress.rate)}%
                   </span>
                 </div>
                 <Progress
-                  percentage={Math.round(careStats.completionRate)}
+                  percentage={Math.round(todayProgress.rate)}
                   color="#4CAF50"
                   strokeWidth={8}
                 />
                 <div className={styles.taskList}>
-                  {todayTasks.map((task: any) => (
+                  {todayTasks.map((task: CareTask) => (
                     <div
                       key={task.id}
                       className={`${styles.taskItem} ${

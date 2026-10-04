@@ -21,44 +21,8 @@ import {
 } from "@react-vant/icons";
 import { Empty } from "../common";
 import { formatCareReminderTime } from "../../utils/date";
+import type { CarePlan, CareRecord, CareTask } from "../../store/types";
 import styles from "./care.module.css";
-
-// 养护类型定义
-interface CareTask {
-  id: string;
-  plantId: string;
-  plantName: string;
-  type: "water" | "fertilize" | "prune" | "repot" | "other";
-  title: string;
-  description: string;
-  dueDate: string;
-  completed: boolean;
-  completedAt?: string;
-  priority: "high" | "medium" | "low";
-  createdAt: string;
-}
-
-interface CarePlan {
-  id: string;
-  plantId: string;
-  plantName: string;
-  tasks: CareTask[];
-  nextTask?: CareTask;
-  progress: number;
-  createdAt: string;
-}
-
-interface CareRecord {
-  id: string;
-  plantId: string;
-  plantName: string;
-  type: "water" | "fertilize" | "prune" | "repot" | "other";
-  title: string;
-  description: string;
-  completedAt: string;
-  notes?: string;
-  images?: string[];
-}
 
 // CarePlan 组件
 interface CarePlanProps {
@@ -622,7 +586,7 @@ export const CareForm: React.FC<CareFormProps> = ({
   const handleTypeConfirm = useCallback((values: string[]) => {
     setFormData((prev) => ({
       ...prev,
-      type: values[0] as any,
+      type: values[0] as CareTask["type"],
     }));
     setShowTypePicker(false);
   }, []);
@@ -630,7 +594,7 @@ export const CareForm: React.FC<CareFormProps> = ({
   const handlePriorityConfirm = useCallback((values: string[]) => {
     setFormData((prev) => ({
       ...prev,
-      priority: values[0] as any,
+      priority: values[0] as CareTask["priority"],
     }));
     setShowPriorityPicker(false);
   }, []);

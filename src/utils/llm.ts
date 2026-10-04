@@ -152,7 +152,7 @@ export const streamChat = async (
                 fullContent += content;
                 onChunk(content);
               }
-            } catch (e) {
+            } catch {
               // 忽略解析错误，继续处理下一个chunk
             }
           }

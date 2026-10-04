@@ -2,20 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, Field, Loading } from "react-vant";
 import { PhotoO, Search, Setting, Arrow, Add } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
-import { useAI, useTitle } from "../../hooks";
+import { useStore } from "../../store";
+import { useTitle } from "../../hooks";
 import styles from "./ai.module.css";
-
-interface Message {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-  timestamp: Date;
-  type?: "text" | "image";
-}
 
 const AIPage: React.FC = () => {
   useTitle();
-  const { sendChatMessage, aiLoading, chatMessages } = useAI();
+  const chatMessages = useStore((s) => s.chatMessages);
+  const aiLoading = useStore((s) => s.aiLoading);
+  const sendChatMessage = useStore((s) => s.sendChatMessage);
+  const clearChat = useStore((s) => s.clearChat);
   const navigate = useNavigate();
 
   // 检查API密钥配置状态
@@ -32,9 +28,7 @@ const AIPage: React.FC = () => {
   const apiConfig = checkAPIConfig();
 
   // 聊天相关状态
-  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [chatMode, setChatMode] = useState<"welcome" | "chat">("welcome");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -75,89 +69,30 @@ const AIPage: React.FC = () => {
     if (chatMode === "chat") {
       scrollToBottom();
     }
-  }, [messages, chatMode]);
+  }, [chatMessages, chatMode]);
 
-  const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading || aiLoading) return;
+  // 发送消息：消息流由 store 统一维护（含流式输出与错误提示）
+  const handleSend = async (text: string) => {
+    const content = text.trim();
+    if (!content || aiLoading || !apiConfig.hasAnyKey) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: inputValue,
-      role: "user",
-      timestamp: new Date(),
-      type: "text",
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    const currentInput = inputValue;
     setInputValue("");
-    setIsLoading(true);
+    if (chatMode === "welcome") {
+      setChatMode("chat");
+    }
 
     try {
-      const result = await sendChatMessage(currentInput);
-
-      if (result.success) {
-        // 直接使用从LLM返回的实际内容
-        let assistantContent = "收到您的消息，正在处理...";
-
-        // 尝试从chatMessages中获取最新的AI回复
-        if (chatMessages.length > 0) {
-          const latestMessage = chatMessages[chatMessages.length - 1];
-          if (latestMessage && latestMessage.role === "assistant") {
-            assistantContent = latestMessage.content;
-          }
-        }
-
-        // 短暂延迟以确保store更新
-        setTimeout(() => {
-          const updatedLatestMessage = chatMessages[chatMessages.length - 1];
-          if (
-            updatedLatestMessage &&
-            updatedLatestMessage.role === "assistant"
-          ) {
-            assistantContent = updatedLatestMessage.content;
-          }
-
-          const assistantMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            content: assistantContent,
-            role: "assistant",
-            timestamp: new Date(),
-            type: "text",
-          };
-          setMessages((prev) => [...prev, assistantMessage]);
-        }, 800);
-      } else {
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content:
-            result.error ||
-            "抱歉，我现在无法回答您的问题。可能是API密钥未配置或网络问题，请检查配置后重试。",
-          role: "assistant",
-          timestamp: new Date(),
-          type: "text",
-        };
-        setMessages((prev) => [...prev, errorMessage]);
-      }
+      await sendChatMessage(content);
     } catch (error) {
+      // 错误信息已由 store 写入对话流，这里仅记录日志
       console.error("聊天发送失败:", error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: "网络连接出现问题，请检查网络连接和API配置后重试。",
-        role: "assistant",
-        timestamp: new Date(),
-        type: "text",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSend(inputValue);
     }
   };
 
@@ -170,84 +105,8 @@ const AIPage: React.FC = () => {
     "室内植物需要多少光照？",
   ];
 
-  const handleQuickQuestion = async (question: string) => {
-    if (chatMode === "welcome") {
-      setChatMode("chat");
-    }
-    setInputValue(question);
-    // 延迟一下确保UI更新后自动发送消息
-    setTimeout(async () => {
-      if (!question.trim() || isLoading || aiLoading) return;
-
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        content: question,
-        role: "user",
-        timestamp: new Date(),
-        type: "text",
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-      setInputValue("");
-      setIsLoading(true);
-
-      try {
-        const result = await sendChatMessage(question);
-
-        if (result.success) {
-          let assistantContent = "收到您的消息，正在处理...";
-
-          if (chatMessages.length > 0) {
-            const latestMessage = chatMessages[chatMessages.length - 1];
-            if (latestMessage && latestMessage.role === "assistant") {
-              assistantContent = latestMessage.content;
-            }
-          }
-
-          setTimeout(() => {
-            const updatedLatestMessage = chatMessages[chatMessages.length - 1];
-            if (
-              updatedLatestMessage &&
-              updatedLatestMessage.role === "assistant"
-            ) {
-              assistantContent = updatedLatestMessage.content;
-            }
-
-            const assistantMessage: Message = {
-              id: (Date.now() + 1).toString(),
-              content: assistantContent,
-              role: "assistant",
-              timestamp: new Date(),
-              type: "text",
-            };
-            setMessages((prev) => [...prev, assistantMessage]);
-          }, 800);
-        } else {
-          const errorMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            content:
-              result.error ||
-              "抱歉，我现在无法回答您的问题。可能是API密钥未配置或网络问题，请检查配置后重试。",
-            role: "assistant",
-            timestamp: new Date(),
-            type: "text",
-          };
-          setMessages((prev) => [...prev, errorMessage]);
-        }
-      } catch (error) {
-        console.error("聊天发送失败:", error);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content: "网络连接出现问题，请检查网络连接和API配置后重试。",
-          role: "assistant",
-          timestamp: new Date(),
-          type: "text",
-        };
-        setMessages((prev) => [...prev, errorMessage]);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 200);
+  const handleQuickQuestion = (question: string) => {
+    handleSend(question);
   };
 
   const startNewChat = () => {
@@ -256,7 +115,7 @@ const AIPage: React.FC = () => {
 
   const backToWelcome = () => {
     setChatMode("welcome");
-    setMessages([]);
+    clearChat();
     setInputValue("");
   };
 
@@ -435,7 +294,7 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
           {/* 消息区域 */}
           <div className={styles.messagesContainer}>
             <div className={styles.messagesList}>
-              {messages.length === 0 ? (
+              {chatMessages.length === 0 ? (
                 <div className={styles.emptyChat}>
                   <div className={styles.emptyChatIcon}>💬</div>
                   <p className={styles.emptyChatText}>
@@ -462,7 +321,7 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
                 </div>
               ) : (
                 <>
-                  {messages.map((message) => (
+                  {chatMessages.map((message) => (
                     <div
                       key={message.id}
                       className={`${styles.messageItem} ${
@@ -483,7 +342,7 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
                   ))}
                 </>
               )}
-              {isLoading && (
+              {aiLoading && (
                 <div
                   className={`${styles.messageItem} ${styles.assistantMessage}`}
                 >
@@ -515,11 +374,11 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
                 size="small"
                 icon={<Arrow />}
                 className={styles.sendButton}
-                onClick={handleSendMessage}
+                onClick={() => handleSend(inputValue)}
                 disabled={
-                  !inputValue.trim() || isLoading || !apiConfig.hasAnyKey
+                  !inputValue.trim() || aiLoading || !apiConfig.hasAnyKey
                 }
-                loading={isLoading}
+                loading={aiLoading}
               />
             </div>
           </div>
