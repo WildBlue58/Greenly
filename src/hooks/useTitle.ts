@@ -6,39 +6,25 @@ const PAGE_TITLES: Record<string, string> = {
   // 首页
   '/': '小养 - 智能植物养护助手',
   '/home': '小养 - 智能植物养护助手',
-  
+
   // 植物管理
   '/plant': '我的植物 - 小养',
   '/plant/list': '我的植物 - 小养',
   '/plant/add': '添加植物 - 小养',
-  '/plant/edit': '编辑植物 - 小养',
-  '/plant/detail': '植物详情 - 小养',
-  
+
   // 养护管理
   '/care': '养护管理 - 小养',
-  '/care/add': '添加养护任务 - 小养',
-  '/care/edit': '编辑养护任务 - 小养',
-  '/care/record': '养护记录 - 小养',
-  '/care/reminder': '养护提醒 - 小养',
-  '/care/stats': '养护统计 - 小养',
-  
+
   // AI功能
   '/ai': 'AI助手 - 小养',
-  '/ai/chat': 'AI聊天 - 小养',
   '/ai/recognition': '植物识别 - 小养',
-  '/ai/generate': '图片生成 - 小养',
-  '/ai/diagnosis': '健康诊断 - 小养',
-  
+
   // 用户中心
   '/user': '个人中心 - 小养',
   '/user/profile': '个人资料 - 小养',
-  '/user/settings': '应用设置 - 小养',
-  '/user/login': '用户登录 - 小养',
-  '/user/register': '用户注册 - 小养',
-  
+
   // 错误页面
   '/error/404': '页面未找到 - 小养',
-  '/error/500': '服务器错误 - 小养',
 };
 
 // 动态标题生成规则

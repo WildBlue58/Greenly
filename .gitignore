@@ -29,3 +29,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 本机安全扫描工具状态
+.mimosa/

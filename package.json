@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@react-vant/icons": "^0.1.0",
-    "axios": "^1.11.0",
     "lib-flexible": "^0.3.2",
-    "mitt": "^3.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
@@ -29,12 +27,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "jwt": "^0.2.0",
     "postcss-pxtorem": "^6.1.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5",
-    "vite-plugin-mock": "^3.0.2"
+    "vite": "^6.3.5"
   }
 }

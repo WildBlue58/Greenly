@@ -7,6 +7,8 @@ import {
   Toast,
   Picker,
   DatetimePicker,
+  Button as CustomButton,
+  Tag as CustomTag,
 } from "react-vant";
 import {
   Clock,
@@ -17,7 +19,7 @@ import {
   CalendarO,
   Arrow,
 } from "@react-vant/icons";
-import { Button as CustomButton, Empty, Tag as CustomTag } from "../common";
+import { Empty } from "../common";
 import { formatCareReminderTime } from "../../utils/date";
 import styles from "./care.module.css";
 
@@ -161,7 +163,6 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                 </span>
                 <CustomTag
                   type={priorityColor(plan.nextTask.priority)}
-                  size="small"
                 >
                   {priorityText(plan.nextTask.priority)}优先级
                 </CustomTag>
@@ -197,7 +198,7 @@ export const CarePlanComponent: React.FC<CarePlanProps> = ({
                     <span className={styles.taskDue}>
                       截止: {formatCareReminderTime(task.dueDate)}
                     </span>
-                    <CustomTag type={priorityColor(task.priority)} size="small">
+                    <CustomTag type={priorityColor(task.priority)}>
                       {priorityText(task.priority)}优先级
                     </CustomTag>
                   </div>

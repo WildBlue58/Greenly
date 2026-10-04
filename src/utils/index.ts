@@ -17,9 +17,6 @@ export * from './helpers';
 // 导出常量定义
 export * from './constants';
 
-// 导出请求工具（已存在）
-export * from './request';
-
 // 导出图片处理工具（避免重复导出）
 export {
   IMAGE_FORMATS,
