@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Cell, Tag, Dialog, Field } from "react-vant";
+import React, { useState } from "react";
+import { Card, Button, Cell, Tag, Dialog, Field, Toast, Switch } from "react-vant";
 import {
   UserO,
   SettingO,
@@ -11,7 +11,6 @@ import {
 } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../../store";
-import { useCare } from "../../../hooks/useCare";
 import { AvatarUpload } from "../../../components/common";
 import { formatRelativeDate } from "../../../utils/date";
 import styles from "./profile.module.css";
@@ -19,9 +18,14 @@ import { useTitle } from "../../../hooks";
 
 const UserProfile: React.FC = () => {
   useTitle();
-  const { user, plants, updateProfile } = useStore();
-  const { careTasks, careRecords, fetchCareTasks, fetchCareRecords } =
-    useCare();
+  const user = useStore((s) => s.user);
+  const plants = useStore((s) => s.plants);
+  const updateProfile = useStore((s) => s.updateProfile);
+  const logout = useStore((s) => s.logout);
+  const careTasks = useStore((s) => s.careTasks);
+  const careRecords = useStore((s) => s.careRecords);
+  const theme = useStore((s) => s.theme);
+  const setTheme = useStore((s) => s.setTheme);
   const navigate = useNavigate();
   const [showEditName, setShowEditName] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
@@ -29,12 +33,6 @@ const UserProfile: React.FC = () => {
   // const [activeTab, setActiveTab] = useState<"profile" | "stats" | "settings">(
   //   "profile"
   // );
-
-  // 获取养护任务和记录数据
-  useEffect(() => {
-    fetchCareTasks();
-    fetchCareRecords();
-  }, [fetchCareTasks, fetchCareRecords]);
 
   // 计算用户活跃天数（基于用户创建时间）
   const calculateDaysActive = () => {
@@ -48,7 +46,7 @@ const UserProfile: React.FC = () => {
 
   const userStats = {
     totalPlants: plants.length,
-    healthyPlants: plants.filter((p: any) => p.status === "healthy").length,
+    healthyPlants: plants.filter((p) => p.status === "healthy").length,
     careTasks: careTasks.length,
     daysActive: calculateDaysActive(),
   };
@@ -58,7 +56,7 @@ const UserProfile: React.FC = () => {
       icon: FlowerO,
       title: "我的植物",
       desc: `${userStats.totalPlants} 株植物`,
-      color: "#4CAF50",
+      color: "var(--primary)",
       onClick: () => {
         navigate("/plant");
       },
@@ -67,7 +65,7 @@ const UserProfile: React.FC = () => {
       icon: ServiceO,
       title: "养护记录",
       desc: "查看养护历史",
-      color: "#8BC34A",
+      color: "var(--success)",
       onClick: () => {
         navigate("/care");
       },
@@ -76,7 +74,7 @@ const UserProfile: React.FC = () => {
       icon: ChatO,
       title: "AI助手",
       desc: "智能养护咨询",
-      color: "#2196F3",
+      color: "var(--info)",
       onClick: () => {
         navigate("/ai");
       },
@@ -85,7 +83,7 @@ const UserProfile: React.FC = () => {
       icon: SettingO,
       title: "设置",
       desc: "应用设置",
-      color: "#FF9800",
+      color: "var(--warning)",
       onClick: () => {
         // 暂时导航到用户资料页面，因为设置页面还未实现
         navigate("/user/profile");
@@ -95,11 +93,9 @@ const UserProfile: React.FC = () => {
 
   // 计算成就状态
   const calculateAchievements = () => {
-    const completedTasks = careTasks.filter(
-      (task: any) => task.completed
-    ).length;
+    const completedTasks = careTasks.filter((task) => task.completed).length;
     const healthyPlantsCount = plants.filter(
-      (p: any) => p.status === "healthy"
+      (p) => p.status === "healthy",
     ).length;
 
     return [
@@ -136,18 +132,18 @@ const UserProfile: React.FC = () => {
 
   const handleSaveName = async () => {
     if (!newName.trim()) {
-      alert("请输入有效的用户名");
+      Toast.fail("请输入有效的用户名");
       return;
     }
 
     try {
       setIsUpdating(true);
       await updateProfile({ name: newName.trim() });
-      alert("用户名更新成功！");
+      Toast.success("用户名更新成功！");
       setShowEditName(false);
     } catch (error) {
       console.error("更新用户名失败:", error);
-      alert("更新失败，请重试");
+      Toast.fail("更新失败，请重试");
     } finally {
       setIsUpdating(false);
     }
@@ -257,6 +253,18 @@ const UserProfile: React.FC = () => {
               </div>
             </Cell>
           ))}
+          {/* 外观设置：亮色 / 暗色 */}
+          <div className={styles.themeRow}>
+            <div className={styles.themeLabel}>
+              <div className={styles.menuIcon}>🎨</div>
+              外观模式
+            </div>
+            <Switch
+              size="20px"
+              checked={theme === "dark"}
+              onChange={(checked) => setTheme(checked ? "dark" : "light")}
+            />
+          </div>
         </div>
       </Card>
 
@@ -302,18 +310,18 @@ const UserProfile: React.FC = () => {
         </div>
         <div className={styles.activityList}>
           {careRecords.length > 0 ? (
-            careRecords.slice(0, 3).map((record: any) => (
+            careRecords.slice(0, 3).map((record) => (
               <div key={record.id} className={styles.activityItem}>
                 <div className={styles.activityIcon}>
                   {record.type === "water"
                     ? "💧"
                     : record.type === "fertilize"
-                    ? "🌱"
-                    : record.type === "prune"
-                    ? "✂️"
-                    : record.type === "repot"
-                    ? "🪴"
-                    : "🌿"}
+                      ? "🌱"
+                      : record.type === "prune"
+                        ? "✂️"
+                        : record.type === "repot"
+                          ? "🪴"
+                          : "🌿"}
                 </div>
                 <div className={styles.activityContent}>
                   <div className={styles.activityTitle}>{record.title}</div>
@@ -340,12 +348,16 @@ const UserProfile: React.FC = () => {
           size="large"
           block
           className={styles.logoutButton}
-          onClick={() => {
-            // 退出登录逻辑
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
+          onClick={async () => {
+            // 免登录 demo：退出即重置为默认访客身份
+            const confirmed = await Dialog.confirm({
+              title: "退出登录",
+              message: "将重置为默认访客身份，确定继续吗？",
+            });
+            if (!confirmed) return;
+            logout();
+            Toast.success("已退出登录");
             navigate("/");
-            window.location.reload();
           }}
         >
           退出登录

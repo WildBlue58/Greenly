@@ -1,0 +1,2 @@
+patchedDependencies:
+  react-vant@3.3.5: patches/react-vant@3.3.5.patch

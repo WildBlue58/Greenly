@@ -12,7 +12,7 @@ import {
 } from "@react-vant/icons";
 import styles from "./layout.module.css";
 
-// Header 组件
+// Header 组件（仅供 Layout 内部使用）
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
@@ -21,7 +21,7 @@ interface HeaderProps {
   className?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+const Header: React.FC<HeaderProps> = ({
   title = "小养",
   showBack = false,
   onBack,
@@ -52,54 +52,14 @@ export const Header: React.FC<HeaderProps> = ({
   );
 };
 
-// Footer 组件
-interface FooterProps {
-  children?: React.ReactNode;
-  className?: string;
-}
-
-export const Footer: React.FC<FooterProps> = ({ children, className = "" }) => {
-  return (
-    <footer className={`${styles.footer} ${className}`}>{children}</footer>
-  );
-};
-
-// Sidebar 组件
-interface SidebarProps {
-  visible: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  className?: string;
-}
-
-export const Sidebar: React.FC<SidebarProps> = ({
-  visible,
-  onClose,
-  children,
-  className = "",
-}) => {
-  return (
-    <>
-      {visible && <div className={styles.sidebarOverlay} onClick={onClose} />}
-      <div
-        className={`${styles.sidebar} ${
-          visible ? styles.visible : ""
-        } ${className}`}
-      >
-        {children}
-      </div>
-    </>
-  );
-};
-
-// Navigation 组件
+// Navigation 组件（仅供 Layout 内部使用）
 interface NavigationProps {
   active: string;
   onChange: (value: string) => void;
   className?: string;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({
+const Navigation: React.FC<NavigationProps> = ({
   active,
   onChange,
   className = "",
@@ -112,14 +72,14 @@ export const Navigation: React.FC<NavigationProps> = ({
       { key: "ai", title: "AI助手", icon: ChatO },
       { key: "user", title: "我的", icon: UserO },
     ],
-    []
+    [],
   );
 
   const handleChange = useCallback(
     (name: string | number) => {
       onChange(name as string);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
@@ -141,6 +101,34 @@ export const Navigation: React.FC<NavigationProps> = ({
         </TabbarItem>
       ))}
     </Tabbar>
+  );
+};
+
+// Sidebar 组件（仅供 Layout 内部使用）
+interface SidebarProps {
+  visible: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+  visible,
+  onClose,
+  children,
+  className = "",
+}) => {
+  return (
+    <>
+      {visible && <div className={styles.sidebarOverlay} onClick={onClose} />}
+      <div
+        className={`${styles.sidebar} ${
+          visible ? styles.visible : ""
+        } ${className}`}
+      >
+        {children}
+      </div>
+    </>
   );
 };
 
@@ -176,7 +164,7 @@ export const Layout: React.FC<LayoutProps> = ({
     (value: string) => {
       navigate(`/${value === "home" ? "" : value}`);
     },
-    [navigate]
+    [navigate],
   );
 
   const handleSidebarToggle = useCallback(() => {
@@ -246,7 +234,7 @@ export const Layout: React.FC<LayoutProps> = ({
             <div
               className={styles.sidebarItem}
               onClick={() => {
-                navigate("/ai/chat");
+                navigate("/ai");
                 handleSidebarClose();
               }}
             >
@@ -265,62 +253,4 @@ export const BlankLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   return <div className={styles.blankLayout}>{children}</div>;
-};
-
-// TabBar Layout (带标签栏的布局)
-export const TabBarLayout: React.FC = () => {
-  return <Layout showHeader={false} showFooter={true} />;
-};
-
-// 搜索栏组件
-interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  onSearch?: (value: string) => void;
-  className?: string;
-}
-
-export const SearchBar: React.FC<SearchBarProps> = ({
-  value,
-  onChange,
-  placeholder = "搜索植物、养护知识...",
-  onSearch,
-  className = "",
-}) => {
-  const handleSearch = useCallback(() => {
-    if (onSearch && value.trim()) {
-      onSearch(value.trim());
-    }
-  }, [onSearch, value]);
-
-  return (
-    <div className={`${styles.searchBar} ${className}`}>
-      <div className={styles.searchInput}>
-        <Search className={styles.searchIcon} />
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className={styles.searchInputField}
-          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-        />
-        {value && (
-          <div className={styles.clearIcon} onClick={() => onChange("")}>
-            ✕
-          </div>
-        )}
-      </div>
-      {onSearch && (
-        <button
-          className={styles.searchButton}
-          onClick={handleSearch}
-          disabled={!value.trim()}
-        >
-          搜索
-        </button>
-      )}
-    </div>
-  );
 };

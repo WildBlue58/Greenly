@@ -1,119 +1,25 @@
-/* 👤 用户个人资料页面 - 现代个人中心体验 */
-@import "../../shared/variables.css";
-
+/* ============================================================
+   个人中心 — 用户卡 + 统计 + 成就 + 设置
+   ============================================================ */
 .userProfile {
-  padding: var(--space-lg);
-  background: var(--bg-gradient-primary);
   min-height: 100vh;
-  padding-bottom: 100px; /* 为底部导航留出空间 */
-  position: relative;
-  overflow-x: hidden;
+  padding: 16px;
+  background: var(--grad-hero);
 }
 
-/* 个人中心背景装饰 */
-.userProfile::before {
-  content: "";
-  position: absolute;
-  top: -30%;
-  right: -30%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    circle,
-    rgba(76, 175, 80, 0.04) 0%,
-    transparent 70%
-  );
-  animation: floating 10s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.userProfile::after {
-  content: "";
-  position: absolute;
-  bottom: -20%;
-  left: -20%;
-  width: 40%;
-  height: 40%;
-  background: radial-gradient(
-    circle,
-    rgba(139, 195, 74, 0.03) 0%,
-    transparent 70%
-  );
-  animation: floating 8s ease-in-out infinite reverse;
-  pointer-events: none;
-}
-
-/* 💫 用户信息卡片 - 精美展示 */
+/* ---------- 用户卡 ---------- */
 .userCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow-hover);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  position: relative;
-  overflow: hidden;
-  transition: all var(--transition-normal);
-  animation: fadeInUp 0.8s var(--ease-out-cubic);
-}
-
-.userCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 50%,
-    var(--primary-600) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    background-position: 200% 0;
-  }
-  50% {
-    background-position: -200% 0;
-  }
-}
-
-.userCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 64px rgba(76, 175, 80, 0.15);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--divider);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  padding: 18px 16px;
 }
 
 .userHeader {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
-  position: relative;
-  z-index: 1;
-}
-
-.userAvatar {
-  flex-shrink: 0;
-  position: relative;
-}
-
-.userAvatar img {
-  border-radius: 50%;
-  border: 3px solid var(--primary-100);
-  transition: all var(--transition-normal);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.2);
-}
-
-.userCard:hover .userAvatar img {
-  transform: scale(1.05);
-  border-color: var(--primary-300);
-  box-shadow: 0 12px 32px rgba(76, 175, 80, 0.3);
+  gap: 14px;
 }
 
 .userInfo {
@@ -124,593 +30,251 @@
 .userNameSection {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  margin-bottom: var(--space-sm);
+  gap: 8px;
 }
 
 .userName {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--gray-800);
-  margin: 0;
-  flex: 1;
-  background: linear-gradient(
-    135deg,
-    var(--gray-800) 0%,
-    var(--primary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  transition: all var(--transition-normal);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-1);
 }
 
 .editNameBtn {
-  flex-shrink: 0;
-  height: 32px;
-  padding: var(--space-xs) var(--space-sm);
-  font-size: var(--font-size-xs);
-  border-radius: var(--card-radius-small);
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border: 1px solid var(--primary-200);
-  transition: all var(--transition-normal);
-  font-weight: var(--font-weight-medium);
-}
-
-.editNameBtn:hover {
-  background: var(--primary-100);
-  border-color: var(--primary-400);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  color: var(--primary);
+  font-size: 14px;
 }
 
 .userBio {
-  font-size: var(--font-size-sm);
-  color: var(--gray-600);
-  margin: 0 0 var(--space-md) 0;
-  line-height: var(--line-height-relaxed);
-  font-style: italic;
-  opacity: 0.9;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--text-3);
 }
 
 .userTags {
   display: flex;
-  gap: var(--space-sm);
+  gap: 6px;
+  margin-top: 8px;
   flex-wrap: wrap;
 }
 
 .userTag {
-  font-size: var(--font-size-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border-radius: var(--card-radius-small);
-  border: 1px solid var(--primary-200);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-normal);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 2px 9px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 600;
 }
 
-.userTag:hover {
-  background: var(--primary-100);
-  border-color: var(--primary-400);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-}
-
-/* 📊 统计卡片 - 数据可视化 */
+/* ---------- 统计 ---------- */
 .statsCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.2s both;
-}
-
-.statsCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(76, 175, 80, 0.02) 0%,
-    rgba(139, 195, 74, 0.02) 100%
-  );
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-  pointer-events: none;
-}
-
-.statsCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.statsCard:hover::before {
-  opacity: 1;
+  margin-top: 14px;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
 }
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-  position: relative;
-  z-index: 1;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
 }
 
 .statItem {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-lg);
-  background: var(--primary-50);
-  border-radius: var(--card-radius);
-  transition: all var(--transition-normal);
-  border: 1px solid var(--primary-100);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.statItem::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(76, 175, 80, 0.1),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.statItem:hover {
-  background: var(--primary-100);
-  border-color: var(--primary-300);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
-}
-
-.statItem:hover::before {
-  left: 100%;
+  gap: 4px;
 }
 
 .statIcon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  color: white;
-  font-size: var(--font-size-lg);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-}
-
-.statItem:hover .statIcon {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 14px;
 }
 
 .statInfo {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .statNumber {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: #000000;
-  margin-bottom: var(--space-sm);
-  transition: all var(--transition-normal);
-  line-height: var(--line-height-tight);
-  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-}
-
-.statItem:hover .statNumber {
-  transform: scale(1.05);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.1;
 }
 
 .statLabel {
-  font-size: var(--font-size-base);
-  color: #000000;
-  font-weight: var(--font-weight-bold);
-  text-transform: none;
-  letter-spacing: 0.3px;
-  opacity: 1;
-  line-height: var(--line-height-normal);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  color: var(--text-3);
 }
 
-/* 📝 菜单卡片 - 交互式导航 */
-.menuCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  overflow: hidden;
-  transition: all var(--transition-normal);
-  animation: fadeInUp 1.2s var(--ease-out-cubic) 0.4s both;
-}
-
-.menuCard:hover {
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
-}
-
-.menuList {
-  padding: 0;
-  position: relative;
-}
-
-.menuItem {
-  padding: var(--space-lg) var(--space-xl);
-  border-bottom: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.menuItem::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(76, 175, 80, 0.05),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.menuItem:last-child {
-  border-bottom: none;
-}
-
-.menuItem:hover {
-  background: var(--primary-50);
-  transform: translateX(4px);
-}
-
-.menuItem:hover::before {
-  left: 100%;
-}
-
-.menuIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: var(--primary-100);
-  color: var(--primary-600);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-}
-
-.menuItem:hover .menuIcon {
-  background: var(--primary-200);
-  transform: scale(1.1) rotate(-5deg);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.25);
-}
-
-/* 🏆 成就卡片 - 成就系统 */
-.achievementsCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 1.4s var(--ease-out-cubic) 0.6s both;
-}
-
-.achievementsCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #ffb300 0%, #ffc107 50%, #ffd54f 100%);
-  opacity: 0.8;
-}
-
-.achievementsCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
+/* ---------- 通用卡 ---------- */
+.menuCard,
+.achievementsCard,
+.activityCard {
+  margin-top: 14px;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
 }
 
 .cardHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-lg);
-  position: relative;
-  z-index: 1;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .cardTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+/* ---------- 菜单 ---------- */
+.menuList {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuItem {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 12px;
+  padding: 11px 2px;
 }
 
-.cardTitle::before {
-  content: "🏆";
-  font-size: var(--font-size-xl);
-  animation: pulse 2s ease-in-out infinite;
+.menuItem + .menuItem {
+  border-top: 1px solid var(--divider);
 }
 
-.achievementCount {
-  font-size: var(--font-size-xs);
-  color: var(--warning);
-  background: #fff3e0;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--card-radius-large);
-  border: 1px solid #ffcc80;
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.menuIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 14px;
 }
 
+/* 主题切换行 */
+.themeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 2px;
+}
+
+.themeRow + .menuItem,
+.menuItem + .themeRow {
+  border-top: 1px solid var(--divider);
+}
+
+.themeLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+/* ---------- 成就 ---------- */
 .achievementsList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  position: relative;
-  z-index: 1;
+  gap: 8px;
 }
 
 .achievementItem {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-lg);
-  border-radius: var(--card-radius);
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.achievementItem::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 193, 7, 0.1),
-    transparent
-  );
-  transition: left var(--transition-slow);
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .achievementItem.earned {
-  background: #f8fff8;
-  border: 2px solid var(--primary-200);
-}
-
-.achievementItem.earned:hover {
-  background: var(--primary-50);
-  border-color: var(--primary-400);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
-}
-
-.achievementItem.earned:hover::before {
-  left: 100%;
+  background: var(--primary-soft);
 }
 
 .achievementItem.locked {
-  background: var(--gray-100);
-  border: 2px solid var(--gray-200);
-  opacity: 0.6;
-}
-
-.achievementItem.locked:hover {
-  opacity: 0.8;
-  transform: translateY(-1px);
+  opacity: 0.55;
 }
 
 .achievementIcon {
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-xl);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  font-size: 17px;
   flex-shrink: 0;
-  border-radius: 50%;
-  transition: all var(--transition-normal);
-}
-
-.achievementItem.earned .achievementIcon {
-  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-}
-
-.achievementItem.locked .achievementIcon {
-  background: var(--gray-300);
-  color: var(--gray-500);
-}
-
-.achievementItem:hover .achievementIcon {
-  transform: scale(1.1) rotate(5deg);
 }
 
 .achievementInfo {
   flex: 1;
-  min-width: 0;
 }
 
 .achievementName {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
-  color: #1a1a1a;
-  margin-bottom: var(--space-xs);
-  transition: color var(--transition-normal);
-}
-
-.achievementItem.earned:hover .achievementName {
-  color: var(--primary-600);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
 .achievementDesc {
-  font-size: var(--font-size-base);
-  color: #000000;
-  opacity: 1;
-  line-height: var(--line-height-normal);
-  font-weight: var(--font-weight-bold);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  font-size: 10.5px;
+  color: var(--text-3);
 }
 
 .achievementStatus {
-  flex-shrink: 0;
-  transition: all var(--transition-normal);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
 }
 
-/* 📊 活动卡片 - 动态展示 */
-.activityCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 1.6s var(--ease-out-cubic) 0.8s both;
+.locked .achievementStatus {
+  color: var(--text-3);
 }
 
-.activityCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--info) 0%, #64b5f6 50%, #90caf9 100%);
-  opacity: 0.8;
-}
-
-.activityCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-}
-
+/* ---------- 最近活动 ---------- */
 .activityList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  position: relative;
-  z-index: 1;
+  gap: 8px;
 }
 
 .activityItem {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-lg);
-  border-radius: var(--card-radius);
-  background: var(--primary-50);
-  border: 1px solid var(--primary-100);
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.activityItem::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(33, 150, 243, 0.1),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.activityItem:hover {
-  background: var(--primary-100);
-  border-color: var(--primary-300);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
-}
-
-.activityItem:hover::before {
-  left: 100%;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .activityIcon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-lg);
+  font-size: 15px;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--info) 0%, #64b5f6 100%);
-  color: white;
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
-}
-
-.activityItem:hover .activityIcon {
-  transform: scale(1.1) rotate(-5deg);
-  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
 }
 
 .activityContent {
@@ -719,266 +283,55 @@
 }
 
 .activityTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
-  color: #1a1a1a;
-  margin-bottom: var(--space-sm);
-  transition: color var(--transition-normal);
-  line-height: var(--line-height-normal);
-}
-
-.activityItem:hover .activityTitle {
-  color: var(--info);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .activityDesc {
-  font-size: var(--font-size-base);
-  color: #000000;
-  opacity: 1;
-  line-height: var(--line-height-relaxed);
-  font-weight: var(--font-weight-bold);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  font-size: 10.5px;
+  color: var(--text-3);
 }
 
-/* 🚞 退出登录 - 安全操作 */
+.emptyActivity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 0;
+}
+
+.emptyActivityIcon {
+  font-size: 26px;
+  opacity: 0.5;
+}
+
+.emptyActivityText {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+/* ---------- 退出登录 ---------- */
 .logoutSection {
-  margin-top: var(--space-2xl);
-  margin-bottom: 100px;
-  animation: fadeInUp 1.8s var(--ease-out-cubic) 1s both;
+  margin-top: 18px;
+  padding-bottom: 20px;
 }
 
 .logoutButton {
-  border-radius: var(--card-radius);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  background: linear-gradient(135deg, var(--error) 0%, #e53935 100%);
-  border: none;
-  color: white;
-  transition: all var(--transition-normal);
-  padding: var(--space-lg) var(--space-2xl);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.3);
+  width: 100%;
+  height: 46px;
+  border-radius: var(--r-full);
+  font-weight: 700;
+  background: var(--danger-soft) !important;
+  color: var(--danger) !important;
+  border: none !important;
 }
 
-.logoutButton::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.logoutButton:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(244, 67, 54, 0.4);
-}
-
-.logoutButton:hover::before {
-  opacity: 1;
-}
-
-.logoutButton:active {
-  transform: translateY(-2px);
-}
-
-/* 📱 响应式设计 - 移动优先 */
-@media (max-width: 768px) {
-  .userProfile {
-    padding: var(--space-md);
-  }
-
-  .userCard {
-    padding: var(--space-xl);
-  }
-
-  .userName {
-    font-size: var(--font-size-xl);
-  }
-
-  .userBio {
-    font-size: var(--font-size-xs);
-  }
-
-  .userAvatar img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .statsGrid {
-    gap: var(--space-md);
-  }
-
-  .statItem {
-    padding: var(--space-md);
-  }
-
-  .statIcon {
-    width: 40px;
-    height: 40px;
-    font-size: var(--font-size-base);
-  }
-
-  .statNumber {
-    font-size: var(--font-size-xl);
-  }
-
-  .menuItem {
-    padding: var(--space-md) var(--space-lg);
-  }
-
-  .menuIcon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .achievementsCard,
-  .activityCard {
-    padding: var(--space-xl);
-  }
-
-  .achievementItem,
-  .activityItem {
-    padding: var(--space-md);
-  }
-
-  .achievementIcon,
-  .activityIcon {
-    width: 36px;
-    height: 36px;
-    font-size: var(--font-size-base);
-  }
-
-  .logoutButton {
-    font-size: var(--font-size-sm);
-    padding: var(--space-md) var(--space-xl);
-  }
-}
-
-@media (max-width: 480px) {
-  .userProfile {
-    padding: var(--space-sm);
-  }
-
-  .userCard {
-    padding: var(--space-lg);
-  }
-
-  .userHeader {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--space-md);
-  }
-
-  .userName {
-    font-size: var(--font-size-lg);
-  }
-
-  .userAvatar img {
-    width: 72px;
-    height: 72px;
-  }
-
-  .statsGrid {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
-
-  .statItem {
-    padding: var(--space-sm);
-  }
-
-  .menuItem {
-    padding: var(--space-sm) var(--space-md);
-  }
-
-  .achievementsCard,
-  .activityCard {
-    padding: var(--space-lg);
-  }
-
-  .achievementItem,
-  .activityItem {
-    padding: var(--space-sm);
-  }
-}
-
-/* ✏️ 编辑用户名对话框 - 现代设计 */
+/* ---------- 改名弹层 ---------- */
 .editNameDialog {
-  border-radius: var(--card-radius-large);
-  overflow: hidden;
-  backdrop-filter: blur(20px);
+  border-radius: var(--r-lg);
 }
 
 .editNameContent {
-  padding: var(--space-lg) 0;
-}
-
-.editNameContent .rv-field {
-  border-radius: var(--card-radius);
-  border: 2px solid var(--gray-200);
-  background: var(--gray-50);
-  transition: all var(--transition-normal);
-  margin: var(--space-sm) 0;
-}
-
-.editNameContent .rv-field:focus-within {
-  border-color: var(--primary-400);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
-  transform: translateY(-2px);
-}
-
-.editNameContent .rv-field input {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
-  color: var(--gray-800);
-  padding: var(--space-md);
-}
-
-.editNameContent .rv-field input::placeholder {
-  color: var(--gray-400);
-  font-style: italic;
-}
-
-/* ✨ 全局动画效果 */
-.userProfile * {
-  animation-fill-mode: both;
-}
-
-/* 🔄 加载状态 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  font-size: var(--font-size-base);
-  color: var(--gray-600);
-}
-
-.loading::before {
-  content: "👤";
-  font-size: 48px;
-  margin-right: var(--space-md);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-/* 🎆 特殊效果 */
-.userCard,
-.statsCard,
-.menuCard,
-.achievementsCard,
-.activityCard {
-  transform-origin: center;
-  will-change: transform, box-shadow;
-}
-
-/* 🔍 聚焦效果 */
-.userCard:focus-within,
-.statsCard:focus-within,
-.menuCard:focus-within {
-  outline: 2px solid var(--primary-400);
-  outline-offset: 2px;
+  padding: 6px 2px;
 }

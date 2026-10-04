@@ -1,308 +1,83 @@
-/* 🌿 养护页面 - 智能管理系统 */
-@import '../shared/variables.css';
-
+/* ============================================================
+   养护主页 — 统计 / 今日提醒 / 任务分组 / 记录
+   ============================================================ */
 .carePage {
   min-height: 100vh;
-  background: var(--bg-gradient-primary);
-  padding-bottom: 100px; /* 调整底部间距，配合全局导航栏 */
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* 护理主题背景装饰 */
-.carePage::before {
-  content: '';
-  position: absolute;
-  top: -30%;
-  right: -30%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle, rgba(76, 175, 80, 0.04) 0%, transparent 70%);
-  animation: floating 12s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.carePage::after {
-  content: '';
-  position: absolute;
-  bottom: -20%;
-  left: -20%;
-  width: 40%;
-  height: 40%;
-  background: radial-gradient(circle, rgba(139, 195, 74, 0.03) 0%, transparent 70%);
-  animation: floating 8s ease-in-out infinite reverse;
-  pointer-events: none;
-}
-
-/* 📊 Tab 按钮 - 现代导航 */
-.tabButtons {
-  display: flex;
-  gap: var(--space-sm);
-  padding: var(--space-lg);
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--card-border);
-  position: relative;
-  z-index: 1;
-}
-
-.tabButtons button {
-  flex: 1;
-  background: var(--gray-50);
-  color: var(--gray-600);
-  border: 2px solid var(--gray-200);
-  border-radius: var(--card-radius);
-  padding: var(--space-md) var(--space-lg);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-}
-
-.tabButtons button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
-  transition: left var(--transition-slow);
-}
-
-.tabButtons button:hover {
-  border-color: var(--primary-300);
-  color: var(--primary-600);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15);
-}
-
-.tabButtons button:hover::before {
-  left: 100%;
-}
-
-.tabButtons button.active {
-  background: linear-gradient(135deg, var(--primary-500) 0%, var(--green-light) 100%);
-  color: white;
-  border-color: var(--primary-600);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-}
-
-/* 📋 Tab 内容 - 流畅体验 */
-.tabContent {
-  background: transparent;
-  position: relative;
-  z-index: 1;
+  padding: 16px;
 }
 
 .pageContent {
-  padding: var(--space-lg);
-  animation: fadeInUp 0.6s var(--ease-out-cubic);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* 提醒区域 */
+/* ---------- 今日提醒 ---------- */
 .reminderSection {
-  margin-bottom: 16px;
+  border-radius: var(--r-lg);
 }
 
-/* 统计区域 */
+/* ---------- 统计 ---------- */
 .statsSection {
-  margin-bottom: 16px;
+  border-radius: var(--r-lg);
 }
 
-/* 📋 任务区域 - 现代卡片 */
+/* ---------- Tab ---------- */
 .taskSection {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  margin-bottom: var(--space-lg);
-  transition: all var(--transition-normal);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 12px;
 }
 
-.taskSection:hover {
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
+.tabButtons {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--divider);
 }
 
-.taskSection::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary-500) 0%, var(--green-light) 100%);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
+.tabButtons .rv-button {
+  flex: 1;
+  border-radius: var(--r-full);
 }
 
-.taskSection:hover::before {
-  opacity: 1;
+.tabContent {
+  padding-top: 14px;
 }
 
-.tabs {
-  background: var(--card-bg);
-}
-
-.taskList {
-  padding: var(--space-xl);
-  background: transparent;
+/* ---------- 任务列表 ---------- */
+.taskList,
+.recordList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .taskItem {
-  margin-bottom: var(--space-lg);
-  padding: var(--space-lg);
-  background: var(--gray-50);
-  border-radius: var(--card-radius);
-  border-left: 4px solid var(--primary-400);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
+  border-radius: var(--r-md);
 }
 
-.taskItem::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.05), transparent);
-  transition: left var(--transition-slow);
-}
-
-.taskItem:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.1);
-  border-left-color: var(--primary-600);
-}
-
-.taskItem:hover::before {
-  left: 100%;
-}
-
-.taskItem:last-child {
-  margin-bottom: 0;
-}
-
-.taskItem.completed {
-  background: var(--primary-50);
-  border-left-color: var(--success);
-  opacity: 0.8;
-}
-
-.taskItem.completed::after {
-  content: '✓';
-  position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
-  font-size: var(--font-size-lg);
-  color: var(--success);
-  font-weight: bold;
-}
-
-/* 记录列表 */
-.recordList {
-  padding: 16px;
-  background: var(--rv-background-color);
-}
-
+/* ---------- 记录列表 ---------- */
 .recordItem {
-  margin-bottom: 12px;
+  border-radius: var(--r-md);
 }
 
-.recordItem:last-child {
-  margin-bottom: 0;
-}
-
-/* 空状态 */
-.emptyState {
-  padding: 40px 20px;
-  text-align: center;
-}
-
-/* 移除了底部操作栏，避免与全局导航栏重叠 */
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .pageContent {
-    padding: 12px;
-  }
-
-  .taskItem {
-    margin-bottom: 8px;
-  }
-
-  .recordItem {
-    margin-bottom: 8px;
-  }
-}
-
-/* 加载状态 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-/* 筛选器 */
-.filterSection {
-  margin-bottom: 16px;
-  padding: 12px;
-  background: var(--rv-cell-background-color);
-  border-radius: 8px;
-}
-
-.filterRow {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.filterRow:last-child {
-  margin-bottom: 0;
-}
-
-.filterButton {
-  flex: 1;
-  min-width: 0;
-}
-
-/* 搜索框 */
-.searchSection {
-  margin-bottom: 16px;
-}
-
-/* 浮动添加按钮 */
+/* ---------- 浮动按钮 ---------- */
 .floatingAddButton {
   position: fixed;
-  bottom: 80px; /* 调整位置，避免与全局导航栏重叠 */
-  right: 20px;
-  z-index: 99;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--rv-primary-color);
-  color: white;
-  border: none;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  right: 18px;
+  bottom: 92px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-lg);
+  font-size: 20px;
+  z-index: 10;
 }
 
-.floatingAddButton:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-}
-
-.floatingAddButton:active {
-  transform: scale(0.95);
+/* ---------- 空状态 ---------- */
+.emptyState {
+  padding: 32px 12px;
 }

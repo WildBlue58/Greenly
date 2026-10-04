@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Card, Field, Loading, Image } from "react-vant";
+import { Button, Card, Field, Loading, Image, Toast } from "react-vant";
 import { PhotoO, Arrow, Delete, ArrowLeft } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
-import { streamPlantCareChat } from "../../../utils/llm";
+import { streamPlantCareChat, recognizePlantImage } from "../../../utils/llm";
 import styles from "./recognition.module.css";
 import { useTitle } from "../../../hooks";
 
@@ -57,15 +57,7 @@ const PlantRecognition: React.FC = () => {
     scrollToBottom();
   }, [messages, streamingText]);
 
-  // 植物识别提示词
-  const recognitionPrompt = `请分析这张植物图片，识别植物种类并提供养护建议。请返回JSON格式数据：
-{
-  "plantName": "植物中文名称",
-  "scientificName": "植物学名", 
-  "confidence": 0.95,
-  "description": "植物详细描述",
-  "careAdvice": "详细的养护建议，包括浇水、光照、温度、施肥等方面"
-}`;
+  // 植物识别提示词已内聚在 utils/llm 的 recognizePlantImage 中
 
   // 处理图片上传
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,13 +66,13 @@ const PlantRecognition: React.FC = () => {
 
     // 检查文件类型
     if (!file.type.startsWith("image/")) {
-      alert("请选择图片文件");
+      Toast.fail("请选择图片文件");
       return;
     }
 
     // 检查文件大小 (10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert("图片大小不能超过10MB");
+      Toast.fail("图片大小不能超过10MB");
       return;
     }
 
@@ -94,10 +86,10 @@ const PlantRecognition: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
-  // 执行植物识别
+  // 执行植物识别（AI 调用统一走 utils/llm）
   const recognizePlant = async () => {
     if (!imageFile || !hasAPIKey) {
-      alert("请先上传图片并确保API密钥已配置");
+      Toast.fail("请先上传图片并确保API密钥已配置");
       return;
     }
 
@@ -105,60 +97,24 @@ const PlantRecognition: React.FC = () => {
     setRecognitionResult(null);
 
     try {
-      // 将图片转换为base64
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const imageBase64 = e.target?.result as string;
+      const imageBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target?.result as string);
+        reader.onerror = () => reject(new Error("图片读取失败"));
+        reader.readAsDataURL(imageFile);
+      });
 
-        try {
-          // 调用KIMI视觉API
-          const kimiApiKey = import.meta.env.VITE_KIMI_API_KEY;
-          const response = await fetch(
-            "https://api.moonshot.cn/v1/chat/completions",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${kimiApiKey}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                model: "moonshot-v1-8k-vision-preview",
-                messages: [
-                  {
-                    role: "user",
-                    content: [
-                      {
-                        type: "image_url",
-                        image_url: {
-                          url: imageBase64,
-                        },
-                      },
-                      {
-                        type: "text",
-                        text: recognitionPrompt,
-                      },
-                    ],
-                  },
-                ],
-              }),
-            }
-          );
+      const response = await recognizePlantImage(imageBase64);
 
-          const data = await response.json();
+      if (response.code !== 0 || !response.data) {
+        throw new Error(response.msg || "识别失败，请重试");
+      }
 
-          if (!response.ok) {
-            throw new Error(data.error?.message || "识别失败");
-          }
+      const result = response.data;
+      setRecognitionResult(result);
 
-          const resultText = data.choices[0].message.content;
-
-          try {
-            // 尝试解析JSON结果
-            const result = JSON.parse(resultText);
-            setRecognitionResult(result);
-
-            // 添加格式化的识别结果到消息列表
-            const formattedContent = `🌿 **植物识别成功！**
+      // 添加格式化的识别结果到消息列表
+      const formattedContent = `🌿 **植物识别成功！**
 
 📋 **基本信息**
 • 植物名称：${result.plantName}
@@ -171,46 +127,19 @@ ${result.description}
 🌱 **专业养护建议**
 ${result.careAdvice}`;
 
-            const recognitionMessage: Message = {
-              id: Date.now().toString(),
-              content: formattedContent,
-              role: "assistant",
-              timestamp: new Date(),
-              type: "recognition",
-            };
-
-            setMessages([recognitionMessage]);
-            alert("识别成功！");
-          } catch (parseError) {
-            // 如果JSON解析失败，格式化原始文本
-            const formattedContent = `🌿 **植物识别结果**
-
-${resultText}
-
-💡 **小贴士**
-您可以继续问我关于这种植物的任何养护问题哦！`;
-
-            const recognitionMessage: Message = {
-              id: Date.now().toString(),
-              content: formattedContent,
-              role: "assistant",
-              timestamp: new Date(),
-              type: "recognition",
-            };
-
-            setMessages([recognitionMessage]);
-            alert("识别完成！");
-          }
-        } catch (error) {
-          console.error("植物识别失败:", error);
-          alert(error instanceof Error ? error.message : "识别失败，请重试");
-        }
-      };
-
-      reader.readAsDataURL(imageFile);
+      setMessages([
+        {
+          id: Date.now().toString(),
+          content: formattedContent,
+          role: "assistant",
+          timestamp: new Date(),
+          type: "recognition",
+        },
+      ]);
+      Toast.success("识别成功！");
     } catch (error) {
       console.error("植物识别失败:", error);
-      alert("识别失败，请重试");
+      Toast.fail(error instanceof Error ? error.message : "识别失败，请重试");
     } finally {
       setIsRecognizing(false);
     }
@@ -266,7 +195,7 @@ ${resultText}
           setStreamingText((prev) => prev + chunk);
         },
         chatHistory,
-        "kimi"
+        "kimi",
       );
 
       if (response.code === 0 && response.data) {
@@ -275,8 +204,8 @@ ${resultText}
           prev.map((msg) =>
             msg.id === assistantMessage.id
               ? { ...msg, content: response.data!.content }
-              : msg
-          )
+              : msg,
+          ),
         );
         setStreamingText("");
       } else {
@@ -290,8 +219,8 @@ ${resultText}
                     response.msg ||
                     "抱歉，我现在无法回答您的问题。请检查API配置后重试。",
                 }
-              : msg
-          )
+              : msg,
+          ),
         );
         setStreamingText("");
       }
@@ -552,7 +481,7 @@ ${resultText}
                   >
                     <div className={styles.messageContent}>
                       <div className={styles.loadingMessage}>
-                        <Loading size="small" color="#4CAF50">
+                        <Loading size="small" color="var(--primary)">
                           正在思考...
                         </Loading>
                       </div>

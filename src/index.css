@@ -1,59 +1,146 @@
-:root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light;
-  color: #333333;
-  background-color: #f5f5f5;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ============================================================
+   全局基础样式
+   令牌唯一来源在 ./pages/shared/variables.css（main.tsx 引入）
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-  font-size: 37.5px; /* 基础字体大小，配合 lib-flexible 使用 */
-}
-
-a {
-  font-weight: 500;
-  color: #4caf50;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #388e3c;
+  /* lib-flexible 会在运行时覆盖为 clientWidth/10，此处为无 JS 兜底 */
+  font-size: 37.5px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
+  font-family:
+    "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text-1);
+  line-height: 1.55;
   min-height: 100vh;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-h1 {
-  font-size: 0.85rem;
-  line-height: 1.1;
+a {
+  color: var(--primary);
+  text-decoration: none;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 0.43rem;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #4caf50;
-  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  font-family: inherit;
 }
-button:hover {
-  background-color: #388e3c;
-  border-color: #4caf50;
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--r-full);
+}
+
+/* ============================================================
+   react-vant 组件的观感统一（主要解决暗色主题与圆角质感）
+   注意：这些选择器不能放进 CSS Module（react-vant 类名是全局的）
+   ============================================================ */
+
+/* 弹层：Popup / Picker / Dialog / Toast 在暗色下使用表面色 */
+.rv-popup {
+  background: var(--surface);
+}
+
+.rv-picker__toolbar,
+.rv-picker__columns {
+  background: var(--surface);
+}
+
+.rv-picker__confirm {
+  color: var(--primary);
+}
+
+.rv-picker__cancel {
+  color: var(--text-3);
+}
+
+.rv-dialog {
+  background: var(--surface);
+  border-radius: var(--r-lg) !important;
+}
+
+.rv-dialog__confirm,
+.rv-dialog__cancel {
+  color: var(--primary);
+}
+
+.rv-dialog__cancel {
+  color: var(--text-2);
+}
+
+/* 主题色按钮：森林绿渐变胶囊 */
+.rv-button--primary {
+  background: var(--grad-primary);
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.rv-button--default {
+  background: var(--surface);
+}
+
+/* Field / Cell：去内边框生硬感 */
+.rv-field {
+  padding: 14px 0;
+}
+
+.rv-cell::after,
+.rv-field::after {
+  border-bottom-color: var(--divider) !important;
+}
+
+/* NavBar 透明融入页面背景 */
+.rv-nav-bar {
+  background: transparent;
+}
+
+/* Search 搜索框 */
+.rv-search__content {
+  border-radius: var(--r-full);
+}
+
+/* Toast 质感 */
+.rv-toast {
+  border-radius: var(--r-md);
+  backdrop-filter: blur(6px);
+}
+
+/* Uploader 预览圆角 */
+.rv-uploader__preview-image,
+.rv-uploader__upload {
+  border-radius: var(--r-md);
 }

@@ -1,33 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, Button, Search, Empty, PullRefresh } from "react-vant";
 import { Plus } from "@react-vant/icons";
 import { useStore } from "../../../store";
 import { useTitle } from "../../../hooks";
 import { PlantImage } from "../../../components/common";
+import type { Plant } from "../../../store/types";
 import styles from "./list.module.css";
 
 const PlantList: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { plants, fetchPlants } = useStore() as any;
-  
+  const plants = useStore((s) => s.plants);
+
   // 设置页面标题
   useTitle();
-  
+
   const [searchValue, setSearchValue] = useState("");
   const [filterStatus, setFilterStatus] = useState<
     "all" | "healthy" | "needs_care"
   >("all");
-  useEffect(() => {
-    fetchPlants();
-  }, [fetchPlants, location.pathname]);
 
   const onRefresh = async () => {
-    await fetchPlants();
+    // 数据由 store 持久化并实时同步，下拉刷新保留交互习惯
+    await Promise.resolve();
   };
 
-  const filteredPlants = plants.filter((plant: any) => {
+  const filteredPlants = plants.filter((plant: Plant) => {
     const matchesSearch =
       plant.name.toLowerCase().includes(searchValue.toLowerCase()) ||
       plant.species.toLowerCase().includes(searchValue.toLowerCase());
@@ -36,13 +34,16 @@ const PlantList: React.FC = () => {
     return matchesSearch && matchesFilter;
   });
 
-  const statusOptions = [
+  const statusOptions: {
+    label: string;
+    value: "all" | "healthy" | "needs_care";
+  }[] = [
     { label: "全部", value: "all" },
     { label: "健康", value: "healthy" },
     { label: "需要养护", value: "needs_care" },
   ];
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status: Plant["status"]) => {
     return status === "healthy" ? "健康" : "需要养护";
   };
 
@@ -63,7 +64,7 @@ const PlantList: React.FC = () => {
               key={option.value}
               size="small"
               type={filterStatus === option.value ? "primary" : "default"}
-              onClick={() => setFilterStatus(option.value as any)}
+              onClick={() => setFilterStatus(option.value)}
               className={styles.filterButton}
             >
               {option.label}
@@ -76,7 +77,7 @@ const PlantList: React.FC = () => {
       <PullRefresh onRefresh={onRefresh} className={styles.listContainer}>
         {filteredPlants.length > 0 ? (
           <div className={styles.plantsGrid}>
-            {filteredPlants.map((plant: any) => (
+            {filteredPlants.map((plant: Plant) => (
               <Card
                 key={plant.id}
                 className={styles.plantCard}

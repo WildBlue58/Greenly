@@ -1,329 +1,173 @@
-/* 🌿 首页 - 现代清新设计 */
-@import "../shared/variables.css";
-
+/* ============================================================
+   首页 — 自然有机风
+   渐变苔绿 Hero + 胶囊统计 + 叶影卡片
+   ============================================================ */
 .home {
-  padding: var(--space-md);
-  background: var(--bg-gradient-primary);
   min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
+  padding: 18px 16px 8px;
 }
 
-/* 背景装饰元素 */
-.home::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle,
-    rgba(76, 175, 80, 0.05) 0%,
-    transparent 70%
-  );
-  animation: floating 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* 💫 欢迎区域 - 玻璃拟态设计 */
+/* ---------- Hero 问候 ---------- */
 .welcome {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: var(--card-radius-large);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
-  color: white;
-  box-shadow: var(--card-shadow-hover);
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px 20px 22px;
+  border-radius: var(--r-xl);
+  background: var(--grad-leaf);
+  border: 1px solid var(--divider);
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-normal);
 }
 
-.welcome::before {
-  content: "";
+.welcome::after {
+  content: "🌿";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: inherit;
+  right: -14px;
+  bottom: -22px;
+  font-size: 96px;
+  opacity: 0.18;
+  transform: rotate(-12deg);
   pointer-events: none;
-}
-
-.welcome:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(76, 175, 80, 0.25);
 }
 
 .welcomeContent {
   flex: 1;
-  position: relative;
-  z-index: 1;
+  min-width: 0;
 }
 
 .greeting {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  margin: 0 0 var(--space-sm) 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s var(--ease-out-cubic);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: 0.5px;
 }
 
 .subtitle {
-  font-size: var(--font-size-sm);
-  margin: 0;
-  opacity: 0.9;
-  line-height: var(--line-height-relaxed);
-  animation: fadeInUp 0.8s var(--ease-out-cubic) 0.2s both;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--text-2);
 }
 
 .avatar {
-  width: 72px;
-  height: 72px;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-  z-index: 1;
-  transition: all var(--transition-normal);
-  animation: fadeInUp 0.8s var(--ease-out-cubic) 0.4s both;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--primary);
+  font-size: 24px;
 }
 
-.avatar:hover {
-  transform: scale(1.05) rotate(5deg);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* 📊 统计网格 - 现代卡片设计 */
+/* ---------- 统计胶囊 ---------- */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-md);
-  margin-bottom: var(--space-2xl);
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.6s both;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .statCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-}
-
-.statCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  transform: scaleX(0);
-  transition: transform var(--transition-normal);
-}
-
-.statCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.statCard:hover::before {
-  transform: scaleX(1);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 4px;
 }
 
 .statContent {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-md);
-  position: relative;
-  z-index: 1;
+  gap: 5px;
 }
 
 .statIcon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-100) 0%,
-    var(--primary-200) 100%
-  );
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-lg);
-  color: var(--primary-600);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-}
-
-.statCard:hover .statIcon {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.25);
-}
-
-.statInfo {
-  flex: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 15px;
 }
 
 .statNumber {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--gray-800);
-  margin-bottom: var(--space-xs);
-  background: linear-gradient(
-    135deg,
-    var(--primary-600) 0%,
-    var(--green-fresh) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1;
 }
 
 .statLabel {
-  font-size: var(--font-size-xs);
-  color: var(--gray-600);
-  font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 10.5px;
+  color: var(--text-3);
 }
 
-/* 🏠 区域样式 - 优雅的分组设计 */
+/* ---------- 区块标题 ---------- */
 .section {
-  margin-bottom: var(--space-2xl);
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.8s both;
+  margin-top: 22px;
 }
 
 .sectionHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-lg);
-  position: relative;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .sectionTitle {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0;
-  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
-.sectionTitle::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: 2px;
-  opacity: 0.8;
-}
-
-/* ⚡ 快速操作 - 交互式卡片 */
+/* ---------- 快速操作 ---------- */
 .quickActions {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 10px;
 }
 
 .actionCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  transition: var(--transition);
 }
 
-.actionCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(76, 175, 80, 0.05),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.actionCard:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.actionCard:hover::before {
-  left: 100%;
+.actionCard:active {
+  transform: scale(0.98);
+  background: var(--surface-2);
 }
 
 .actionContent {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
-  position: relative;
-  z-index: 1;
+  gap: 14px;
 }
 
 .actionIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--card-radius-small);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-md);
+  color: var(--on-primary);
+  font-size: 20px;
   flex-shrink: 0;
-  font-size: var(--font-size-xl);
-  background: linear-gradient(
-    135deg,
-    var(--primary-100) 0%,
-    var(--primary-200) 100%
-  );
-  color: var(--primary-600);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-}
-
-.actionCard:hover .actionIcon {
-  transform: scale(1.1) rotate(-5deg);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.25);
 }
 
 .actionInfo {
@@ -331,456 +175,194 @@
 }
 
 .actionTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin-bottom: var(--space-xs);
-  transition: color var(--transition-normal);
-}
-
-.actionCard:hover .actionTitle {
-  color: var(--primary-600);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .actionDesc {
-  font-size: var(--font-size-xs);
-  color: var(--gray-600);
-  line-height: var(--line-height-relaxed);
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text-3);
 }
 
 .actionArrow {
-  color: var(--gray-400);
-  font-size: var(--font-size-lg);
-  transition: all var(--transition-normal);
+  color: var(--text-3);
+  font-size: 14px;
 }
 
-.actionCard:hover .actionArrow {
-  color: var(--primary-500);
-  transform: translateX(4px);
-}
-
-/* 🌱 植物列表 - 精美展示 */
+/* ---------- 最近植物 ---------- */
 .plantsList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 10px;
 }
 
 .plantCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 12px;
+  transition: var(--transition);
 }
 
-.plantCard::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(76, 175, 80, 0.03) 0%,
-    rgba(139, 195, 74, 0.03) 100%
-  );
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-  pointer-events: none;
-}
-
-.plantCard:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.plantCard:hover::after {
-  opacity: 1;
+.plantCard:active {
+  transform: scale(0.985);
 }
 
 .plantContent {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
-  position: relative;
-  z-index: 1;
+  gap: 12px;
 }
 
 .plantImage {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--card-radius-small);
+  width: 58px;
+  height: 58px;
+  border-radius: var(--r-md);
   overflow: hidden;
   flex-shrink: 0;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all var(--transition-normal);
-}
-
-.plantImage::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    45deg,
-    rgba(76, 175, 80, 0.1),
-    rgba(139, 195, 74, 0.1)
-  );
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.plantCard:hover .plantImage {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.plantCard:hover .plantImage::before {
-  opacity: 1;
+  background: var(--primary-soft);
 }
 
 .plantImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-normal);
-}
-
-.plantCard:hover .plantImage img {
-  transform: scale(1.1);
 }
 
 .plantInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .plantName {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-xs) 0;
-  transition: color var(--transition-normal);
-}
-
-.plantCard:hover .plantName {
-  color: var(--primary-600);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
 .plantSpecies {
-  font-size: var(--font-size-xs);
-  color: var(--gray-600);
-  margin: 0 0 var(--space-sm) 0;
-  font-style: italic;
+  margin-top: 1px;
+  font-size: 11.5px;
+  color: var(--text-3);
 }
 
 .plantStatus {
-  display: flex;
-  gap: var(--space-sm);
+  margin-top: 5px;
 }
 
 .status {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all var(--transition-normal);
+  display: inline-block;
+  padding: 2.5px 9px;
+  border-radius: var(--r-full);
+  font-size: 10.5px;
+  font-weight: 600;
 }
 
 .status.healthy {
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border: 1px solid var(--primary-200);
+  background: var(--primary-soft);
+  color: var(--primary);
 }
 
 .status.needs_care {
-  background: #fff3e0;
+  background: var(--warning-soft);
   color: var(--warning);
-  border: 1px solid #ffcc80;
 }
 
-.plantCard:hover .status {
-  transform: translateY(-1px);
+.status.sick {
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 
-/* 🌌 空状态 - 温馨的引导 */
+/* ---------- 空状态 ---------- */
 .emptyCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-3xl) var(--space-lg);
-  text-align: center;
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  position: relative;
-  overflow: hidden;
-}
-
-.emptyCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(76, 175, 80, 0.03) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-lg);
+  padding: 26px 16px;
 }
 
 .emptyContent {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-lg);
-  position: relative;
-  z-index: 1;
-}
-
-.emptyContent > * {
-  animation: fadeInUp 0.6s var(--ease-out-cubic)
-    calc(var(--animation-delay, 0) * 0.1s) both;
+  gap: 8px;
+  color: var(--text-3);
+  font-size: 26px;
 }
 
 .emptyText {
-  font-size: var(--font-size-base);
-  color: var(--gray-600);
-  margin: 0;
-  line-height: var(--line-height-relaxed);
-  --animation-delay: 1;
+  font-size: 12.5px;
 }
 
-/* 📊 进度卡片 - 数据可视化 */
+/* ---------- 今日养护进度 ---------- */
 .progressCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  padding: var(--space-xl);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-}
-
-.progressCard:hover {
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
+  margin-top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .progressContent {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: 12px;
 }
 
 .progressInfo {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  align-items: center;
 }
 
 .progressLabel {
-  font-size: var(--font-size-sm);
-  color: var(--gray-700);
-  font-weight: var(--font-weight-medium);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .progressPercent {
-  font-size: var(--font-size-lg);
-  color: var(--primary-600);
-  font-weight: var(--font-weight-bold);
-  background: linear-gradient(
-    135deg,
-    var(--primary-600) 0%,
-    var(--green-fresh) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--primary);
 }
 
 .taskList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 8px;
 }
 
 .taskItem {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) 0;
-  font-size: var(--font-size-sm);
-  color: var(--gray-600);
-  transition: all var(--transition-normal);
-  border-radius: 6px;
-  padding-left: var(--space-sm);
-  margin-left: calc(-1 * var(--space-sm));
-}
-
-.taskItem:hover {
-  background: rgba(76, 175, 80, 0.05);
-  color: var(--gray-700);
-  transform: translateX(4px);
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-size: 12.5px;
+  color: var(--text-2);
 }
 
 .taskItem.completed {
-  color: var(--primary-600);
-}
-
-.taskItem.completed span {
   text-decoration: line-through;
-  opacity: 0.7;
+  color: var(--text-3);
 }
 
-.taskItem::before {
-  content: "•";
-  color: var(--primary-400);
-  font-weight: bold;
-  margin-right: var(--space-xs);
-}
-
-.taskItem.completed::before {
-  content: "✓";
-  color: var(--primary-600);
-}
-
-/* 空任务状态 */
 .emptyTasks {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-xl) 0;
-  color: var(--gray-500);
-  text-align: center;
-}
-
-.emptyTasks > * {
-  font-size: var(--font-size-lg);
-  color: var(--gray-400);
+  gap: 8px;
+  padding: 18px 0 8px;
+  color: var(--text-3);
+  font-size: 22px;
 }
 
 .emptyTasks span {
-  font-size: var(--font-size-sm);
-  color: var(--gray-500);
-}
-
-/* 📱 响应式设计 - 移动优先 */
-@media (max-width: 768px) {
-  .home {
-    padding: var(--space-sm);
-  }
-
-  .welcome {
-    padding: var(--space-lg);
-    margin-bottom: var(--space-md);
-    border-radius: var(--card-radius);
-  }
-
-  .greeting {
-    font-size: var(--font-size-xl);
-  }
-
-  .avatar {
-    width: 60px;
-    height: 60px;
-  }
-
-  .statsGrid {
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-  }
-
-  .statCard {
-    padding: var(--space-md);
-  }
-
-  .statIcon {
-    width: 40px;
-    height: 40px;
-    font-size: var(--font-size-base);
-  }
-
-  .statNumber {
-    font-size: var(--font-size-xl);
-  }
-
-  .actionCard,
-  .plantCard {
-    padding: var(--space-md);
-  }
-
-  .actionIcon {
-    width: 48px;
-    height: 48px;
-    font-size: var(--font-size-lg);
-  }
-
-  .plantImage {
-    width: 60px;
-    height: 60px;
-  }
-
-  .progressCard {
-    padding: var(--space-lg);
-  }
-
-  .section {
-    margin-bottom: var(--space-xl);
-  }
-}
-
-@media (max-width: 480px) {
-  .home {
-    padding: var(--space-xs);
-  }
-
-  .welcome {
-    padding: var(--space-md);
-    flex-direction: column;
-    text-align: center;
-    gap: var(--space-md);
-  }
-
-  .greeting {
-    font-size: var(--font-size-lg);
-  }
-
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .actionContent {
-    gap: var(--space-md);
-  }
-
-  .actionIcon {
-    width: 40px;
-    height: 40px;
-    font-size: var(--font-size-base);
-  }
-
-  .plantContent {
-    gap: var(--space-md);
-  }
-
-  .plantImage {
-    width: 50px;
-    height: 50px;
-  }
-
-  .emptyCard {
-    padding: var(--space-xl) var(--space-md);
-  }
+  font-size: 12px;
 }

@@ -8,14 +8,61 @@ import {
   Picker,
   Popup,
   DatetimePicker,
-  Loading,
+  Toast,
+  Dialog,
 } from "react-vant";
 import { Arrow, CalendarO, Delete } from "@react-vant/icons";
-import { useCare, useTitle } from "../../../hooks";
-import { usePlant } from "../../../hooks/usePlant";
-import type { CareTask } from "../../../store/types";
+import { useStore } from "../../../store";
+import { useTitle } from "../../../hooks";
+import type { CareTask, Plant } from "../../../store/types";
 import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./edit.module.css";
+
+// 任务类型选项
+const taskTypes = [
+  {
+    value: "water",
+    label: "浇水",
+    icon: "💧",
+    description: "给植物浇水，保持适当湿度",
+  },
+  {
+    value: "fertilize",
+    label: "施肥",
+    icon: "🌱",
+    description: "为植物提供营养",
+  },
+  {
+    value: "prune",
+    label: "修剪",
+    icon: "✂️",
+    description: "修剪枝叶，保持植物形状",
+  },
+  { value: "repot", label: "换盆", icon: "🪴", description: "更换更大的花盆" },
+  { value: "other", label: "其他", icon: "📝", description: "其他养护活动" },
+] as const;
+
+// 优先级选项
+const priorities = [
+  {
+    value: "high",
+    label: "高优先级",
+    color: "var(--danger)",
+    description: "紧急需要处理",
+  },
+  {
+    value: "medium",
+    label: "中优先级",
+    color: "var(--warning)",
+    description: "正常优先级",
+  },
+  {
+    value: "low",
+    label: "低优先级",
+    color: "var(--primary)",
+    description: "不紧急，可延后",
+  },
+] as const;
 
 /**
  * 编辑养护任务页面
@@ -28,18 +75,16 @@ const EditCareTask: React.FC = () => {
   // 设置页面标题
   useTitle();
 
-  const {
-    careTasks,
-    updateCareTask,
-    deleteCareTask,
-    careLoading,
-    fetchCareTasks,
-  } = useCare();
-  const { plants, fetchPlants } = usePlant();
+  const careTasks = useStore((s) => s.careTasks);
+  const updateCareTask = useStore((s) => s.updateCareTask);
+  const deleteCareTask = useStore((s) => s.deleteCareTask);
+  const plants = useStore((s) => s.plants);
 
-  // 当前编辑的任务
-  const [currentTask, setCurrentTask] = useState<CareTask | null>(null);
-  const [loading, setLoading] = useState(true);
+  // 当前编辑的任务（store 数据启动时已同步恢复，直接派生即可）
+  const currentTask = useMemo(
+    () => (id ? (careTasks.find((t) => t.id === id) ?? null) : null),
+    [id, careTasks],
+  );
 
   // 表单数据
   const [formData, setFormData] = useState({
@@ -58,166 +103,73 @@ const EditCareTask: React.FC = () => {
   const [showPriorityPicker, setShowPriorityPicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // 任务类型选项
-  const taskTypes = [
-    {
-      value: "water",
-      label: "浇水",
-      icon: "💧",
-      description: "给植物浇水，保持适当湿度",
-    },
-    {
-      value: "fertilize",
-      label: "施肥",
-      icon: "🌱",
-      description: "为植物提供营养",
-    },
-    {
-      value: "prune",
-      label: "修剪",
-      icon: "✂️",
-      description: "修剪枝叶，保持植物形状",
-    },
-    {
-      value: "repot",
-      label: "换盆",
-      icon: "🪴",
-      description: "更换更大的花盆",
-    },
-    { value: "other", label: "其他", icon: "📝", description: "其他养护活动" },
-  ];
-
-  // 优先级选项
-  const priorities = [
-    {
-      value: "high",
-      label: "高优先级",
-      color: "#F44336",
-      description: "紧急需要处理",
-    },
-    {
-      value: "medium",
-      label: "中优先级",
-      color: "#FF9800",
-      description: "正常优先级",
-    },
-    {
-      value: "low",
-      label: "低优先级",
-      color: "#4CAF50",
-      description: "不紧急，可延后",
-    },
-  ];
-
-  // 初始化数据
+  // 表单数据跟随当前任务初始化/同步
   useEffect(() => {
-    const initData = async () => {
-      try {
-        setLoading(true);
-        await Promise.all([
-          fetchCareTasks().catch((error) => {
-            console.error("获取养护任务失败:", error);
-            return { success: false, error: error.message };
-          }),
-          fetchPlants().catch((error) => {
-            console.error("获取植物列表失败:", error);
-            return { success: false, error: error.message };
-          }),
-        ]);
-      } catch (error) {
-        console.error("初始化数据失败:", error);
-        alert("加载数据失败");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initData();
-  }, [fetchCareTasks, fetchPlants]);
-
-  // 查找并设置当前任务
-  useEffect(() => {
-    if (id && careTasks.length > 0) {
-      try {
-        const task = careTasks.find((t: any) => t.id === id);
-        if (task && task.id && task.createdAt) {
-          setCurrentTask(task);
-          setFormData({
-            plantId: task.plantId || "",
-            plantName: task.plantName || "",
-            type: task.type || "water",
-            title: task.title || "",
-            description: task.description || "",
-            dueDate: task.dueDate || "",
-            priority: task.priority || "medium",
-          });
-        } else {
-          console.error("任务数据不完整:", task);
-          alert("任务数据不完整");
-          navigate("/care", { replace: true });
-        }
-      } catch (error) {
-        console.error("查找任务失败:", error);
-        alert("查找任务失败");
-        navigate("/care", { replace: true });
-      }
-    }
-  }, [id, careTasks, navigate]);
+    if (!currentTask) return;
+    setFormData({
+      plantId: currentTask.plantId || "",
+      plantName: currentTask.plantName || "",
+      type: currentTask.type || "water",
+      title: currentTask.title || "",
+      description: currentTask.description || "",
+      dueDate: currentTask.dueDate || "",
+      priority: currentTask.priority || "medium",
+    });
+  }, [currentTask]);
 
   // 准备植物选择器数据
   const plantPickerColumns = useMemo(() => {
-    if (!plants || plants.length === 0) return [[]];
+    if (plants.length === 0) {
+      return [[{ text: "无植物", value: "", plantData: null as Plant | null }]];
+    }
     return [
-      plants.map((plant: any) => ({
+      plants.map((plant) => ({
         text: plant.name || "未知植物",
         value: plant.id,
-        plantData: plant,
+        plantData: plant as Plant | null,
       })),
     ];
   }, [plants]);
 
   // 准备任务类型选择器数据
-  const typePickerColumns = useMemo(() => {
-    if (!taskTypes || taskTypes.length === 0) return [[]];
-    return [
+  const typePickerColumns = useMemo(
+    () => [
       taskTypes.map((type) => ({
         text: `${type.icon} ${type.label}`,
         value: type.value,
-        typeData: type,
       })),
-    ];
-  }, [taskTypes]);
-
+    ],
+    [],
+  );
   // 准备优先级选择器数据
-  const priorityPickerColumns = useMemo(() => {
-    if (!priorities || priorities.length === 0) return [[]];
-    return [
+  const priorityPickerColumns = useMemo(
+    () => [
       priorities.map((priority) => ({
         text: priority.label,
         value: priority.value,
-        priorityData: priority,
       })),
-    ];
-  }, [priorities]);
+    ],
+    [],
+  );
 
   // 获取当前选中的任务类型信息
   const currentTaskType = useMemo(() => {
     const found = taskTypes.find((type) => type.value === formData.type);
     return found || taskTypes[0] || null;
-  }, [formData.type, taskTypes]);
+  }, [formData.type]);
 
   // 获取当前选中的优先级信息
   const currentPriority = useMemo(() => {
     const found = priorities.find(
-      (priority) => priority.value === formData.priority
+      (priority) => priority.value === formData.priority,
     );
     return found || priorities[1] || priorities[0] || null;
-  }, [formData.priority, priorities]);
+  }, [formData.priority]);
 
   // 获取当前选中的植物信息
   const currentPlant = useMemo(() => {
     if (!formData.plantId || !plants || plants.length === 0) return null;
-    return plants.find((plant: any) => plant.id === formData.plantId) || null;
+    return plants.find((plant) => plant.id === formData.plantId) || null;
   }, [plants, formData.plantId]);
 
   // 检查是否有变更
@@ -242,7 +194,7 @@ const EditCareTask: React.FC = () => {
   // 处理植物选择
   const handlePlantSelect = useCallback(
     (values: string[]) => {
-      const selectedPlant = plants.find((plant: any) => plant.id === values[0]);
+      const selectedPlant = plants.find((plant) => plant.id === values[0]);
       if (selectedPlant) {
         updateFormData({
           plantId: selectedPlant.id,
@@ -251,7 +203,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowPlantPicker(false);
     },
-    [plants, updateFormData, setShowPlantPicker]
+    [plants, updateFormData, setShowPlantPicker],
   );
 
   // 处理任务类型选择
@@ -265,7 +217,7 @@ const EditCareTask: React.FC = () => {
       }
       setShowTypePicker(false);
     },
-    [updateFormData, taskTypes, setShowTypePicker]
+    [updateFormData, setShowTypePicker],
   );
 
   // 处理优先级选择
@@ -276,7 +228,7 @@ const EditCareTask: React.FC = () => {
       });
       setShowPriorityPicker(false);
     },
-    [updateFormData, setShowPriorityPicker]
+    [updateFormData, setShowPriorityPicker],
   );
 
   // 处理日期选择
@@ -287,7 +239,7 @@ const EditCareTask: React.FC = () => {
       });
       setShowDatePicker(false);
     },
-    [updateFormData, setShowDatePicker]
+    [updateFormData, setShowDatePicker],
   );
 
   // 格式化显示日期
@@ -304,15 +256,15 @@ const EditCareTask: React.FC = () => {
   // 验证表单
   const validateForm = useCallback(() => {
     if (!formData.plantId) {
-      alert("请选择植物");
+      Toast.fail("请选择植物");
       return false;
     }
     if (!formData.title.trim()) {
-      alert("请输入任务标题");
+      Toast.fail("请输入任务标题");
       return false;
     }
     if (!formData.dueDate) {
-      alert("请选择截止日期");
+      Toast.fail("请选择截止日期");
       return false;
     }
     return true;
@@ -329,15 +281,14 @@ const EditCareTask: React.FC = () => {
       });
 
       if (result.success) {
-        // 使用原生 alert 避免 react-vant Toast 的问题
-        alert("更新任务成功");
+        Toast.success("更新任务成功");
         navigate("/care", { replace: true });
       } else {
-        alert(result.error || "更新任务失败");
+        Toast.fail(result.error || "更新任务失败");
       }
     } catch (error) {
       console.error("更新任务失败:", error);
-      alert("更新任务失败");
+      Toast.fail("更新任务失败");
     }
   }, [
     currentTask,
@@ -352,32 +303,33 @@ const EditCareTask: React.FC = () => {
   const handleDelete = useCallback(async () => {
     if (!currentTask) return;
 
-    // 使用原生确认对话框，避免react-vant Dialog的潜在问题
-    const confirmed = window.confirm(
-      "确定要删除这个养护任务吗？删除后无法恢复。"
-    );
+    const confirmed = await Dialog.confirm({
+      title: "删除任务",
+      message: "确定要删除这个养护任务吗？删除后无法恢复。",
+    });
     if (!confirmed) return;
 
     try {
       const result = await deleteCareTask(currentTask.id);
       if (result.success) {
-        // 使用原生 alert 避免 react-vant Toast 的问题
-        alert("删除任务成功");
+        Toast.success("删除任务成功");
         navigate("/care", { replace: true });
       } else {
-        alert(result.error || "删除任务失败");
+        Toast.fail(result.error || "删除任务失败");
       }
     } catch (error) {
       console.error("删除任务失败:", error);
-      alert("删除任务失败");
+      Toast.fail("删除任务失败");
     }
   }, [currentTask, deleteCareTask, navigate]);
 
   // 取消编辑
-  const handleCancel = useCallback(() => {
+  const handleCancel = useCallback(async () => {
     if (hasChanges) {
-      // 使用原生确认对话框，避免react-vant Dialog的潜在问题
-      const confirmed = window.confirm("当前有未保存的更改，确定要离开吗？");
+      const confirmed = await Dialog.confirm({
+        title: "离开编辑",
+        message: "当前有未保存的更改，确定要离开吗？",
+      });
       if (confirmed) {
         navigate(-1);
       }
@@ -386,61 +338,10 @@ const EditCareTask: React.FC = () => {
     }
   }, [hasChanges, navigate]);
 
-  // ====== 调试日志和兜底渲染 ======
-  // console.log(
-  //   "【调试】currentTask:",
-  //   currentTask,
-  //   "\ncareTasks:",
-  //   careTasks,
-  //   "\nplants:",
-  //   plants,
-  //   "\nloading:",
-  //   loading,
-  //   "\nid:",
-  //   id
-  // );
-
-  if (!loading && !currentTask) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorText}>
-          任务不存在或数据未加载
-          <br />
-          当前id: {id}
-          <br />
-          careTasks: {JSON.stringify(careTasks)}
-        </div>
-        <Button type="primary" onClick={() => navigate("/care")}>
-          返回
-        </Button>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <Loading size="24px" />
-        <div className={styles.loadingText}>加载中...</div>
-      </div>
-    );
-  }
-
   if (!currentTask) {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorText}>任务不存在</div>
-        <Button type="primary" onClick={() => navigate("/care")}>
-          返回
-        </Button>
-      </div>
-    );
-  }
-
-  if (!currentTask.id || !currentTask.createdAt) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorText}>任务数据不完整</div>
         <Button type="primary" onClick={() => navigate("/care")}>
           返回
         </Button>
@@ -457,24 +358,6 @@ const EditCareTask: React.FC = () => {
   };
   // 兜底 currentPlant
   const safePlant = currentPlant || { name: "未知植物" };
-
-  // 兜底选择器 columns
-  const safePlantPickerColumns =
-    plantPickerColumns &&
-    plantPickerColumns[0] &&
-    plantPickerColumns[0].length > 0
-      ? plantPickerColumns
-      : [[{ text: "无植物", value: "" }]];
-  const safeTypePickerColumns =
-    typePickerColumns && typePickerColumns[0] && typePickerColumns[0].length > 0
-      ? typePickerColumns
-      : [[{ text: "无类型", value: "" }]];
-  const safePriorityPickerColumns =
-    priorityPickerColumns &&
-    priorityPickerColumns[0] &&
-    priorityPickerColumns[0].length > 0
-      ? priorityPickerColumns
-      : [[{ text: "无优先级", value: "" }]];
 
   return (
     <div className={styles.editTaskPage}>
@@ -615,7 +498,6 @@ const EditCareTask: React.FC = () => {
           <Button
             type="primary"
             size="large"
-            loading={careLoading}
             onClick={handleSave}
             disabled={!hasChanges}
             className={styles.saveButton}
@@ -633,7 +515,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择植物"
-          columns={safePlantPickerColumns}
+          columns={plantPickerColumns}
           value={[formData.plantId]}
           onConfirm={handlePlantSelect}
           onCancel={() => setShowPlantPicker(false)}
@@ -648,7 +530,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择任务类型"
-          columns={safeTypePickerColumns}
+          columns={typePickerColumns}
           value={[formData.type]}
           onConfirm={handleTypeSelect}
           onCancel={() => setShowTypePicker(false)}
@@ -663,7 +545,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择优先级"
-          columns={safePriorityPickerColumns}
+          columns={priorityPickerColumns}
           value={[formData.priority]}
           onConfirm={handlePrioritySelect}
           onCancel={() => setShowPriorityPicker(false)}

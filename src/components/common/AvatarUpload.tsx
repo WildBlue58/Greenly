@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Dialog } from "react-vant";
+import { Dialog, Toast } from "react-vant";
 import { UserO, Edit, Plus } from "@react-vant/icons";
 import {
   validateImageFile,
@@ -24,7 +24,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   className = "",
   onChange,
 }) => {
-  const { updateProfile } = useStore() as any;
+  const updateProfile = useStore((s) => s.updateProfile);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
@@ -43,7 +43,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       });
 
       if (!validation.isValid) {
-        alert(validation.error || "图片验证失败");
+        Toast.fail(validation.error || "图片验证失败");
         return;
       }
 
@@ -63,7 +63,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       setShowPreview(true);
     } catch (error) {
       console.error("处理图片失败:", error);
-      alert("图片处理失败，请重试");
+      Toast.fail("图片处理失败，请重试");
     } finally {
       setUploading(false);
     }
@@ -92,11 +92,11 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       // 触发回调
       onChange?.(previewUrl);
 
-      alert("头像更新成功！");
+      Toast.success("头像更新成功！");
       setShowPreview(false);
     } catch (error) {
       console.error("更新头像失败:", error);
-      alert("头像更新失败，请重试");
+      Toast.fail("头像更新失败，请重试");
     } finally {
       setUploading(false);
     }

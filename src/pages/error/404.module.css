@@ -1,477 +1,83 @@
-/* 🌟 404错误页面 - 现代友好设计 */
-@import "../shared/variables.css";
-
+/* ============================================================
+   404 — 植物园迷路了
+   ============================================================ */
 .error404 {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-gradient-primary);
-  padding: var(--space-xl);
-  position: relative;
-  overflow: hidden;
-}
-
-/* 动态背景装饰 */
-.error404::before {
-  content: "";
-  position: absolute;
-  top: -30%;
-  left: -30%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    circle,
-    rgba(76, 175, 80, 0.05) 0%,
-    transparent 70%
-  );
-  animation: floating 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.error404::after {
-  content: "";
-  position: absolute;
-  bottom: -30%;
-  right: -30%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    circle,
-    rgba(139, 195, 74, 0.05) 0%,
-    transparent 70%
-  );
-  animation: floating 10s ease-in-out infinite reverse;
-  pointer-events: none;
+  padding: 24px;
+  background: var(--grad-hero);
 }
 
 .errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  max-width: 500px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  background: var(--card-bg);
-  padding: var(--space-3xl);
-  border-radius: var(--card-radius-large);
-  box-shadow: var(--card-shadow-hover);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
+  gap: 10px;
 }
 
 .errorIcon {
-  font-size: 96px;
-  margin-bottom: var(--space-xl);
-  animation: bounceGently 3s ease-in-out infinite;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-}
-
-@keyframes bounceGently {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-10px) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-5px) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-8px) rotate(2deg);
-  }
+  font-size: 74px;
+  line-height: 1;
+  filter: drop-shadow(0 10px 18px var(--primary-glow));
 }
 
 .errorTitle {
-  font-size: clamp(48px, 12vw, 88px);
-  font-weight: var(--font-weight-bold);
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0 0 var(--space-sm) 0;
-  text-shadow: none;
-  animation: shimmerText 3s ease-in-out infinite;
-}
-
-@keyframes shimmerText {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 2px;
 }
 
 .errorSubtitle {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-lg) 0;
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.3s both;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
 .errorDesc {
-  font-size: var(--font-size-base);
-  color: var(--gray-600);
-  line-height: var(--line-height-relaxed);
-  margin: 0 0 var(--space-2xl) 0;
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.6s both;
+  font-size: 12.5px;
+  color: var(--text-3);
 }
 
-.errorActions {
-  display: flex;
-  gap: var(--space-lg);
-  justify-content: center;
-  margin-bottom: var(--space-2xl);
-  flex-wrap: wrap;
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.9s both;
-}
-
-.homeButton {
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border: none;
-  color: white;
-  border-radius: var(--card-radius);
-  padding: var(--space-lg) var(--space-2xl);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.homeButton::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.homeButton:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.4);
-}
-
-.homeButton:hover::before {
-  opacity: 1;
-}
-
-.backButton {
-  background: var(--card-bg);
-  border: 2px solid var(--gray-200);
-  color: var(--gray-600);
-  border-radius: var(--card-radius);
-  padding: var(--space-lg) var(--space-2xl);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  transition: all var(--transition-normal);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-}
-
-.backButton:hover {
-  background: var(--primary-50);
-  border-color: var(--primary-400);
-  color: var(--primary-600);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15);
-}
-
+/* 小贴士 */
 .errorTips {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  box-shadow: var(--card-shadow);
-  text-align: left;
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 1s var(--ease-out-cubic) 1.2s both;
-}
-
-.errorTips::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  opacity: 0.8;
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  box-shadow: var(--shadow-sm);
 }
 
 .tipsTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-lg) 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.tipsTitle::before {
-  content: "💡";
-  font-size: var(--font-size-xl);
-  animation: pulse 2s ease-in-out infinite;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-bottom: 6px;
 }
 
 .tipsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--text-3);
 }
 
-.tipsList li {
-  font-size: var(--font-size-sm);
-  color: var(--gray-600);
-  padding: var(--space-sm) 0;
-  position: relative;
-  padding-left: var(--space-xl);
-  line-height: var(--line-height-relaxed);
-  transition: all var(--transition-normal);
-  border-radius: 6px;
-}
-
-.tipsList li:hover {
-  background: rgba(76, 175, 80, 0.05);
-  color: var(--gray-700);
-  transform: translateX(4px);
-}
-
-.tipsList li::before {
-  content: "🌿";
-  position: absolute;
-  left: var(--space-sm);
-  top: var(--space-sm);
-  font-size: var(--font-size-sm);
-  transition: transform var(--transition-normal);
-}
-
-.tipsList li:hover::before {
-  transform: scale(1.2);
-}
-
-/* 动画效果 */
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
-}
-
-.errorTitle {
-  animation: fadeInUp 0.8s ease;
-}
-
-.errorSubtitle {
-  animation: fadeInUp 0.8s ease 0.2s both;
-}
-
-.errorDesc {
-  animation: fadeInUp 0.8s ease 0.4s both;
-}
-
+/* 按钮 */
 .errorActions {
-  animation: fadeInUp 0.8s ease 0.6s both;
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
 }
 
-.errorTips {
-  animation: fadeInUp 0.8s ease 0.8s both;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 📱 响应式设计 - 移动优先 */
-@media (max-width: 768px) {
-  .error404 {
-    padding: var(--space-lg);
-  }
-
-  .errorContent {
-    padding: var(--space-2xl);
-    max-width: 100%;
-  }
-
-  .errorIcon {
-    font-size: 72px;
-  }
-
-  .errorTitle {
-    font-size: clamp(36px, 10vw, 64px);
-  }
-
-  .errorSubtitle {
-    font-size: var(--font-size-xl);
-  }
-
-  .errorDesc {
-    font-size: var(--font-size-sm);
-  }
-
-  .errorActions {
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-  }
-
-  .homeButton,
-  .backButton {
-    width: 100%;
-    max-width: 280px;
-    padding: var(--space-md) var(--space-xl);
-  }
-
-  .errorTips {
-    padding: var(--space-xl);
-  }
-
-  .tipsTitle {
-    font-size: var(--font-size-base);
-  }
-
-  .tipsList li {
-    font-size: var(--font-size-xs);
-    padding-left: var(--space-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .error404 {
-    padding: var(--space-md);
-  }
-
-  .errorContent {
-    padding: var(--space-xl);
-  }
-
-  .errorIcon {
-    font-size: 56px;
-  }
-
-  .errorActions {
-    gap: var(--space-sm);
-  }
-
-  .homeButton,
-  .backButton {
-    padding: var(--space-sm) var(--space-lg);
-    font-size: var(--font-size-sm);
-  }
-}
-
-/* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .error404 {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  }
-
-  .errorSubtitle {
-    color: #ffffff;
-  }
-
-  .errorDesc {
-    color: #cccccc;
-  }
-
-  .backButton {
-    background: #333333;
-    border-color: #555555;
-    color: #cccccc;
-  }
-
-  .backButton:hover {
-    background: #404040;
-    border-color: #4caf50;
-    color: #4caf50;
-  }
-
-  .errorTips {
-    background: #333333;
-  }
-
-  .tipsTitle {
-    color: #ffffff;
-  }
-
-  .tipsList li {
-    color: #cccccc;
-  }
-}
-
-/* 打印样式 */
-@media print {
-  .errorActions {
-    display: none;
-  }
-
-  .error404 {
-    background: white !important;
-  }
-
-  .errorTitle {
-    color: black !important;
-  }
-
-  .errorSubtitle {
-    color: black !important;
-  }
-
-  .errorDesc {
-    color: black !important;
-  }
-
-  .errorTips {
-    background: white !important;
-    border: 1px solid #ccc !important;
-  }
-
-  .tipsTitle {
-    color: black !important;
-  }
-
-  .tipsList li {
-    color: black !important;
-  }
+.backButton,
+.homeButton {
+  height: 42px;
+  border-radius: var(--r-full);
+  min-width: 120px;
+  font-weight: 600;
 }

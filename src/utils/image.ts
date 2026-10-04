@@ -4,14 +4,14 @@
 
 // 图片格式类型
 export const IMAGE_FORMATS = {
-  JPEG: 'image/jpeg',
-  PNG: 'image/png',
-  WEBP: 'image/webp',
-  GIF: 'image/gif',
-  BMP: 'image/bmp',
+  JPEG: "image/jpeg",
+  PNG: "image/png",
+  WEBP: "image/webp",
+  GIF: "image/gif",
+  BMP: "image/bmp",
 } as const;
 
-export type ImageFormat = typeof IMAGE_FORMATS[keyof typeof IMAGE_FORMATS];
+export type ImageFormat = (typeof IMAGE_FORMATS)[keyof typeof IMAGE_FORMATS];
 
 // 图片压缩选项
 export interface ImageCompressOptions {
@@ -36,7 +36,7 @@ export interface ImageCropOptions {
  * @returns 是否为图片
  */
 export const isImageFile = (file: File): boolean => {
-  return file.type.startsWith('image/');
+  return file.type.startsWith("image/");
 };
 
 /**
@@ -63,14 +63,16 @@ export const isImageSizeValid = (file: File, maxSize: number = 10): boolean => {
  * @param file 图片文件
  * @returns Promise<{width: number, height: number}>
  */
-export const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
+export const getImageDimensions = (
+  file: File,
+): Promise<{ width: number; height: number }> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
       resolve({ width: img.width, height: img.height });
     };
     img.onerror = () => {
-      reject(new Error('无法读取图片尺寸'));
+      reject(new Error("无法读取图片尺寸"));
     };
     img.src = URL.createObjectURL(file);
   });
@@ -84,7 +86,7 @@ export const getImageDimensions = (file: File): Promise<{ width: number; height:
  */
 export const compressImage = async (
   file: File,
-  options: ImageCompressOptions = {}
+  options: ImageCompressOptions = {},
 ): Promise<File> => {
   const {
     quality = 0.8,
@@ -95,8 +97,8 @@ export const compressImage = async (
   } = options;
 
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     const img = new Image();
 
     img.onload = () => {
@@ -134,19 +136,19 @@ export const compressImage = async (
               });
               resolve(compressedFile);
             } else {
-              reject(new Error('图片压缩失败'));
+              reject(new Error("图片压缩失败"));
             }
           },
           format,
-          quality
+          quality,
         );
       } else {
-        reject(new Error('无法创建画布上下文'));
+        reject(new Error("无法创建画布上下文"));
       }
     };
 
     img.onerror = () => {
-      reject(new Error('无法加载图片'));
+      reject(new Error("无法加载图片"));
     };
 
     img.src = URL.createObjectURL(file);
@@ -161,13 +163,13 @@ export const compressImage = async (
  */
 export const cropImage = async (
   file: File,
-  cropOptions: ImageCropOptions
+  cropOptions: ImageCropOptions,
 ): Promise<File> => {
   const { x, y, width, height } = cropOptions;
 
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     const img = new Image();
 
     img.onload = () => {
@@ -185,19 +187,19 @@ export const cropImage = async (
               });
               resolve(croppedFile);
             } else {
-              reject(new Error('图片裁剪失败'));
+              reject(new Error("图片裁剪失败"));
             }
           },
           file.type,
-          0.9
+          0.9,
         );
       } else {
-        reject(new Error('无法创建画布上下文'));
+        reject(new Error("无法创建画布上下文"));
       }
     };
 
     img.onerror = () => {
-      reject(new Error('无法加载图片'));
+      reject(new Error("无法加载图片"));
     };
 
     img.src = URL.createObjectURL(file);
@@ -216,7 +218,7 @@ export const imageToBase64 = (file: File): Promise<string> => {
       resolve(reader.result as string);
     };
     reader.onerror = () => {
-      reject(new Error('读取文件失败'));
+      reject(new Error("读取文件失败"));
     };
     reader.readAsDataURL(file);
   });
@@ -229,16 +231,20 @@ export const imageToBase64 = (file: File): Promise<string> => {
  * @param mimeType MIME类型
  * @returns File对象
  */
-export const base64ToFile = (base64: string, filename: string, mimeType: string): File => {
-  const arr = base64.split(',');
+export const base64ToFile = (
+  base64: string,
+  filename: string,
+  mimeType: string,
+): File => {
+  const arr = base64.split(",");
   const bstr = atob(arr[1]);
   let n = bstr.length;
   const u8arr = new Uint8Array(n);
-  
+
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  
+
   return new File([u8arr], filename, { type: mimeType });
 };
 
@@ -252,7 +258,7 @@ export const base64ToFile = (base64: string, filename: string, mimeType: string)
 export const createThumbnail = async (
   file: File,
   maxWidth: number = 200,
-  maxHeight: number = 200
+  maxHeight: number = 200,
 ): Promise<File> => {
   return compressImage(file, {
     maxWidth,
@@ -277,11 +283,11 @@ export const validateImageFile = (
     minHeight?: number;
     maxWidth?: number;
     maxHeight?: number;
-  } = {}
+  } = {},
 ): Promise<{ isValid: boolean; error?: string }> => {
   const {
     maxSize = 10,
-    allowedTypes = ['image/jpeg', 'image/png', 'image/webp'],
+    allowedTypes = ["image/jpeg", "image/png", "image/webp"],
     minWidth,
     minHeight,
     maxWidth,
@@ -293,7 +299,7 @@ export const validateImageFile = (
     if (!allowedTypes.includes(file.type)) {
       resolve({
         isValid: false,
-        error: '不支持的图片格式',
+        error: "不支持的图片格式",
       });
       return;
     }
@@ -344,7 +350,7 @@ export const validateImageFile = (
         .catch(() => {
           resolve({
             isValid: false,
-            error: '无法读取图片尺寸',
+            error: "无法读取图片尺寸",
           });
         });
     } else {
@@ -359,18 +365,18 @@ export const validateImageFile = (
  * @returns MIME类型
  */
 export const getImageMimeType = (filename: string): string => {
-  const ext = filename.split('.').pop()?.toLowerCase();
+  const ext = filename.split(".").pop()?.toLowerCase();
   switch (ext) {
-    case 'jpg':
-    case 'jpeg':
+    case "jpg":
+    case "jpeg":
       return IMAGE_FORMATS.JPEG;
-    case 'png':
+    case "png":
       return IMAGE_FORMATS.PNG;
-    case 'webp':
+    case "webp":
       return IMAGE_FORMATS.WEBP;
-    case 'gif':
+    case "gif":
       return IMAGE_FORMATS.GIF;
-    case 'bmp':
+    case "bmp":
       return IMAGE_FORMATS.BMP;
     default:
       return IMAGE_FORMATS.JPEG;
@@ -383,8 +389,11 @@ export const getImageMimeType = (filename: string): string => {
  * @param prefix 前缀
  * @returns 随机文件名
  */
-export const generateRandomFileName = (originalName: string, prefix: string = ''): string => {
-  const ext = originalName.split('.').pop() || 'jpg';
+export const generateRandomFileName = (
+  originalName: string,
+  prefix: string = "",
+): string => {
+  const ext = originalName.split(".").pop() || "jpg";
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(2, 8);
   return `${prefix}${timestamp}_${random}.${ext}`;
@@ -398,10 +407,10 @@ export const generateRandomFileName = (originalName: string, prefix: string = ''
  */
 export const compressImages = async (
   files: File[],
-  options: ImageCompressOptions = {}
+  options: ImageCompressOptions = {},
 ): Promise<File[]> => {
   const compressedFiles: File[] = [];
-  
+
   for (const file of files) {
     try {
       const compressedFile = await compressImage(file, options);
@@ -412,7 +421,7 @@ export const compressImages = async (
       compressedFiles.push(file);
     }
   }
-  
+
   return compressedFiles;
 };
 
@@ -421,10 +430,10 @@ export const compressImages = async (
  * @returns 是否支持WebP
  */
 export const isWebPSupported = (): boolean => {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = 1;
   canvas.height = 1;
-  return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
 };
 
 /**

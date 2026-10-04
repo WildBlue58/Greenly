@@ -4,17 +4,17 @@
 
 // 日期格式化选项
 export const DATE_FORMATS = {
-  DATE: 'YYYY-MM-DD',
-  TIME: 'HH:mm:ss',
-  DATETIME: 'YYYY-MM-DD HH:mm:ss',
-  DATETIME_SHORT: 'MM-DD HH:mm',
-  TIME_SHORT: 'HH:mm',
-  MONTH_DAY: 'MM-DD',
-  YEAR_MONTH: 'YYYY-MM',
-  RELATIVE: 'relative',
+  DATE: "YYYY-MM-DD",
+  TIME: "HH:mm:ss",
+  DATETIME: "YYYY-MM-DD HH:mm:ss",
+  DATETIME_SHORT: "MM-DD HH:mm",
+  TIME_SHORT: "HH:mm",
+  MONTH_DAY: "MM-DD",
+  YEAR_MONTH: "YYYY-MM",
+  RELATIVE: "relative",
 } as const;
 
-export type DateFormat = typeof DATE_FORMATS[keyof typeof DATE_FORMATS];
+export type DateFormat = (typeof DATE_FORMATS)[keyof typeof DATE_FORMATS];
 
 /**
  * 格式化日期
@@ -22,20 +22,23 @@ export type DateFormat = typeof DATE_FORMATS[keyof typeof DATE_FORMATS];
  * @param format 格式化模式
  * @returns 格式化后的日期字符串
  */
-export const formatDate = (date: Date | string, format: DateFormat = DATE_FORMATS.DATETIME): string => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+export const formatDate = (
+  date: Date | string,
+  format: DateFormat = DATE_FORMATS.DATETIME,
+): string => {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
   if (format === DATE_FORMATS.RELATIVE) {
     return formatRelativeDate(dateObj);
   }
-  
+
   const year = dateObj.getFullYear();
-  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-  const day = String(dateObj.getDate()).padStart(2, '0');
-  const hours = String(dateObj.getHours()).padStart(2, '0');
-  const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-  const seconds = String(dateObj.getSeconds()).padStart(2, '0');
-  
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const hours = String(dateObj.getHours()).padStart(2, "0");
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+  const seconds = String(dateObj.getSeconds()).padStart(2, "0");
+
   switch (format) {
     case DATE_FORMATS.DATE:
       return `${year}-${month}-${day}`;
@@ -67,9 +70,9 @@ export const formatRelativeDate = (date: Date): string => {
   const diffMinutes = Math.floor(diff / (1000 * 60));
   const diffHours = Math.floor(diff / (1000 * 60 * 60));
   const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-  
+
   if (diffMinutes < 1) {
-    return '刚刚';
+    return "刚刚";
   } else if (diffMinutes < 60) {
     return `${diffMinutes}分钟前`;
   } else if (diffHours < 24) {
@@ -89,7 +92,7 @@ export const formatRelativeDate = (date: Date): string => {
 export const parseDate = (dateString: string): Date => {
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    throw new Error('无效的日期格式');
+    throw new Error("无效的日期格式");
   }
   return date;
 };
@@ -101,7 +104,7 @@ export const parseDate = (dateString: string): Date => {
  */
 export const isValidDate = (date: Date | string): boolean => {
   try {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    const dateObj = typeof date === "string" ? new Date(date) : date;
     return !isNaN(dateObj.getTime());
   } catch {
     return false;
@@ -117,12 +120,12 @@ export const isValidDate = (date: Date | string): boolean => {
 export const getDateRange = (startDate: Date, endDate: Date): Date[] => {
   const dates: Date[] = [];
   const current = new Date(startDate);
-  
+
   while (current <= endDate) {
     dates.push(new Date(current));
     current.setDate(current.getDate() + 1);
   }
-  
+
   return dates;
 };
 
@@ -242,7 +245,15 @@ export const addMinutes = (date: Date, minutes: number): Date => {
  * @returns 星期几的中文名称
  */
 export const getDayOfWeek = (date: Date): string => {
-  const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  const days = [
+    "星期日",
+    "星期一",
+    "星期二",
+    "星期三",
+    "星期四",
+    "星期五",
+    "星期六",
+  ];
   return days[date.getDay()];
 };
 
@@ -252,7 +263,15 @@ export const getDayOfWeek = (date: Date): string => {
  * @returns 星期几的英文名称
  */
 export const getDayOfWeekEn = (date: Date): string => {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   return days[date.getDay()];
 };
 
@@ -266,7 +285,7 @@ export const formatDuration = (milliseconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
-  
+
   if (days > 0) {
     return `${days}天`;
   } else if (hours > 0) {
@@ -287,11 +306,14 @@ export const getAge = (birthDate: Date): number => {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
-  
+
   return age;
 };
 
@@ -349,18 +371,19 @@ export const formatCareReminderTime = (dateString: string | Date): string => {
   try {
     // 检查输入是否为空
     if (!dateString) {
-      return '无效时间';
+      return "无效时间";
     }
-    
-    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
-    
+
+    const date =
+      typeof dateString === "string" ? new Date(dateString) : dateString;
+
     // 检查日期是否有效
     if (!isValidDate(date)) {
-      return '无效时间';
+      return "无效时间";
     }
-    
+
     const now = new Date();
-    
+
     if (isToday(date)) {
       return `今天 ${formatDate(date, DATE_FORMATS.TIME_SHORT)}`;
     } else if (isTomorrow(date)) {
@@ -377,7 +400,7 @@ export const formatCareReminderTime = (dateString: string | Date): string => {
       }
     }
   } catch (error) {
-    console.error('格式化养护提醒时间失败:', error);
-    return '时间格式错误';
+    console.error("格式化养护提醒时间失败:", error);
+    return "时间格式错误";
   }
 };
