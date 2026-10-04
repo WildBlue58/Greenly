@@ -1,0 +1,28 @@
+diff --git a/es/utils/dom/render.js b/es/utils/dom/render.js
+index e7072e5a6fc1628458591acb1a2b0b42d51669ea..fd5b60de466cf2d1a2e0a1067f3ae4d657a16920 100644
+--- a/es/utils/dom/render.js
++++ b/es/utils/dom/render.js
+@@ -1,5 +1,6 @@
+ import { __awaiter } from "tslib";
+ import * as ReactDOM from 'react-dom';
++import { createRoot } from 'react-dom/client';
+ import { reactDomVersion } from './version';
+ // Let compiler not to search module usage
+ const fullClone = Object.assign({}, ReactDOM);
+@@ -7,15 +8,7 @@ const {
+   render: reactRender,
+   unmountComponentAtNode
+ } = fullClone;
+-let createRoot;
+-try {
+-  if (reactDomVersion >= 18 && fullClone.createRoot) {
+-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+-    createRoot = fullClone.createRoot;
+-  }
+-} catch (e) {
+-  // Do nothing;
+-}
++
+ function toggleWarning(skip) {
+   const {
+     __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  react-vant@3.3.5:
+    hash: c12c6daac680f1e808a2b38fb3e50845e2dc6c0eabcc9a9fdde50a8523e4507e
+    path: patches/react-vant@3.3.5.patch
+
 importers:
 
   .:
@@ -25,7 +30,7 @@ importers:
         version: 7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-vant:
         specifier: ^3.3.5
-        version: 3.3.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 3.3.5(patch_hash=c12c6daac680f1e808a2b38fb3e50845e2dc6c0eabcc9a9fdde50a8523e4507e)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       zustand:
         specifier: ^5.0.7
         version: 5.0.7(@types/react@19.1.9)(react@19.1.1)
@@ -2270,7 +2275,7 @@ snapshots:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
 
-  react-vant@3.3.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  react-vant@3.3.5(patch_hash=c12c6daac680f1e808a2b38fb3e50845e2dc6c0eabcc9a9fdde50a8523e4507e)(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       '@react-spring/web': 9.7.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-vant/icons': 0.1.0(react@19.1.1)
