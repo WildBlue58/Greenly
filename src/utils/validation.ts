@@ -8,7 +8,7 @@ export interface ValidationRule {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  custom?: (value: any) => boolean | string;
+  custom?: (value: unknown) => boolean | string;
   message?: string;
 }
 
@@ -256,7 +256,7 @@ export const validateLength = (
  * @param fieldName 字段名称
  * @returns 验证结果
  */
-export const validateRequired = (value: any, fieldName: string = '字段'): ValidationResult => {
+export const validateRequired = (value: unknown, fieldName: string = '字段'): ValidationResult => {
   if (value === null || value === undefined || value === '') {
     return { isValid: false, message: `请输入${fieldName}` };
   }
@@ -311,7 +311,7 @@ export const validateDate = (
  * @param rules 验证规则
  * @returns 验证结果
  */
-export const validate = (value: any, rules: ValidationRule[]): ValidationResult => {
+export const validate = (value: unknown, rules: ValidationRule[]): ValidationResult => {
   for (const rule of rules) {
     // 必填验证
     if (rule.required) {
@@ -363,7 +363,7 @@ export const validate = (value: any, rules: ValidationRule[]): ValidationResult 
  * @returns 表单验证结果
  */
 export const validateForm = (
-  formData: Record<string, any>,
+  formData: Record<string, unknown>,
   validationSchema: Record<string, ValidationRule[]>
 ): FormValidationResult => {
   const errors: Record<string, string> = {};

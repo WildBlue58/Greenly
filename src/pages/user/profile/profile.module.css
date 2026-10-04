@@ -1,5 +1,4 @@
 /* 👤 用户个人资料页面 - 现代个人中心体验 */
-@import "../../shared/variables.css";
 
 .userProfile {
   padding: var(--space-lg);

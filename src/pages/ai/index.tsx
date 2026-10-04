@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Card, Field, Loading } from "react-vant";
+import { Button, Card, Field, Loading, Toast } from "react-vant";
 import { PhotoO, Search, Setting, Arrow, Add } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store";
@@ -44,14 +44,14 @@ const AIPage: React.FC = () => {
       icon: <PhotoO />,
       title: "图片生成",
       description: "根据描述生成植物相关的图片",
-      action: () => alert("图片生成功能即将上线！"),
+      action: () => Toast.info("图片生成功能即将上线！"),
       color: "#FF9800",
     },
     {
       icon: <Setting />,
       title: "AI设置",
       description: "配置AI模型和个性化选项",
-      action: () => alert("AI设置功能即将上线！"),
+      action: () => Toast.info("AI设置功能即将上线！"),
       color: "#9C27B0",
     },
   ];

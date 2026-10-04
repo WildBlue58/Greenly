@@ -492,6 +492,20 @@ export const CareStats: React.FC<CareStatsProps> = ({
 };
 
 // CareForm 组件
+const FORM_TASK_TYPES = [
+  { value: "water", label: "浇水", icon: "💧" },
+  { value: "fertilize", label: "施肥", icon: "🌱" },
+  { value: "prune", label: "修剪", icon: "✂️" },
+  { value: "repot", label: "换盆", icon: "🪴" },
+  { value: "other", label: "其他", icon: "📝" },
+] as const;
+
+const FORM_PRIORITIES = [
+  { value: "high", label: "高优先级", color: "danger" },
+  { value: "medium", label: "中优先级", color: "warning" },
+  { value: "low", label: "低优先级", color: "primary" },
+] as const;
+
 interface CareFormProps {
   visible: boolean;
   onClose: () => void;
@@ -526,20 +540,6 @@ export const CareForm: React.FC<CareFormProps> = ({
   const [showPriorityPicker, setShowPriorityPicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const taskTypes = [
-    { value: "water", label: "浇水", icon: "💧" },
-    { value: "fertilize", label: "施肥", icon: "🌱" },
-    { value: "prune", label: "修剪", icon: "✂️" },
-    { value: "repot", label: "换盆", icon: "🪴" },
-    { value: "other", label: "其他", icon: "📝" },
-  ];
-
-  const priorities = [
-    { value: "high", label: "高优先级", color: "danger" },
-    { value: "medium", label: "中优先级", color: "warning" },
-    { value: "low", label: "低优先级", color: "primary" },
-  ];
-
   // 准备选择器数据
   const plantPickerColumns = useMemo(() => {
     return [
@@ -552,7 +552,7 @@ export const CareForm: React.FC<CareFormProps> = ({
 
   const typePickerColumns = useMemo(() => {
     return [
-      taskTypes.map((type) => ({
+      FORM_TASK_TYPES.map((type) => ({
         text: `${type.icon} ${type.label}`,
         value: type.value,
       })),
@@ -561,7 +561,7 @@ export const CareForm: React.FC<CareFormProps> = ({
 
   const priorityPickerColumns = useMemo(() => {
     return [
-      priorities.map((priority) => ({
+      FORM_PRIORITIES.map((priority) => ({
         text: priority.label,
         value: priority.value,
       })),
@@ -622,7 +622,7 @@ export const CareForm: React.FC<CareFormProps> = ({
     }
 
     const selectedPlant = plants.find((p) => p.id === formData.plantId);
-    const selectedType = taskTypes.find((t) => t.value === formData.type);
+    const selectedType = FORM_TASK_TYPES.find((t) => t.value === formData.type);
 
     onSubmit({
       ...formData,
@@ -664,7 +664,7 @@ export const CareForm: React.FC<CareFormProps> = ({
             <Field
               label="任务类型"
               value={
-                taskTypes.find((t) => t.value === formData.type)?.label ||
+                FORM_TASK_TYPES.find((t) => t.value === formData.type)?.label ||
                 "请选择任务类型"
               }
               placeholder="请选择任务类型"
@@ -712,7 +712,7 @@ export const CareForm: React.FC<CareFormProps> = ({
             <Field
               label="优先级"
               value={
-                priorities.find((p) => p.value === formData.priority)?.label ||
+                FORM_PRIORITIES.find((p) => p.value === formData.priority)?.label ||
                 "请选择优先级"
               }
               placeholder="请选择优先级"

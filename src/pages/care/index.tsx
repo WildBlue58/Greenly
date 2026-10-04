@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Toast } from "react-vant";
+import { Button, Toast, Dialog } from "react-vant";
 import { Add } from "@react-vant/icons";
 import {
   CarePlanComponent,
@@ -61,15 +61,14 @@ const CarePage: React.FC = () => {
       try {
         const result = await addCareTask(taskData);
         if (result.success) {
-          // 测试：使用alert替代Toast
-          alert("添加任务成功");
+          Toast.success("添加任务成功");
           setShowAddForm(false);
         } else {
-          alert(`添加任务失败: ${result.error || "未知错误"}`);
+          Toast.fail(`添加任务失败: ${result.error || "未知错误"}`);
         }
       } catch (error) {
         console.error("添加任务失败:", error);
-        alert("添加任务失败");
+        Toast.fail("添加任务失败");
       }
     },
     [addCareTask]
@@ -87,20 +86,20 @@ const CarePage: React.FC = () => {
   const handleDeleteTask = useCallback(
     async (task: CareTask) => {
       if (!task?.id) {
-        alert("任务信息错误");
+        Toast.fail("任务信息错误");
         return;
       }
 
       try {
         const result = await deleteCareTask(task.id);
         if (result?.success) {
-          alert("删除任务成功");
+          Toast.success("删除任务成功");
         } else {
-          alert(`删除任务失败: ${result?.error || "未知错误"}`);
+          Toast.fail(`删除任务失败: ${result?.error || "未知错误"}`);
         }
       } catch (error) {
         console.error("删除任务失败:", error);
-        alert("删除任务失败");
+        Toast.fail("删除任务失败");
       }
     },
     [deleteCareTask]
@@ -110,20 +109,20 @@ const CarePage: React.FC = () => {
   const handleCompleteTask = useCallback(
     async (task: CareTask) => {
       if (!task?.id) {
-        alert("任务信息错误");
+        Toast.fail("任务信息错误");
         return;
       }
 
       try {
         const result = await completeCareTask(task.id);
         if (result?.success) {
-          alert("任务已完成");
+          Toast.success("任务已完成");
         } else {
-          alert(`操作失败: ${result?.error || "未知错误"}`);
+          Toast.fail(`操作失败: ${result?.error || "未知错误"}`);
         }
       } catch (error) {
         console.error("完成任务失败:", error);
-        alert("操作失败");
+        Toast.fail("操作失败");
       }
     },
     [completeCareTask]
@@ -147,9 +146,10 @@ const CarePage: React.FC = () => {
   // 删除养护记录
   const handleDeleteRecord = useCallback(
     async (record: CareRecord) => {
-      const confirmed = window.confirm(
-        `确定要删除"${record.title}"记录吗？删除后无法恢复。`
-      );
+      const confirmed = await Dialog.confirm({
+        title: "删除记录",
+        message: `确定要删除"${record.title}"记录吗？删除后无法恢复。`,
+      });
       if (!confirmed) return;
 
       const result = await deleteCareRecord(record.id);

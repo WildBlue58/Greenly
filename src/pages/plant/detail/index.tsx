@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Button, Tag, Progress } from "react-vant";
+import { Card, Button, Tag, Progress, Toast, Dialog } from "react-vant";
 import { ArrowLeft, Edit, Delete, StarO } from "@react-vant/icons";
 import { useStore } from "../../../store";
 import { useTitle } from "../../../hooks";
@@ -97,21 +97,24 @@ const PlantDetail: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    // 删除确认逻辑
-    if (window.confirm("确定要删除这株植物吗？")) {
-      try {
-        await deletePlant(id!);
-        navigate("/plant/list");
-      } catch (error) {
-        console.error("删除植物失败:", error);
-        alert("删除失败，请重试");
-      }
+    const confirmed = await Dialog.confirm({
+      title: "删除植物",
+      message: "确定要删除这株植物吗？删除后无法恢复。",
+    });
+    if (!confirmed) return;
+    try {
+      await deletePlant(id!);
+      Toast.success("删除成功");
+      navigate("/plant/list");
+    } catch (error) {
+      console.error("删除植物失败:", error);
+      Toast.fail("删除失败，请重试");
     }
   };
 
   const handleWater = () => {
-    // 浇水逻辑
-    alert("浇水成功！");
+    // 浇水记录由养护任务体系管理，此处仅为展示占位
+    Toast.info("请在养护页面记录浇水");
   };
 
   if (loading) {

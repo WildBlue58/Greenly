@@ -1,5 +1,4 @@
 /* 🌿 植物列表页面 - 现代网格展示 */
-@import "../../shared/variables.css";
 
 .plantList {
   padding: var(--space-lg);

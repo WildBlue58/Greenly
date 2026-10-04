@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Card, Field, Loading, Image } from "react-vant";
+import { Button, Card, Field, Loading, Image, Toast } from "react-vant";
 import { PhotoO, Arrow, Delete, ArrowLeft } from "@react-vant/icons";
 import { useNavigate } from "react-router-dom";
 import { streamPlantCareChat, recognizePlantImage } from "../../../utils/llm";
@@ -66,13 +66,13 @@ const PlantRecognition: React.FC = () => {
 
     // 检查文件类型
     if (!file.type.startsWith("image/")) {
-      alert("请选择图片文件");
+      Toast.fail("请选择图片文件");
       return;
     }
 
     // 检查文件大小 (10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert("图片大小不能超过10MB");
+      Toast.fail("图片大小不能超过10MB");
       return;
     }
 
@@ -89,7 +89,7 @@ const PlantRecognition: React.FC = () => {
   // 执行植物识别（AI 调用统一走 utils/llm）
   const recognizePlant = async () => {
     if (!imageFile || !hasAPIKey) {
-      alert("请先上传图片并确保API密钥已配置");
+      Toast.fail("请先上传图片并确保API密钥已配置");
       return;
     }
 
@@ -136,10 +136,10 @@ ${result.careAdvice}`;
           type: "recognition",
         },
       ]);
-      alert("识别成功！");
+      Toast.success("识别成功！");
     } catch (error) {
       console.error("植物识别失败:", error);
-      alert(error instanceof Error ? error.message : "识别失败，请重试");
+      Toast.fail(error instanceof Error ? error.message : "识别失败，请重试");
     } finally {
       setIsRecognizing(false);
     }

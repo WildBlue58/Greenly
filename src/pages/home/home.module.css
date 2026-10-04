@@ -1,5 +1,4 @@
 /* 🌿 首页 - 现代清新设计 */
-@import "../shared/variables.css";
 
 .home {
   padding: var(--space-md);

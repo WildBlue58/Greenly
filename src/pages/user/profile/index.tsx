@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Cell, Tag, Dialog, Field } from "react-vant";
+import { Card, Button, Cell, Tag, Dialog, Field, Toast } from "react-vant";
 import {
   UserO,
   SettingO,
@@ -21,6 +21,7 @@ const UserProfile: React.FC = () => {
   const user = useStore((s) => s.user);
   const plants = useStore((s) => s.plants);
   const updateProfile = useStore((s) => s.updateProfile);
+  const logout = useStore((s) => s.logout);
   const careTasks = useStore((s) => s.careTasks);
   const careRecords = useStore((s) => s.careRecords);
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const UserProfile: React.FC = () => {
 
   const userStats = {
     totalPlants: plants.length,
-    healthyPlants: plants.filter((p: any) => p.status === "healthy").length,
+    healthyPlants: plants.filter((p) => p.status === "healthy").length,
     careTasks: careTasks.length,
     daysActive: calculateDaysActive(),
   };
@@ -90,11 +91,9 @@ const UserProfile: React.FC = () => {
 
   // 计算成就状态
   const calculateAchievements = () => {
-    const completedTasks = careTasks.filter(
-      (task: any) => task.completed
-    ).length;
+    const completedTasks = careTasks.filter((task) => task.completed).length;
     const healthyPlantsCount = plants.filter(
-      (p: any) => p.status === "healthy"
+      (p) => p.status === "healthy"
     ).length;
 
     return [
@@ -131,18 +130,18 @@ const UserProfile: React.FC = () => {
 
   const handleSaveName = async () => {
     if (!newName.trim()) {
-      alert("请输入有效的用户名");
+      Toast.fail("请输入有效的用户名");
       return;
     }
 
     try {
       setIsUpdating(true);
       await updateProfile({ name: newName.trim() });
-      alert("用户名更新成功！");
+      Toast.success("用户名更新成功！");
       setShowEditName(false);
     } catch (error) {
       console.error("更新用户名失败:", error);
-      alert("更新失败，请重试");
+      Toast.fail("更新失败，请重试");
     } finally {
       setIsUpdating(false);
     }
@@ -297,7 +296,7 @@ const UserProfile: React.FC = () => {
         </div>
         <div className={styles.activityList}>
           {careRecords.length > 0 ? (
-            careRecords.slice(0, 3).map((record: any) => (
+            careRecords.slice(0, 3).map((record) => (
               <div key={record.id} className={styles.activityItem}>
                 <div className={styles.activityIcon}>
                   {record.type === "water"
@@ -335,12 +334,16 @@ const UserProfile: React.FC = () => {
           size="large"
           block
           className={styles.logoutButton}
-          onClick={() => {
-            // 退出登录逻辑
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
+          onClick={async () => {
+            // 免登录 demo：退出即重置为默认访客身份
+            const confirmed = await Dialog.confirm({
+              title: "退出登录",
+              message: "将重置为默认访客身份，确定继续吗？",
+            });
+            if (!confirmed) return;
+            logout();
+            Toast.success("已退出登录");
             navigate("/");
-            window.location.reload();
           }}
         >
           退出登录
