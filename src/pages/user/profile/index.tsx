@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Cell, Tag, Dialog, Field, Toast } from "react-vant";
+import { Card, Button, Cell, Tag, Dialog, Field, Toast, Switch } from "react-vant";
 import {
   UserO,
   SettingO,
@@ -24,6 +24,8 @@ const UserProfile: React.FC = () => {
   const logout = useStore((s) => s.logout);
   const careTasks = useStore((s) => s.careTasks);
   const careRecords = useStore((s) => s.careRecords);
+  const theme = useStore((s) => s.theme);
+  const setTheme = useStore((s) => s.setTheme);
   const navigate = useNavigate();
   const [showEditName, setShowEditName] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
@@ -54,7 +56,7 @@ const UserProfile: React.FC = () => {
       icon: FlowerO,
       title: "我的植物",
       desc: `${userStats.totalPlants} 株植物`,
-      color: "#4CAF50",
+      color: "var(--primary)",
       onClick: () => {
         navigate("/plant");
       },
@@ -63,7 +65,7 @@ const UserProfile: React.FC = () => {
       icon: ServiceO,
       title: "养护记录",
       desc: "查看养护历史",
-      color: "#8BC34A",
+      color: "var(--success)",
       onClick: () => {
         navigate("/care");
       },
@@ -72,7 +74,7 @@ const UserProfile: React.FC = () => {
       icon: ChatO,
       title: "AI助手",
       desc: "智能养护咨询",
-      color: "#2196F3",
+      color: "var(--info)",
       onClick: () => {
         navigate("/ai");
       },
@@ -81,7 +83,7 @@ const UserProfile: React.FC = () => {
       icon: SettingO,
       title: "设置",
       desc: "应用设置",
-      color: "#FF9800",
+      color: "var(--warning)",
       onClick: () => {
         // 暂时导航到用户资料页面，因为设置页面还未实现
         navigate("/user/profile");
@@ -251,6 +253,18 @@ const UserProfile: React.FC = () => {
               </div>
             </Cell>
           ))}
+          {/* 外观设置：亮色 / 暗色 */}
+          <div className={styles.themeRow}>
+            <div className={styles.themeLabel}>
+              <div className={styles.menuIcon}>🎨</div>
+              外观模式
+            </div>
+            <Switch
+              size="20px"
+              checked={theme === "dark"}
+              onChange={(checked) => setTheme(checked ? "dark" : "light")}
+            />
+          </div>
         </div>
       </Card>
 

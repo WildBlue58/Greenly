@@ -1,582 +1,299 @@
-/* 🌺 植物详情页面 - 沉浸式体验 */
-
+/* ============================================================
+   植物详情 — 沉浸式大图 + 信息卡
+   ============================================================ */
 .plantDetail {
   min-height: 100vh;
-  background: var(--bg-gradient-primary);
-  padding-bottom: 100px; /* 为底部导航留出空间 */
-  position: relative;
+  padding-bottom: 30px;
 }
 
-/* 自然主题背景装饰 */
-.plantDetail::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(
-      circle at 20% 30%,
-      rgba(76, 175, 80, 0.02) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(139, 195, 74, 0.02) 0%,
-      transparent 50%
-    );
-  pointer-events: none;
-}
-
-/* 加载状态 */
 .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
-}
-
-.loadingText {
-  font-size: 16px;
-  color: #666;
-}
-
-/* 错误状态 */
-.error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e8 100%);
+  gap: 10px;
+  padding: 120px 0;
+  color: var(--text-3);
+}
+
+.loadingText {
+  font-size: 13px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 120px 24px;
+  text-align: center;
 }
 
 .errorText {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 20px;
+  font-size: 15px;
+  color: var(--text-2);
 }
 
-/* 🖼️ 植物图片 - 视觉焦点 */
+/* ---------- 大图 ---------- */
 .plantImage {
   position: relative;
-  width: 100%;
-  height: 350px;
-  overflow: hidden;
-  border-radius: 0 0 var(--card-radius-large) var(--card-radius-large);
+  height: 260px;
+  background: var(--primary-soft);
 }
 
 .plantImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
-}
-
-.plantImage:hover img {
-  transform: scale(1.05);
 }
 
 .imageOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.4) 0%,
-    transparent 25%,
-    transparent 75%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: var(--space-xl);
-  backdrop-filter: blur(1px);
-}
-
-.backButton {
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  top: 12px;
+  left: 14px;
+  right: 14px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  z-index: 2;
 }
 
-.backButton:hover {
-  background: rgba(255, 255, 255, 1);
-  transform: translateX(-4px) scale(1.05);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+.backButton,
+.editButton,
+.deleteButton {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--text-1);
+  box-shadow: var(--shadow-sm);
 }
 
 .actionButtons {
   display: flex;
-  gap: var(--space-md);
+  gap: 10px;
 }
 
-.editButton,
-.deleteButton {
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.editButton:hover {
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border-color: var(--primary-200);
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 24px rgba(76, 175, 80, 0.2);
-}
-
-.deleteButton {
-  background: rgba(244, 67, 54, 0.95);
-  color: white;
-  border-color: rgba(244, 67, 54, 0.3);
-}
-
-.deleteButton:hover {
-  background: var(--error);
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 24px rgba(244, 67, 54, 0.3);
-}
-
-/* 📝 信息卡片 - 精美展示 */
+/* ---------- 名称卡 ---------- */
 .infoCard {
-  margin: -30px var(--space-lg) var(--space-lg) var(--space-lg);
-  border-radius: var(--card-radius-large);
-  box-shadow: var(--card-shadow-hover);
-  background: var(--card-bg);
-  padding: var(--space-2xl);
+  margin: -26px 16px 0;
   position: relative;
-  z-index: 1;
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  animation: fadeInUp 0.8s var(--ease-out-cubic) 0.2s both;
-}
-
-.infoCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 64px rgba(76, 175, 80, 0.15);
-}
-
-.infoCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: var(--card-radius-large) var(--card-radius-large) 0 0;
+  z-index: 3;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  padding: 16px;
 }
 
 .plantHeader {
-  margin-bottom: var(--space-xl);
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plantInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .plantName {
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-xs) 0;
-  background: linear-gradient(
-    135deg,
-    var(--gray-800) 0%,
-    var(--primary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: var(--line-height-tight);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--text-1);
 }
 
 .plantSpecies {
-  font-size: var(--font-size-base);
-  color: var(--gray-600);
-  margin: 0 0 var(--space-lg) 0;
-  font-style: italic;
-  font-weight: var(--font-weight-medium);
-  opacity: 0.9;
+  font-size: 12px;
+  color: var(--text-3);
 }
 
 .plantTags {
   display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-lg);
+  gap: 8px;
 }
 
 .statusTag,
 .levelTag {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--card-radius-small);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all var(--transition-normal);
-  border: 1px solid;
-  backdrop-filter: blur(10px);
-}
-
-.statusTag.healthy {
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border-color: var(--primary-200);
-}
-
-.statusTag.warning {
-  background: #fff3e0;
-  color: var(--warning);
-  border-color: #ffcc80;
-}
-
-.statusTag.danger {
-  background: #ffebee;
-  color: var(--error);
-  border-color: #ffcdd2;
-}
-
-.levelTag {
-  background: var(--gray-50);
-  color: var(--gray-700);
-  border-color: var(--gray-200);
-}
-
-.statusTag:hover,
-.levelTag:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: var(--r-full);
+  padding: 2px 10px;
+  font-size: 11px;
 }
 
 .plantDescription {
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
-  color: var(--gray-700);
-  background: var(--gray-50);
-  padding: var(--space-lg);
-  border-radius: var(--card-radius);
-  border-left: 4px solid var(--primary-500);
-  margin-top: var(--space-lg);
-  position: relative;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--divider);
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.7;
 }
 
-.plantDescription::before {
-  content: "📝";
-  position: absolute;
-  top: var(--space-md);
-  left: var(--space-md);
-  font-size: var(--font-size-lg);
-  opacity: 0.7;
-}
-
-.plantDescription {
-  padding-left: var(--space-3xl);
-}
-
-/* 📋 卡片通用样式 - 统一设计 */
+/* ---------- 通用卡片 ---------- */
 .careCard,
 .waterCard,
 .tipsCard,
 .locationCard {
-  margin: 0 var(--space-lg) var(--space-lg) var(--space-lg);
-  border-radius: var(--card-radius-large);
-  box-shadow: var(--card-shadow);
-  background: var(--card-bg);
-  padding: var(--space-2xl);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 0.6s var(--ease-out-cubic)
-    calc(var(--animation-delay, 0) * 0.2s) both;
-}
-
-.careCard::before,
-.waterCard::before,
-.tipsCard::before,
-.locationCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  transform: scaleX(0);
-  transition: transform var(--transition-normal);
-}
-
-.careCard:hover,
-.waterCard:hover,
-.tipsCard:hover,
-.locationCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.careCard:hover::before,
-.waterCard:hover::before,
-.tipsCard:hover::before,
-.locationCard:hover::before {
-  transform: scaleX(1);
+  margin: 14px 16px 0;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .cardTitle {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-lg) 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 12px;
 }
 
-.cardTitle::before {
-  content: attr(data-icon);
-  font-size: var(--font-size-2xl);
-  opacity: 0.8;
-}
-
-/* 养护信息 */
+/* ---------- 养护信息网格 ---------- */
 .careGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 10px;
 }
 
 .careItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .careIcon {
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 15px;
   flex-shrink: 0;
 }
 
 .careInfo {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .careLabel {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 2px;
+  font-size: 10.5px;
+  color: var(--text-3);
 }
 
 .careValue {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
-/* 浇水信息 */
+/* ---------- 浇水提醒 ---------- */
 .waterHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-}
-
-.waterButton {
-  background: #4caf50;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  gap: 12px;
 }
 
 .waterInfo {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .waterItem {
-  text-align: center;
-  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
 }
 
 .waterLabel {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 4px;
+  color: var(--text-3);
 }
 
 .waterValue {
-  font-size: 14px;
+  color: var(--text-1);
   font-weight: 500;
-  color: #333;
-}
-
-.waterValue.urgent {
-  color: #f44336;
-  font-weight: 600;
 }
 
 .waterProgress {
-  margin-top: 16px;
+  margin-top: 12px;
+}
+
+.waterButton {
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+}
+
+.urgent {
+  color: var(--danger) !important;
+  font-weight: 700;
 }
 
 .progressInfo {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 6px;
 }
 
-/* 养护技巧 */
+/* ---------- 养护技巧 ---------- */
 .tipsList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 9px;
 }
 
 .tipItem {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .tipIcon {
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-top: 2px;
+  font-size: 13px;
 }
 
 .tipText {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
+  font-size: 12.5px;
+  color: var(--text-2);
 }
 
-/* 位置信息 */
+/* ---------- 位置 ---------- */
 .locationInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  gap: 10px;
 }
 
 .locationIcon {
-  font-size: 20px;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 15px;
 }
 
 .locationText {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .plantImage {
-    height: 250px;
-  }
-
-  .imageOverlay {
-    padding: 16px;
-  }
-
-  .backButton,
-  .editButton,
-  .deleteButton {
-    width: 36px;
-    height: 36px;
-  }
-
-  .plantName {
-    font-size: 24px;
-  }
-
-  .careGrid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .waterInfo {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .waterItem {
-    text-align: left;
-  }
-}
-
-@media (max-width: 480px) {
-  .plantImage {
-    height: 200px;
-  }
-
-  .infoCard,
-  .careCard,
-  .waterCard,
-  .tipsCard,
-  .locationCard {
-    margin: 0 12px 12px 12px;
-    padding: 16px;
-  }
-
-  .plantName {
-    font-size: 20px;
-  }
-
-  .cardTitle {
-    font-size: 16px;
-  }
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }

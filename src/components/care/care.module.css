@@ -1,641 +1,518 @@
-/* 养护组件样式 */
+/* ============================================================
+   养护业务组件：计划卡 / 今日提醒 / 统计 / 记录 / 快速表单
+   ============================================================ */
 
-/* CarePlan 样式 */
+/* ============ CarePlan 计划卡 ============ */
 .carePlan {
-  background-color: var(--background-white);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow-light);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .planHeader {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.planTitle {
-  flex: 1;
+  gap: 12px;
 }
 
 .plantName {
-  margin: 0 0 4px 0;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-1);
+}
+
+.planTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .planSubtitle {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-secondary);
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-3);
 }
 
 .planProgress {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.progress {
-  width: 80px;
+  width: 96px;
+  text-align: right;
 }
 
 .progressText {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary-color);
+  font-size: 11px;
+  color: var(--text-3);
 }
 
-/* NextTask 样式 */
+/* 下一个任务 */
 .nextTask {
-  margin-bottom: 24px;
+  margin-top: 12px;
 }
 
 .nextTaskTitle {
-  margin: 0 0 16px 0;
-  font-size: 18px;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-3);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
 }
 
 .nextTaskCard {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-light) 100%
-  );
-  border-radius: var(--border-radius);
-  color: white;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  background: var(--grad-leaf);
+  border: 1px solid var(--divider);
 }
 
 .taskIcon {
-  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  font-size: 17px;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .taskContent {
   flex: 1;
+  min-width: 0;
 }
 
 .taskTitle {
-  margin: 0 0 4px 0;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
 .taskDescription {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  opacity: 0.9;
+  margin-top: 1px;
+  font-size: 11.5px;
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .taskMeta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 12px;
+  gap: 8px;
+  margin-top: 5px;
+  flex-wrap: wrap;
 }
 
 .taskDue {
-  opacity: 0.8;
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.taskCompleted {
+  font-size: 10.5px;
+  color: var(--text-3);
 }
 
 .completeButton {
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
   flex-shrink: 0;
+  border-radius: var(--r-full);
 }
 
-.completeButton:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* TaskList 样式 */
+/* 所有任务 */
 .taskList {
-  margin-top: 24px;
-}
-
-/* 植物分组样式增强 */
-.carePlan {
-  margin-bottom: 16px;
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.carePlan:hover {
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-  transform: translateY(-2px);
+  margin-top: 14px;
 }
 
 .taskListTitle {
-  margin: 0 0 16px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 10px;
 }
 
-.taskSection {
-  margin-bottom: 24px;
+.taskSection + .taskSection {
+  margin-top: 12px;
 }
 
 .sectionTitle {
-  margin: 0 0 12px 0;
-  font-size: 16px;
+  font-size: 11.5px;
   font-weight: 600;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: var(--text-3);
+  margin-bottom: 8px;
 }
 
 .taskItem {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
-  margin-bottom: 12px;
-  transition: var(--transition);
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
-.taskItem:hover {
-  background-color: rgba(76, 175, 80, 0.05);
-  transform: translateX(4px);
+.taskItem + .taskItem {
+  margin-top: 8px;
+}
+
+.taskActions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.actionButton {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--r-full);
+  font-size: 13px;
 }
 
 .taskItem.completed {
-  opacity: 0.6;
-  background-color: rgba(76, 175, 80, 0.1);
+  opacity: 0.62;
 }
 
 .taskItem.completed .taskTitle {
   text-decoration: line-through;
 }
 
-.taskActions {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.actionButton {
-  background-color: var(--background-white);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.actionButton:hover {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-}
-
-.taskCompleted {
-  color: var(--success-color);
-  font-weight: 500;
-}
-
-/* CareRecord 样式 */
-.careRecord {
-  background-color: var(--background-white);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow-light);
-  margin-bottom: 16px;
-}
-
-.recordHeader {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.recordIcon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.recordInfo {
-  flex: 1;
-}
-
-.recordTitle {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.recordPlant {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.recordType {
-  display: inline-block;
-  padding: 4px 8px;
-  background-color: var(--primary-light);
-  color: white;
-  border-radius: var(--border-radius-small);
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.recordActions {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.recordContent {
-  border-top: 1px solid var(--border-color);
-  padding-top: 16px;
-}
-
-.recordDescription {
-  margin: 0 0 12px 0;
-  color: var(--text-primary);
-  line-height: 1.6;
-}
-
-.recordNotes {
-  margin-bottom: 12px;
-}
-
-.notesLabel {
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-right: 8px;
-}
-
-.notesText {
-  margin: 8px 0 0 0;
-  padding: 12px;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
-  color: var(--text-primary);
-  line-height: 1.6;
-}
-
-.recordImages {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  overflow-x: auto;
-}
-
-.recordImage {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: var(--border-radius-small);
-  flex-shrink: 0;
-}
-
-.recordTime {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-/* CareReminder 样式 */
+/* ============ CareReminder 今日提醒 ============ */
 .careReminder {
-  background-color: var(--background-white);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow-light);
+  background: var(--grad-primary);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  color: var(--on-primary);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
 }
 
-.reminderTitle {
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
+.careReminder::after {
+  content: "⏰";
+  position: absolute;
+  right: -10px;
+  top: -12px;
+  font-size: 74px;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.careReminder .sectionTitle {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .reminderList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .reminderItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
-  border-left: 4px solid var(--primary-color);
-}
-
-.reminderContent {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(4px);
 }
 
 .reminderIcon {
-  font-size: 24px;
+  font-size: 17px;
   flex-shrink: 0;
 }
 
-.reminderInfo {
+.reminderContent {
   flex: 1;
+  min-width: 0;
 }
 
-.reminderTask {
-  margin: 0 0 4px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
+.reminderTitle {
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.reminderPlant {
-  margin: 0 0 4px 0;
-  font-size: 14px;
-  color: var(--text-secondary);
+.reminderInfo {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 10.5px;
+  opacity: 0.8;
 }
 
+.reminderTask,
+.reminderPlant,
 .reminderTime {
-  font-size: 12px;
-  color: var(--text-secondary);
+  white-space: nowrap;
 }
 
 .reminderActions {
-  display: flex;
-  gap: 8px;
   flex-shrink: 0;
 }
 
 .reminderAction {
-  padding: 8px 12px;
+  border: none;
+  background: var(--surface);
+  color: var(--primary);
+  border-radius: var(--r-full);
   font-size: 12px;
+  font-weight: 600;
 }
 
-.emptyReminders {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-/* CareStats 样式 */
+/* ============ CareStats 统计 ============ */
 .careStats {
-  background-color: var(--background-white);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow-light);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .statsTitle {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 12px;
 }
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
 }
 
 .statCard {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background-color: var(--background-light);
-  border-radius: var(--border-radius);
-  transition: var(--transition);
-}
-
-.statCard:hover {
-  background-color: rgba(76, 175, 80, 0.1);
-  transform: translateY(-2px);
+  gap: 4px;
+  padding: 10px 4px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .statIcon {
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.statContent {
-  flex: 1;
+  font-size: 16px;
 }
 
 .statValue {
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary-color);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-1);
   line-height: 1;
 }
 
 .statLabel {
-  display: block;
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 4px;
+  font-size: 10px;
+  color: var(--text-3);
 }
 
 .progressSection {
-  margin-bottom: 24px;
+  margin-top: 14px;
 }
 
 .progressHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .progressLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 11.5px;
+  color: var(--text-2);
 }
 
 .progressValue {
-  font-size: 18px;
+  font-size: 11.5px;
   font-weight: 700;
-  color: var(--primary-color);
-}
-
-.progress {
-  width: 100%;
+  color: var(--primary);
 }
 
 .weeklySection {
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-light) 100%
-  );
-  border-radius: var(--border-radius);
-  color: white;
+  margin-top: 14px;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  background: var(--primary-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .weeklyTitle {
-  margin: 0 0 12px 0;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
+  color: var(--primary);
 }
 
 .weeklyStats {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: baseline;
   gap: 4px;
 }
 
 .weeklyValue {
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--primary);
 }
 
 .weeklyLabel {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 10.5px;
+  color: var(--text-2);
 }
 
-/* CareForm 样式 */
+/* ============ CareRecord 记录 ============ */
+.careRecord {
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
+}
+
+.recordHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recordIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: var(--primary-soft);
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.recordInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.recordTitle {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.recordType {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.recordPlant,
+.recordTime {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.recordActions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 6px;
+}
+
+.recordContent {
+  margin-top: 10px;
+}
+
+.recordDescription {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.recordNotes {
+  margin-top: 8px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+}
+
+.notesLabel {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.notesText {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.recordImages {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.recordImage {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-sm);
+  object-fit: cover;
+}
+
+/* ============ CareForm 快速添加弹层 ============ */
 .formPopup {
-  height: 80vh;
-  overflow-y: auto;
-}
-
-.formContent {
-  padding: 20px;
-}
-
-.formHeader {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.formTitle {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
+  padding: 0;
 }
 
 .form {
-  margin-bottom: 24px;
+  padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+}
+
+.formHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.formTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
 }
 
 .formActions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-.cancelButton,
-.submitButton {
+.formActions .rv-button {
   flex: 1;
+  border-radius: var(--r-full);
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .nextTaskCard {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .taskItem {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .taskActions {
-    align-self: flex-end;
-  }
-
-  .reminderItem {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .reminderActions {
-    align-self: flex-end;
-  }
-
-  .formActions {
-    flex-direction: column;
-  }
+.submitButton {
+  flex: 1.4 !important;
 }
 
-@media (max-width: 480px) {
-  .planHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .planProgress {
-    align-self: flex-end;
-  }
-
-  .recordHeader {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .recordActions {
-    align-self: flex-end;
-  }
+.cancelButton {
+  color: var(--text-2);
 }
 
-/* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .carePlan,
-  .careRecord,
-  .careReminder,
-  .careStats {
-    background-color: var(--background-white);
-  }
-
-  .taskItem {
-    background-color: var(--background-light);
-  }
-
-  .statCard {
-    background-color: var(--background-light);
-  }
-
-  .notesText {
-    background-color: var(--background-light);
-  }
+.emptyReminders {
+  padding: 10px 0 4px;
+  font-size: 12px;
+  color: var(--text-3);
+  text-align: center;
 }

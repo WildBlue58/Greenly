@@ -51,21 +51,21 @@ const Home: React.FC = () => {
       icon: Plus,
       title: "添加植物",
       desc: "记录新的植物",
-      color: "#4CAF50",
+      color: "var(--primary)",
       onClick: () => navigate("/plant/add"),
     },
     {
       icon: ServiceO,
       title: "养护计划",
       desc: "查看养护安排",
-      color: "#8BC34A",
+      color: "var(--success)",
       onClick: () => navigate("/care"),
     },
     {
       icon: ChatO,
       title: "AI助手",
       desc: "智能养护咨询",
-      color: "#2196F3",
+      color: "var(--info)",
       onClick: () => navigate("/ai/chat"),
     },
   ];
@@ -247,7 +247,7 @@ const Home: React.FC = () => {
                 </div>
                 <Progress
                   percentage={Math.round(todayProgress.rate)}
-                  color="#4CAF50"
+                  color="var(--primary)"
                   strokeWidth={8}
                 />
                 <div className={styles.taskList}>

@@ -33,7 +33,7 @@ const PlantDetail: React.FC = () => {
   }, [id, plants]);
 
   const getStatusColor = (status: string) => {
-    return status === "healthy" ? "#4CAF50" : "#FF9800";
+    return status === "healthy" ? "var(--primary)" : "var(--warning)";
   };
 
   const getStatusText = (status: string) => {
@@ -56,13 +56,13 @@ const PlantDetail: React.FC = () => {
   const getCareLevelColor = (level: string) => {
     switch (level) {
       case "easy":
-        return "#4CAF50";
+        return "var(--primary)";
       case "medium":
-        return "#FF9800";
+        return "var(--warning)";
       case "hard":
-        return "#F44336";
+        return "var(--danger)";
       default:
-        return "#999";
+        return "var(--text-3)";
     }
   };
 
@@ -297,7 +297,7 @@ const PlantDetail: React.FC = () => {
           </div>
           <Progress
             percentage={Math.max(0, 100 - daysUntilWatering * 20)}
-            color={daysUntilWatering <= 1 ? "#F44336" : "#4CAF50"}
+            color={daysUntilWatering <= 1 ? "var(--danger)" : "var(--primary)"}
             strokeWidth={8}
           />
         </div>

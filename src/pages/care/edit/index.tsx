@@ -47,19 +47,19 @@ const priorities = [
   {
     value: "high",
     label: "高优先级",
-    color: "#F44336",
+    color: "var(--danger)",
     description: "紧急需要处理",
   },
   {
     value: "medium",
     label: "中优先级",
-    color: "#FF9800",
+    color: "var(--warning)",
     description: "正常优先级",
   },
   {
     value: "low",
     label: "低优先级",
-    color: "#4CAF50",
+    color: "var(--primary)",
     description: "不紧急，可延后",
   },
 ] as const;

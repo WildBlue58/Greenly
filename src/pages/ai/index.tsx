@@ -38,21 +38,21 @@ const AIPage: React.FC = () => {
       title: "植物识别",
       description: "拍照识别植物种类，获取专业养护建议",
       action: () => navigate("/ai/recognition"),
-      color: "#2196F3",
+      color: "var(--info)",
     },
     {
       icon: <PhotoO />,
       title: "图片生成",
       description: "根据描述生成植物相关的图片",
       action: () => Toast.info("图片生成功能即将上线！"),
-      color: "#FF9800",
+      color: "var(--warning)",
     },
     {
       icon: <Setting />,
       title: "AI设置",
       description: "配置AI模型和个性化选项",
       action: () => Toast.info("AI设置功能即将上线！"),
-      color: "#9C27B0",
+      color: "var(--primary)",
     },
   ];
 
@@ -254,7 +254,7 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
                     <div
                       className={styles.featureIcon}
                       style={{
-                        backgroundColor: `${feature.color}20`,
+                        backgroundColor: `color-mix(in srgb, ${feature.color} 14%, transparent)`,
                         color: feature.color,
                       }}
                     >
@@ -348,7 +348,7 @@ VITE_KIMI_API_KEY=sk-your-kimi-key`}
                 >
                   <div className={styles.messageContent}>
                     <div className={styles.loadingMessage}>
-                      <Loading size="small" color="#4CAF50">
+                      <Loading size="small" color="var(--primary)">
                         正在思考...
                       </Loading>
                     </div>

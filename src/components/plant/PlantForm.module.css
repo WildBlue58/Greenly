@@ -1,371 +1,129 @@
-/* 🌱 植物表单（添加/编辑共用） */
-
+/* ============================================================
+   植物表单（添加/编辑共用）— 自然有机风
+   ============================================================ */
 .plantForm {
   min-height: 100vh;
-  background: var(--bg-gradient-primary);
-  padding-bottom: 100px; /* 为底部导航留出空间 */
-  position: relative;
-  overflow-x: hidden;
+  background: var(--grad-hero);
+  padding-bottom: 40px;
 }
 
-/* 创造性背景装饰 */
-.plantForm::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    circle,
-    rgba(139, 195, 74, 0.05) 0%,
-    transparent 70%
-  );
-  animation: floating 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.plantForm::after {
-  content: "";
-  position: absolute;
-  bottom: -20%;
-  right: -20%;
-  width: 50%;
-  height: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(76, 175, 80, 0.05) 0%,
-    transparent 70%
-  );
-  animation: floating 10s ease-in-out infinite reverse;
-  pointer-events: none;
-}
-
-/* 🎨 头部样式 - 吸引力设计 */
+/* ---------- 头部 ---------- */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--space-xl) var(--space-2xl);
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  color: white;
-  box-shadow: var(--card-shadow-hover);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  pointer-events: none;
-}
-
-.backButton {
-  background: rgba(255, 255, 255, 0.25);
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all var(--transition-normal);
-  position: relative;
-  z-index: 1;
-}
-
-.backButton:hover {
-  background: rgba(255, 255, 255, 0.35);
-  transform: translateX(-4px) scale(1.05);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  gap: 10px;
+  padding: 12px 16px;
 }
 
 .title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  margin: 0;
   flex: 1;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-1);
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
+}
+
+.backButton {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
 }
 
 .placeholder {
-  width: 48px; /* 占位元素，保持标题居中 */
+  width: 36px;
 }
 
-/* 📋 内容区域 - 整洁布局 */
+/* ---------- 内容 ---------- */
 .content {
-  padding: var(--space-lg);
-  position: relative;
-  z-index: 1;
+  padding: 4px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-/* 🎨 卡片样式 - 现代设计 */
+/* ---------- 区块卡片 ---------- */
 .imageCard,
 .formCard {
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 0.6s var(--ease-out-cubic)
-    calc(var(--animation-delay, 0) * 0.2s) both;
-}
-
-.imageCard::before,
-.formCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.imageCard:hover,
-.formCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.imageCard:hover::before,
-.formCard:hover::before {
-  opacity: 1;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 4px 14px 14px;
 }
 
 .sectionTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  margin: 0 0 var(--space-lg) 0;
-  position: relative;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--primary);
+  padding: 12px 0 6px;
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 6px;
 }
 
 .sectionTitle::before {
-  content: attr(data-icon);
-  font-size: var(--font-size-xl);
-  opacity: 0.8;
+  content: "";
+  width: 4px;
+  height: 14px;
+  border-radius: var(--r-full);
+  background: var(--grad-primary);
 }
 
-/* 图片上传区域 */
+/* ---------- 照片上传 ---------- */
 .imageSection {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6px;
+}
+
+.imageSection :global(.rv-uploader__preview-image),
+.imageSection :global(.rv-uploader__upload) {
+  width: 210px;
+  height: 128px;
+  border-radius: var(--r-md);
 }
 
 .uploader {
-  width: 100%;
+  cursor: pointer;
 }
 
 .uploadPlaceholder {
+  width: 210px;
+  height: 128px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
-  border: 2px dashed #e0e0e0;
-  border-radius: 8px;
-  background: #fafafa;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 auto;
+  gap: 8px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-size: 20px;
+  transition: var(--transition);
 }
 
-.uploadPlaceholder:hover {
-  border-color: #4caf50;
-  background: #f8fff8;
+.uploadPlaceholder:active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
 }
 
 .uploadPlaceholder p {
-  margin: 8px 0 0 0;
-  font-size: 12px;
-  color: #666;
+  font-size: 11.5px;
 }
 
-.uploadArea {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  border: 2px dashed #4caf50;
-  border-radius: 8px;
-  background: #f8fffe;
-  color: #4caf50;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.uploadArea:hover {
-  background: #e8f5e8;
-  border-color: #388e3c;
-}
-
-.uploadText {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #4caf50;
-}
-
-/* 提交区域 */
+/* ---------- 提交 ---------- */
 .submitSection {
-  margin-top: 32px;
-  padding: 0 4px;
+  margin-top: 6px;
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-  transition: all 0.3s ease;
-}
-
-.submitButton:hover {
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-  transform: translateY(-2px);
-}
-
-.submitButton:active {
-  transform: translateY(0);
-}
-
-/* 表单字段自定义样式 */
-.formCard :global(.rv-field) {
-  padding: 16px 0;
-}
-
-.formCard :global(.rv-field__label) {
-  font-weight: 500;
-  color: #333;
-  width: 80px;
-}
-
-.formCard :global(.rv-field__control) {
-  color: #333;
-}
-
-.formCard :global(.rv-field--required .rv-field__label::after) {
-  content: "*";
-  color: #f44336;
-  margin-left: 4px;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .header {
-    padding: 12px 16px;
-  }
-
-  .title {
-    font-size: 16px;
-  }
-
-  .content {
-    padding: 12px;
-  }
-
-  .imageCard,
-  .formCard {
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-
-  .uploadPlaceholder {
-    width: 100px;
-    height: 100px;
-  }
-
-  .sectionTitle {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    padding: 8px 12px;
-  }
-
-  .backButton {
-    width: 36px;
-    height: 36px;
-  }
-
-  .placeholder {
-    width: 36px;
-  }
-
-  .content {
-    padding: 8px;
-  }
-
-  .uploadPlaceholder {
-    width: 80px;
-    height: 80px;
-  }
-
-  .uploadPlaceholder p {
-    font-size: 10px;
-  }
-}
-
-/* 加载状态 */
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  color: #666;
-}
-
-/* 成功状态 */
-.success {
-  text-align: center;
-  padding: 40px 20px;
-  color: #4caf50;
-}
-
-.success h3 {
-  margin: 16px 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.success p {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
+  width: 100%;
+  height: 46px;
+  font-size: 15px;
+  font-weight: 700;
 }

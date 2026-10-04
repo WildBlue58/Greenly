@@ -1,1015 +1,406 @@
-/* 🤖 AI页面 - 现代清新聊天体验 */
-
+/* ============================================================
+   AI 助手 — 欢迎页 + 聊天界面
+   ============================================================ */
 .aiPage {
   min-height: 100vh;
-  background: var(--bg-gradient-primary);
-  padding: var(--space-md);
-  position: relative;
-  overflow-x: hidden;
+  padding: 16px;
+  background: var(--grad-hero);
 }
 
-/* 背景装饰 - 科技感渐变 */
-.aiPage::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 120%;
-  height: 120%;
-  background:
-    radial-gradient(
-      circle at 20% 30%,
-      rgba(76, 175, 80, 0.03) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(139, 195, 74, 0.03) 0%,
-      transparent 50%
-    );
-  animation: floating 12s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* 🎨 头部区域 - 现代卡片设计 */
+/* ---------- 页面头部 ---------- */
 .header {
-  margin-bottom: var(--space-2xl);
-  animation: fadeInUp 0.8s var(--ease-out-cubic);
+  padding: 6px 0 14px;
 }
 
 .headerContent {
   display: flex;
   align-items: center;
-  padding: var(--space-xl);
-  background: var(--card-bg);
-  border-radius: var(--card-radius-large);
-  box-shadow: var(--card-shadow-hover);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  position: relative;
-  overflow: hidden;
-  transition: all var(--transition-normal);
-}
-
-.headerContent::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 50%,
-    var(--primary-600) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    background-position: 200% 0;
-  }
-  50% {
-    background-position: -200% 0;
-  }
-}
-
-.headerContent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 64px rgba(76, 175, 80, 0.15);
+  gap: 12px;
 }
 
 .headerIcon {
-  font-size: 56px;
-  margin-right: var(--space-lg);
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-md);
+  background: var(--grad-primary);
+  font-size: 23px;
+  box-shadow: 0 6px 16px var(--primary-glow);
 }
 
 .headerText {
-  flex: 1;
-  position: relative;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  margin: 0 0 var(--space-xs) 0;
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--gray-800);
-  background: linear-gradient(
-    135deg,
-    var(--gray-800) 0%,
-    var(--primary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-1);
 }
 
 .subtitle {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--gray-600);
-  line-height: var(--line-height-relaxed);
-  opacity: 0.9;
+  font-size: 11.5px;
+  color: var(--text-3);
 }
 
-/* 💡 功能区域 - 交互式卡片 */
+/* ---------- 配置警告 ---------- */
+.configWarning {
+  margin-bottom: 14px;
+}
+
+.warningCard {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--warning-soft);
+  background: var(--warning-soft);
+  padding: 14px;
+}
+
+.warningContent {
+  display: flex;
+  gap: 10px;
+}
+
+.warningIcon {
+  font-size: 20px;
+}
+
+.warningText h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--warning);
+}
+
+.warningText p {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.codeBlock {
+  margin: 8px 0;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+}
+
+.codeBlock pre {
+  font-size: 10.5px;
+  color: var(--text-1);
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.helpText {
+  font-size: 10.5px !important;
+  color: var(--text-3) !important;
+}
+
+/* ---------- 欢迎卡片 ---------- */
+.welcomeSection {
+  margin-bottom: 16px;
+}
+
+.welcomeCard {
+  border-radius: var(--r-xl);
+  border: 1px solid var(--divider);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  padding: 22px 18px;
+}
+
+.welcomeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.welcomeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: var(--r-full);
+  background: var(--grad-leaf);
+  font-size: 30px;
+}
+
+.welcomeTitle {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.welcomeDesc {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.configStatus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  border-radius: var(--r-full);
+  background: var(--surface-2);
+}
+
+.statusLabel {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.statusItem {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.configured {
+  color: var(--primary);
+}
+
+.notConfigured {
+  color: var(--text-3);
+}
+
+/* ---------- 快捷问题 ---------- */
+.quickQuestions {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.quickTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.questionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.quickButton {
+  border-radius: var(--r-md);
+  font-size: 11.5px;
+  height: 36px;
+}
+
+.actionButtons {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.startChatButton {
+  width: 100%;
+  height: 46px;
+  font-weight: 700;
+  border-radius: var(--r-full);
+}
+
+.disabledHint {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* ---------- 功能网格 ---------- */
 .featuresSection {
-  margin-bottom: var(--space-2xl);
-  animation: fadeInUp 1s var(--ease-out-cubic) 0.2s both;
+  margin-bottom: 10px;
 }
 
 .featuresTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-700);
-  margin: 0 0 var(--space-lg) 0;
-  text-align: center;
-  position: relative;
-}
-
-.featuresTitle::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 10px;
 }
 
 .featuresGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 .featureCard {
-  border-radius: var(--card-radius);
-  border: none;
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  height: 140px;
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  position: relative;
-  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 8px;
+  transition: var(--transition);
 }
 
-.featureCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(76, 175, 80, 0.05),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.featureCard:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.featureCard:hover::before {
-  left: 100%;
+.featureCard:active {
+  transform: scale(0.96);
 }
 
 .featureContent {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   text-align: center;
-  padding: var(--space-lg) var(--space-md);
-  height: 100%;
-  position: relative;
-  z-index: 1;
 }
 
 .featureIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--card-radius-small);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-md);
-  font-size: var(--font-size-2xl);
-  background: linear-gradient(
-    135deg,
-    var(--primary-100) 0%,
-    var(--primary-200) 100%
-  );
-  color: var(--primary-600);
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
-}
-
-.featureCard:hover .featureIcon {
-  transform: scale(1.1) rotate(-5deg);
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.25);
-}
-
-.featureInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  font-size: 18px;
 }
 
 .featureTitle {
-  margin: 0 0 var(--space-xs) 0;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  line-height: var(--line-height-tight);
-  transition: color var(--transition-normal);
-}
-
-.featureCard:hover .featureTitle {
-  color: var(--primary-600);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-1);
 }
 
 .featureDesc {
-  margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--gray-600);
-  line-height: var(--line-height-normal);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  overflow: hidden;
-}
-
-.quickStart {
-  margin-bottom: 24px;
-}
-
-.quickStartCard {
-  border-radius: 12px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.quickStartContent {
-  text-align: center;
-  padding: 24px 16px;
-}
-
-.quickStartTitle {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.quickStartDesc {
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  color: #666;
+  font-size: 10px;
+  color: var(--text-3);
   line-height: 1.5;
 }
 
-.configStatus {
-  margin: 12px 0 16px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 12px;
-}
-
-.statusLabel {
-  color: #666;
-  font-weight: 500;
-}
-
-.statusItem {
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-weight: 500;
-}
-
-.configured {
-  background: #e8f5e8;
-  color: #2e7d32;
-}
-
-.notConfigured {
-  background: #ffebee;
-  color: #c62828;
-}
-
-/* API配置警告样式 */
-.configWarning {
-  margin-bottom: 24px;
-}
-
-.warningCard {
-  border-radius: 12px;
-  border: 2px solid #ff9800;
-  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.1);
-  background: #fff8e1;
-}
-
-.warningContent {
-  display: flex;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-.warningIcon {
-  font-size: 32px;
-  margin-right: 16px;
-  flex-shrink: 0;
-}
-
-.warningText {
-  flex: 1;
-}
-
-.warningText h3 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #e65100;
-}
-
-.warningText p {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  color: #bf360c;
-  line-height: 1.5;
-}
-
-.warningText code {
-  background: #ff8f00;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-family: "Courier New", monospace;
-}
-
-.codeBlock {
-  margin: 12px 0;
-  background: #f57f17;
-  border-radius: 8px;
-  padding: 12px;
-}
-
-.codeBlock pre {
-  margin: 0;
-  color: white;
-  font-size: 12px;
-  font-family: "Courier New", monospace;
-  line-height: 1.4;
-  white-space: pre-wrap;
-}
-
-.helpText {
-  margin-top: 12px !important;
-  font-size: 13px !important;
-  color: #d84315 !important;
-}
-
-/* 欢迎界面样式 */
-.welcomeSection {
-  margin-bottom: 24px;
-}
-
-.welcomeCard {
-  border-radius: 16px;
-  border: none;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.welcomeContent {
-  text-align: center;
-  padding: 32px 24px;
-}
-
-.welcomeIcon {
-  font-size: 64px;
-  margin-bottom: 16px;
-  display: block;
-}
-
-.welcomeTitle {
-  margin: 0 0 12px 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
-.welcomeDesc {
-  margin: 0 0 24px 0;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-}
-
-/* ⚡ 快速问题 - 智能推荐 */
-.quickQuestions {
-  margin: var(--space-2xl) 0;
-  text-align: left;
-  animation: fadeInUp 1.2s var(--ease-out-cubic) 0.4s both;
-}
-
-.quickTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-700);
-  margin: 0 0 var(--space-lg) 0;
-  text-align: center;
-  position: relative;
-}
-
-.quickTitle::before {
-  content: "💡";
-  margin-right: var(--space-sm);
-}
-
-.quickTitle::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-400) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: 1px;
-}
-
-.questionsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
-  margin-bottom: var(--space-2xl);
-}
-
-.quickButton {
-  text-align: center;
-  justify-content: center;
-  border-radius: var(--card-radius-small);
-  font-size: var(--font-size-xs);
-  padding: var(--space-md) var(--space-lg);
-  height: auto;
-  line-height: var(--line-height-normal);
-  border: 2px solid var(--primary-100);
-  background: var(--primary-50);
-  color: var(--primary-600);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  font-weight: var(--font-weight-medium);
-}
-
-.quickButton::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(76, 175, 80, 0.1),
-    transparent
-  );
-  transition: left var(--transition-slow);
-}
-
-.quickButton:hover:not(:disabled) {
-  background: var(--primary-100);
-  border-color: var(--primary-300);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.2);
-}
-
-.quickButton:hover:not(:disabled)::before {
-  left: 100%;
-}
-
-.quickButton:disabled {
-  background: var(--gray-100);
-  color: var(--gray-400);
-  border-color: var(--gray-200);
-  cursor: not-allowed;
-}
-
-.actionButtons {
-  width: 100%;
-}
-
-.startChatButton {
-  width: 100%;
-  height: 48px;
-  border-radius: 24px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.disabledHint {
-  margin: 8px 0 0 0;
-  font-size: 12px;
-  color: #999;
-  text-align: center;
-}
-
-/* 💬 聊天界面 - 沉浸式体验 */
+/* ============ 聊天界面 ============ */
 .chatContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background: var(--bg-gradient-primary);
-  position: relative;
-}
-
-.chatContainer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(
-      circle at 10% 20%,
-      rgba(76, 175, 80, 0.02) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 90% 80%,
-      rgba(139, 195, 74, 0.02) 0%,
-      transparent 50%
-    );
-  pointer-events: none;
+  min-height: calc(100vh - 32px);
 }
 
 .chatHeader {
   display: flex;
   align-items: center;
-  padding: var(--space-lg);
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--card-border);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px);
-  position: relative;
-  z-index: 10;
-}
-
-.chatHeader::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--primary-200),
-    transparent
-  );
+  gap: 12px;
+  padding-bottom: 12px;
 }
 
 .backButton {
-  margin-right: var(--space-md);
-  background: var(--primary-50);
-  color: var(--primary-600);
-  border: 1px solid var(--primary-200);
-  transition: all var(--transition-normal);
-}
-
-.backButton:hover {
-  background: var(--primary-100);
-  transform: translateX(-2px);
+  border-radius: var(--r-full);
 }
 
 .chatHeaderInfo {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatTitle {
-  margin: 0;
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-800);
-  background: linear-gradient(
-    135deg,
-    var(--gray-800) 0%,
-    var(--primary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-1);
 }
 
 .chatSubtitle {
-  margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--gray-600);
-  opacity: 0.8;
-  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-3);
 }
 
 .messagesContainer {
   flex: 1;
-  overflow-y: auto;
-  padding: var(--space-lg);
-  padding-bottom: 180px; /* 为输入框和导航栏留出空间 */
-  position: relative;
-  z-index: 1;
+  min-height: 50vh;
 }
 
 .messagesList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 12px;
 }
 
+/* 气泡 */
 .messageItem {
   display: flex;
-  margin-bottom: var(--space-sm);
-  animation: messageSlideIn 0.6s var(--ease-out-cubic);
-}
-
-@keyframes messageSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  max-width: 86%;
 }
 
 .userMessage {
-  justify-content: flex-end;
+  align-self: flex-end;
 }
 
 .assistantMessage {
-  justify-content: flex-start;
+  align-self: flex-start;
 }
 
 .messageContent {
-  max-width: 75%;
-  padding: var(--space-lg) var(--space-xl);
-  border-radius: var(--card-radius-large);
-  position: relative;
-  backdrop-filter: blur(20px);
-  transition: all var(--transition-normal);
-}
-
-.messageContent:hover {
-  transform: translateY(-1px);
+  border-radius: var(--r-lg);
+  padding: 10px 13px;
+  font-size: 13px;
+  line-height: 1.65;
 }
 
 .userMessage .messageContent {
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  color: white;
-  border-bottom-right-radius: 8px;
-  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.userMessage .messageContent::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: inherit;
-  pointer-events: none;
+  background: var(--grad-primary);
+  color: var(--on-primary);
+  border-bottom-right-radius: var(--r-sm);
 }
 
 .assistantMessage .messageContent {
-  background: var(--card-bg);
-  color: var(--gray-800);
-  border-bottom-left-radius: 8px;
-  box-shadow: var(--card-shadow-hover);
-  border: 1px solid var(--card-border);
-  position: relative;
-}
-
-.assistantMessage .messageContent::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border-radius: 2px 0 0 2px;
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  color: var(--text-1);
+  border-bottom-left-radius: var(--r-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .messageText {
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-relaxed);
-  word-wrap: break-word;
   white-space: pre-wrap;
-  position: relative;
-  z-index: 1;
-}
-
-.userMessage .messageText {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.assistantMessage .messageText {
-  color: var(--gray-700);
+  word-break: break-word;
 }
 
 .messageTime {
-  font-size: 10px;
+  margin-top: 4px;
+  font-size: 9.5px;
   opacity: 0.6;
-  margin-top: var(--space-xs);
-  font-family: var(--font-mono, monospace);
-  letter-spacing: 0.5px;
-  font-weight: var(--font-weight-medium);
-  transition: opacity var(--transition-normal);
-}
-
-.messageContent:hover .messageTime {
-  opacity: 0.8;
-}
-
-.userMessage .messageTime {
-  text-align: right;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.assistantMessage .messageTime {
-  text-align: left;
-  color: var(--gray-500);
 }
 
 .loadingMessage {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #666;
-  padding: 8px 0;
+  color: var(--primary);
+  font-size: 12.5px;
 }
 
+/* 空聊天 */
 .emptyChat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #999;
+  padding: 44px 12px 24px;
+  text-align: center;
 }
 
 .emptyChatIcon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  font-size: 44px;
 }
 
 .emptyChatText {
-  font-size: 14px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-2);
 }
 
-/* 📝 输入区域 - 浮动设计 */
-.inputSection {
-  position: fixed;
-  bottom: 90px; /* 底部导航栏的高度 */
-  left: var(--space-md);
-  right: var(--space-md);
-  background: var(--card-bg);
-  padding: var(--space-lg);
-  border-top: 1px solid var(--card-border);
-  box-shadow: var(--card-shadow-hover);
-  border-radius: var(--card-radius-large);
-  backdrop-filter: blur(30px);
-  z-index: 999;
-  border: 1px solid var(--card-border);
-  transition: all var(--transition-normal);
-}
-
-.inputSection:hover {
-  box-shadow: 0 12px 48px rgba(76, 175, 80, 0.15);
-  transform: translateY(-2px);
-}
-
-.inputContainer {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-md);
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.messageInput {
-  flex: 1;
-  min-height: 44px;
-  max-height: 140px;
-  border: 2px solid var(--gray-200);
-  border-radius: var(--card-radius-large);
-  padding: var(--space-md) var(--space-lg);
-  font-size: var(--font-size-sm);
-  resize: none;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  overflow-y: auto;
-  word-wrap: break-word;
-  transition: all var(--transition-normal);
-  line-height: var(--line-height-normal);
-}
-
-.messageInput::placeholder {
-  color: var(--gray-400);
-  font-style: italic;
-}
-
-.messageInput:focus {
-  outline: none;
-  border-color: var(--primary-400);
-  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-  transform: translateY(-1px);
-}
-
-.sendButton {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--green-light) 100%
-  );
-  border: none;
-  color: white;
-  transition: all var(--transition-normal);
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.sendButton::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.sendButton:hover::before {
-  opacity: 1;
-}
-
-.sendButton:disabled {
-  background: var(--gray-300);
-  color: var(--gray-500);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-.sendButton:not(:disabled):hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 24px rgba(76, 175, 80, 0.4);
-}
-
-.sendButton:not(:disabled):active {
-  transform: scale(0.95);
-}
-
-/* 消息动画 */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 用户消息特殊样式 */
-.userMessage .messageContent::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: -8px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid #4caf50;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-}
-
-/* 助手消息特殊样式 */
-.assistantMessage .messageContent::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: -8px;
-  width: 0;
-  height: 0;
-  border-right: 8px solid white;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-}
-
-/* 滚动条样式 */
-.messagesContainer::-webkit-scrollbar {
-  width: 4px;
-}
-
-.messagesContainer::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.messagesContainer::-webkit-scrollbar-thumb {
-  background: rgba(76, 175, 80, 0.3);
-  border-radius: 2px;
-}
-
-.messagesContainer::-webkit-scrollbar-thumb:hover {
-  background: rgba(76, 175, 80, 0.5);
-}
-
-/* 聊天界面中的快捷问题样式 */
 .quickQuestionsInChat {
+  width: 100%;
   margin-top: 20px;
-  padding: 15px;
-  background: rgba(76, 175, 80, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(76, 175, 80, 0.15);
 }
 
 .quickTitleInChat {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 12px 0;
-  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 8px;
 }
 
 .questionsGridInChat {
@@ -1019,208 +410,38 @@
 }
 
 .quickButtonInChat {
-  padding: 8px 12px;
-  font-size: 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(76, 175, 80, 0.3);
-  background: #fff;
-  color: #4caf50;
-  transition: all 0.2s ease;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border-radius: var(--r-md);
+  font-size: 11.5px;
+  height: 36px;
 }
 
-.quickButtonInChat:hover {
-  background: rgba(76, 175, 80, 0.1);
-  border-color: #4caf50;
+/* 输入区 */
+.inputSection {
+  position: sticky;
+  bottom: 14px;
+  margin-top: 12px;
 }
 
-.quickButtonInChat:active {
-  background: rgba(76, 175, 80, 0.15);
+.inputContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--divider);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
 }
 
-/* 📱 响应式设计 - 移动优先 */
-@media (max-width: 768px) {
-  .aiPage {
-    padding: var(--space-sm);
-  }
-
-  .featuresGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .questionsGrid {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
-
-  .quickButton {
-    font-size: var(--font-size-xs);
-    padding: var(--space-sm) var(--space-md);
-  }
-
-  .headerIcon {
-    font-size: 48px;
-  }
-
-  .title {
-    font-size: var(--font-size-xl);
-  }
-
-  .messageContent {
-    max-width: 90%;
-    padding: var(--space-md) var(--space-lg);
-  }
-
-  .messageText {
-    font-size: var(--font-size-xs);
-  }
-
-  .inputSection {
-    left: var(--space-sm);
-    right: var(--space-sm);
-    padding: var(--space-md);
-    bottom: 75px;
-  }
-
-  .messageInput {
-    min-height: 40px;
-    padding: var(--space-sm) var(--space-md);
-    font-size: var(--font-size-xs);
-  }
-
-  .sendButton {
-    width: 40px;
-    height: 40px;
-  }
-
-  .chatHeader {
-    padding: var(--space-md);
-  }
-
-  .messagesContainer {
-    padding: var(--space-md);
-    padding-bottom: 160px;
-  }
-
-  .featureCard {
-    height: 120px;
-  }
-
-  .featureIcon {
-    width: 48px;
-    height: 48px;
-    font-size: var(--font-size-lg);
-  }
+.messageInput {
+  flex: 1;
+  background: transparent;
 }
 
-@media (max-width: 480px) {
-  .headerContent {
-    padding: var(--space-lg);
-  }
-
-  .headerIcon {
-    font-size: 40px;
-    margin-right: var(--space-md);
-  }
-
-  .title {
-    font-size: var(--font-size-lg);
-  }
-
-  .featureCard {
-    height: 100px;
-  }
-
-  .featureContent {
-    padding: var(--space-md) var(--space-sm);
-  }
-
-  .featureIcon {
-    width: 40px;
-    height: 40px;
-    font-size: var(--font-size-base);
-    margin-bottom: var(--space-sm);
-  }
-
-  .featureTitle {
-    font-size: var(--font-size-xs);
-  }
-
-  .featureDesc {
-    font-size: 10px;
-  }
-
-  .inputSection {
-    bottom: 70px;
-    padding: var(--space-sm);
-  }
-
-  .messageInput {
-    min-height: 36px;
-  }
-
-  .sendButton {
-    width: 36px;
-    height: 36px;
-  }
-
-  .messageContent {
-    padding: var(--space-sm) var(--space-md);
-  }
-}
-
-@media (max-width: 480px) {
-  .aiPage {
-    padding: 12px;
-  }
-
-  .headerContent {
-    padding: 16px;
-  }
-
-  .headerIcon {
-    font-size: 40px;
-    margin-right: 12px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .featureCard {
-    height: 100px;
-  }
-
-  .featureContent {
-    padding: 12px 6px;
-  }
-
-  .featureIcon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .featureTitle {
-    font-size: 13px;
-  }
-
-  .featureDesc {
-    font-size: 11px;
-  }
-
-  .quickChatMessages {
-    max-height: 150px;
-  }
-
-  .quickQuestionsGrid {
-    gap: 4px;
-  }
-
-  .quickQuestionButton {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
+.sendButton {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  flex-shrink: 0;
 }

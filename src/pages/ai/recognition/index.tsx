@@ -481,7 +481,7 @@ ${result.careAdvice}`;
                   >
                     <div className={styles.messageContent}>
                       <div className={styles.loadingMessage}>
-                        <Loading size="small" color="#4CAF50">
+                        <Loading size="small" color="var(--primary)">
                           正在思考...
                         </Loading>
                       </div>
