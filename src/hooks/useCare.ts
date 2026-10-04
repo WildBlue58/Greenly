@@ -7,163 +7,73 @@ import type { CareRecord, CareTask } from '../store/types';
  * 提供养护计划、任务、记录管理等功能
  */
 export const useCare = () => {
-  const store = useStore() as any;
-  
-  // 从store中提取养护相关状态和方法
-  const carePlans = store.carePlans || [];
-  const careRecords = store.careRecords || [];
-  const careTasks = store.careTasks || [];
-  const careLoading = store.careLoading;
-  const fetchCarePlans = store.fetchCarePlans;
-  const fetchCareRecords = store.fetchCareRecords;
-  const fetchCareTasks = store.fetchCareTasks;
-  const addCareTask = store.addCareTask;
-  const updateCareTask = store.updateCareTask;
-  const deleteCareTask = store.deleteCareTask;
-  const completeCareTask = store.completeCareTask;
-  const addCareRecord = store.addCareRecord;
-  const deleteCareRecord = store.deleteCareRecord;
-  const generateCarePlan = store.generateCarePlan;
+  const store = useStore();
 
-  /**
-   * 获取养护计划
-   */
-  const handleFetchCarePlans = useCallback(async () => {
-    try {
-      await fetchCarePlans();
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '获取养护计划失败' };
-    }
-  }, [fetchCarePlans]);
-
-  /**
-   * 获取养护记录
-   */
-  const handleFetchCareRecords = useCallback(async () => {
-    try {
-      await fetchCareRecords();
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '获取养护记录失败' };
-    }
-  }, [fetchCareRecords]);
-
-  /**
-   * 获取养护任务
-   */
-  const handleFetchCareTasks = useCallback(async () => {
-    try {
-      await fetchCareTasks();
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '获取养护任务失败' };
-    }
-  }, [fetchCareTasks]);
+  const carePlans = store.carePlans;
+  const careRecords = store.careRecords;
+  const careTasks = store.careTasks;
 
   /**
    * 添加养护任务
    */
   const handleAddCareTask = useCallback(async (taskData: Partial<CareTask>) => {
-    try {
-      const result = await addCareTask(taskData);
-      return result; // 直接返回store的结果
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '添加养护任务失败' };
-    }
-  }, [addCareTask]);
+    return store.addCareTask(taskData);
+  }, [store]);
 
   /**
    * 更新养护任务
    */
   const handleUpdateCareTask = useCallback(async (id: string, taskData: Partial<CareTask>) => {
-    try {
-      await updateCareTask(id, taskData);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '更新养护任务失败' };
-    }
-  }, [updateCareTask]);
+    return store.updateCareTask(id, taskData);
+  }, [store]);
 
   /**
    * 删除养护任务
    */
   const handleDeleteCareTask = useCallback(async (id: string) => {
-    try {
-      const result = await deleteCareTask(id);
-      return result;
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '删除养护任务失败' };
-    }
-  }, [deleteCareTask]);
+    return store.deleteCareTask(id);
+  }, [store]);
 
   /**
    * 完成养护任务
    */
   const handleCompleteCareTask = useCallback(async (id: string) => {
-    try {
-      const result = await completeCareTask(id);
-      return result;
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '完成养护任务失败' };
-    }
-  }, [completeCareTask]);
+    return store.completeCareTask(id);
+  }, [store]);
 
   /**
    * 添加养护记录
    */
   const handleAddCareRecord = useCallback(async (recordData: Partial<CareRecord>) => {
-    try {
-      const result = await addCareRecord(recordData);
-      return result; // 直接返回store的结果
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '添加养护记录失败' };
-    }
-  }, [addCareRecord]);
+    return store.addCareRecord(recordData);
+  }, [store]);
 
   /**
    * 删除养护记录
    */
   const handleDeleteCareRecord = useCallback(async (id: string) => {
-    try {
-      await deleteCareRecord(id);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '删除养护记录失败' };
-    }
-  }, [deleteCareRecord]);
-
-  /**
-   * 生成养护计划
-   */
-  const handleGenerateCarePlan = useCallback(async (plantId: string) => {
-    try {
-      const plan = await generateCarePlan(plantId);
-      return { success: true, data: plan };
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : '生成养护计划失败' };
-    }
-  }, [generateCarePlan]);
+    return store.deleteCareRecord(id);
+  }, [store]);
 
   /**
    * 获取待完成的任务
    */
   const pendingTasks = useMemo(() => {
-    return careTasks.filter((task: CareTask) => !task.completed);
+    return careTasks.filter((task) => !task.completed);
   }, [careTasks]);
 
   /**
    * 获取已完成的任务
    */
   const completedTasks = useMemo(() => {
-    return careTasks.filter((task: CareTask) => task.completed);
+    return careTasks.filter((task) => task.completed);
   }, [careTasks]);
 
   /**
    * 获取高优先级任务
    */
   const highPriorityTasks = useMemo(() => {
-    return careTasks.filter((task: CareTask) => task.priority === 'high' && !task.completed);
+    return careTasks.filter((task) => task.priority === 'high' && !task.completed);
   }, [careTasks]);
 
   /**
@@ -175,7 +85,7 @@ export const useCare = () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    return careTasks.filter((task: CareTask) => {
+    return careTasks.filter((task) => {
       const dueDate = new Date(task.dueDate);
       return dueDate >= today && dueDate < tomorrow;
     });
@@ -186,7 +96,7 @@ export const useCare = () => {
    */
   const overdueTasks = useMemo(() => {
     const now = new Date();
-    return careTasks.filter((task: CareTask) => {
+    return careTasks.filter((task) => {
       const dueDate = new Date(task.dueDate);
       return dueDate < now && !task.completed;
     });
@@ -218,27 +128,22 @@ export const useCare = () => {
     carePlans,
     careRecords,
     careTasks,
-    careLoading,
-    
+
     // 方法
-    fetchCarePlans: handleFetchCarePlans,
-    fetchCareRecords: handleFetchCareRecords,
-    fetchCareTasks: handleFetchCareTasks,
     addCareTask: handleAddCareTask,
     updateCareTask: handleUpdateCareTask,
     deleteCareTask: handleDeleteCareTask,
     completeCareTask: handleCompleteCareTask,
     addCareRecord: handleAddCareRecord,
     deleteCareRecord: handleDeleteCareRecord,
-    generateCarePlan: handleGenerateCarePlan,
-    
+
     // 筛选数据
     pendingTasks,
     completedTasks,
     highPriorityTasks,
     todayTasks,
     overdueTasks,
-    
+
     // 统计信息
     careStats,
   };

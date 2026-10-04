@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Button, Cell, Tag, Dialog, Field } from "react-vant";
 import {
   UserO,
@@ -20,8 +20,7 @@ import { useTitle } from "../../../hooks";
 const UserProfile: React.FC = () => {
   useTitle();
   const { user, plants, updateProfile } = useStore();
-  const { careTasks, careRecords, fetchCareTasks, fetchCareRecords } =
-    useCare();
+  const { careTasks, careRecords } = useCare();
   const navigate = useNavigate();
   const [showEditName, setShowEditName] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
@@ -29,12 +28,6 @@ const UserProfile: React.FC = () => {
   // const [activeTab, setActiveTab] = useState<"profile" | "stats" | "settings">(
   //   "profile"
   // );
-
-  // 获取养护任务和记录数据
-  useEffect(() => {
-    fetchCareTasks();
-    fetchCareRecords();
-  }, [fetchCareTasks, fetchCareRecords]);
 
   // 计算用户活跃天数（基于用户创建时间）
   const calculateDaysActive = () => {

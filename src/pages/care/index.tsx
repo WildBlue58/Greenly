@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Toast } from "react-vant";
 import { Add } from "@react-vant/icons";
@@ -32,10 +32,6 @@ const CarePage: React.FC = () => {
   const {
     careRecords,
     careTasks,
-    careLoading,
-    fetchCarePlans,
-    fetchCareRecords,
-    fetchCareTasks,
     addCareTask,
     deleteCareTask,
     completeCareTask,
@@ -46,25 +42,7 @@ const CarePage: React.FC = () => {
   } = useCare();
 
   // 使用植物相关hooks
-  const { plants, fetchPlants } = usePlant();
-
-  // 初始化数据
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        await Promise.all([
-          fetchCarePlans(),
-          fetchCareRecords(),
-          fetchCareTasks(),
-          fetchPlants(),
-        ]);
-      } catch (error) {
-        console.error("加载数据失败:", error);
-        alert("加载数据失败");
-      }
-    };
-    loadData();
-  }, [fetchCarePlans, fetchCareRecords, fetchCareTasks, fetchPlants]);
+  const { plants } = usePlant();
 
   // 添加养护任务
   const handleAddTask = useCallback(
@@ -75,8 +53,6 @@ const CarePage: React.FC = () => {
           // 测试：使用alert替代Toast
           alert("添加任务成功");
           setShowAddForm(false);
-          // 重新获取数据
-          await fetchCareTasks();
         } else {
           alert(`添加任务失败: ${result.error || "未知错误"}`);
         }
@@ -85,7 +61,7 @@ const CarePage: React.FC = () => {
         alert("添加任务失败");
       }
     },
-    [addCareTask, fetchCareTasks]
+    [addCareTask]
   );
 
   // 编辑养护任务
@@ -108,8 +84,6 @@ const CarePage: React.FC = () => {
         const result = await deleteCareTask(task.id);
         if (result?.success) {
           alert("删除任务成功");
-          // 重新获取数据
-          await fetchCareTasks();
         } else {
           alert(`删除任务失败: ${result?.error || "未知错误"}`);
         }
@@ -118,7 +92,7 @@ const CarePage: React.FC = () => {
         alert("删除任务失败");
       }
     },
-    [deleteCareTask, fetchCareTasks]
+    [deleteCareTask]
   );
 
   // 完成养护任务
@@ -133,8 +107,6 @@ const CarePage: React.FC = () => {
         const result = await completeCareTask(task.id);
         if (result?.success) {
           alert("任务已完成");
-          // 重新获取数据
-          await fetchCareTasks();
         } else {
           alert(`操作失败: ${result?.error || "未知错误"}`);
         }
@@ -143,7 +115,7 @@ const CarePage: React.FC = () => {
         alert("操作失败");
       }
     },
-    [completeCareTask, fetchCareTasks]
+    [completeCareTask]
   );
 
   // 关闭表单
@@ -176,8 +148,6 @@ const CarePage: React.FC = () => {
         const result = await deleteCareRecord(record.id);
         if (result.success) {
           Toast.success("删除记录成功");
-          // 重新获取数据
-          await fetchCareRecords();
         } else {
           Toast.fail(result.error || "删除记录失败");
         }
@@ -186,7 +156,7 @@ const CarePage: React.FC = () => {
         Toast.fail("删除记录失败");
       }
     },
-    [deleteCareRecord, fetchCareRecords]
+    [deleteCareRecord]
   );
 
   // 过滤待完成的任务
@@ -263,7 +233,7 @@ const CarePage: React.FC = () => {
     [pendingTasks.length, completedTasks.length, careRecords.length]
   );
 
-  if (careLoading && careTasks.length === 0) {
+  if (careTasks.length === 0 && careRecords.length === 0) {
     return <Loading visible />;
   }
 
@@ -440,7 +410,6 @@ const CarePage: React.FC = () => {
         onClose={handleCloseForm}
         onSubmit={handleAddTask}
         plants={plantOptions}
-        loading={careLoading}
       />
 
       {/* 浮动添加按钮 */}

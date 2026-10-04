@@ -277,7 +277,7 @@ export const plantCareChat = async (
  * @param onChunk 流式数据回调
  * @param chatHistory 聊天历史（可选）
  * @param model 模型名称
- * @returns 
+ * @returns
  */
 export const streamPlantCareChat = async (
   userMessage: string,
@@ -322,5 +322,82 @@ export const streamPlantCareChat = async (
   }
 
   return await streamChat(messages, onChunk, api_url, api_key, model_name);
+};
+
+/** 植物视觉识别结果 */
+export interface PlantVisionResult {
+  plantName: string;
+  scientificName: string;
+  confidence: number;
+  description: string;
+  careAdvice: string;
+}
+
+const PLANT_RECOGNITION_PROMPT = `请分析这张植物图片，识别植物种类并提供养护建议。请返回JSON格式数据：
+{
+  "plantName": "植物中文名称",
+  "scientificName": "植物学名",
+  "confidence": 0.95,
+  "description": "植物详细描述",
+  "careAdvice": "详细的养护建议，包括浇水、光照、温度、施肥等方面"
+}`;
+
+/**
+ * 植物图片识别（Kimi 视觉模型）
+ * @param imageDataUrl 图片的 data URL（base64）
+ */
+export const recognizePlantImage = async (
+  imageDataUrl: string
+): Promise<{ code: number; data?: PlantVisionResult; msg?: string }> => {
+  const api_key = import.meta.env.VITE_KIMI_API_KEY;
+  if (!api_key) {
+    return {
+      code: 1,
+      msg: "Kimi API密钥未配置。请在项目根目录创建.env.local文件并添加: VITE_KIMI_API_KEY=您的密钥",
+    };
+  }
+
+  try {
+    const response = await fetch(KIMI_CHAT_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${api_key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "moonshot-v1-8k-vision-preview",
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "image_url", image_url: { url: imageDataUrl } },
+              { type: "text", text: PLANT_RECOGNITION_PROMPT },
+            ],
+          },
+        ],
+      }),
+    });
+
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.error?.message || `识别请求失败: ${response.status}`);
+    }
+
+    const resultText: string = payload.choices?.[0]?.message?.content ?? "";
+    // 模型可能用 ```json ... ``` 包裹返回内容，先剥掉围栏
+    const jsonText = resultText
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/, "")
+      .trim();
+    const result = JSON.parse(jsonText) as PlantVisionResult;
+
+    return { code: 0, data: result };
+  } catch (err) {
+    console.error("植物识别失败:", err);
+    return {
+      code: 1,
+      msg: err instanceof Error ? err.message : "植物识别出错",
+    };
+  }
 };
 

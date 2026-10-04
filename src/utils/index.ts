@@ -8,9 +8,6 @@ export * from './date';
 // 导出表单验证工具
 export * from './validation';
 
-// 导出本地存储工具
-export * from './storage';
-
 // 导出通用辅助函数
 export * from './helpers';
 

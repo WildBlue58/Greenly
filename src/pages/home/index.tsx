@@ -19,8 +19,8 @@ import styles from "./home.module.css";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { plants, fetchPlants, user } = useStore() as any;
-  const { todayTasks, careStats, fetchCareTasks } = useCare();
+  const { plants, user } = useStore() as any;
+  const { todayTasks, careStats } = useCare();
 
   // 设置页面标题
   useTitle();
@@ -31,11 +31,6 @@ const Home: React.FC = () => {
     needsCare: 0,
     todayTasks: 0,
   });
-
-  useEffect(() => {
-    fetchPlants();
-    fetchCareTasks();
-  }, [fetchPlants, fetchCareTasks]);
 
   useEffect(() => {
     // 使用真实数据更新统计

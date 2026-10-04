@@ -8,12 +8,11 @@ import {
   Picker,
   Popup,
   DatetimePicker,
-  Loading,
 } from "react-vant";
 import { Arrow, CalendarO, Delete } from "@react-vant/icons";
 import { useCare, useTitle } from "../../../hooks";
 import { usePlant } from "../../../hooks/usePlant";
-import type { CareTask } from "../../../store/types";
+import type { CareTask, Plant } from "../../../store/types";
 import { formatCareReminderTime } from "../../../utils/date";
 import styles from "./edit.module.css";
 
@@ -28,18 +27,14 @@ const EditCareTask: React.FC = () => {
   // 设置页面标题
   useTitle();
 
-  const {
-    careTasks,
-    updateCareTask,
-    deleteCareTask,
-    careLoading,
-    fetchCareTasks,
-  } = useCare();
-  const { plants, fetchPlants } = usePlant();
+  const { careTasks, updateCareTask, deleteCareTask } = useCare();
+  const { plants } = usePlant();
 
-  // 当前编辑的任务
-  const [currentTask, setCurrentTask] = useState<CareTask | null>(null);
-  const [loading, setLoading] = useState(true);
+  // 当前编辑的任务（store 数据启动时已同步恢复，直接派生即可）
+  const currentTask = useMemo(
+    () => (id ? careTasks.find((t) => t.id === id) ?? null : null),
+    [id, careTasks]
+  );
 
   // 表单数据
   const [formData, setFormData] = useState({
@@ -109,96 +104,55 @@ const EditCareTask: React.FC = () => {
     },
   ];
 
-  // 初始化数据
+  // 表单数据跟随当前任务初始化/同步
   useEffect(() => {
-    const initData = async () => {
-      try {
-        setLoading(true);
-        await Promise.all([
-          fetchCareTasks().catch((error) => {
-            console.error("获取养护任务失败:", error);
-            return { success: false, error: error.message };
-          }),
-          fetchPlants().catch((error) => {
-            console.error("获取植物列表失败:", error);
-            return { success: false, error: error.message };
-          }),
-        ]);
-      } catch (error) {
-        console.error("初始化数据失败:", error);
-        alert("加载数据失败");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initData();
-  }, [fetchCareTasks, fetchPlants]);
-
-  // 查找并设置当前任务
-  useEffect(() => {
-    if (id && careTasks.length > 0) {
-      try {
-        const task = careTasks.find((t: any) => t.id === id);
-        if (task && task.id && task.createdAt) {
-          setCurrentTask(task);
-          setFormData({
-            plantId: task.plantId || "",
-            plantName: task.plantName || "",
-            type: task.type || "water",
-            title: task.title || "",
-            description: task.description || "",
-            dueDate: task.dueDate || "",
-            priority: task.priority || "medium",
-          });
-        } else {
-          console.error("任务数据不完整:", task);
-          alert("任务数据不完整");
-          navigate("/care", { replace: true });
-        }
-      } catch (error) {
-        console.error("查找任务失败:", error);
-        alert("查找任务失败");
-        navigate("/care", { replace: true });
-      }
-    }
-  }, [id, careTasks, navigate]);
+    if (!currentTask) return;
+    setFormData({
+      plantId: currentTask.plantId || "",
+      plantName: currentTask.plantName || "",
+      type: currentTask.type || "water",
+      title: currentTask.title || "",
+      description: currentTask.description || "",
+      dueDate: currentTask.dueDate || "",
+      priority: currentTask.priority || "medium",
+    });
+  }, [currentTask]);
 
   // 准备植物选择器数据
   const plantPickerColumns = useMemo(() => {
-    if (!plants || plants.length === 0) return [[]];
+    if (plants.length === 0) {
+      return [[{ text: "无植物", value: "", plantData: null as Plant | null }]];
+    }
     return [
-      plants.map((plant: any) => ({
+      plants.map((plant) => ({
         text: plant.name || "未知植物",
         value: plant.id,
-        plantData: plant,
+        plantData: plant as Plant | null,
       })),
     ];
   }, [plants]);
 
   // 准备任务类型选择器数据
-  const typePickerColumns = useMemo(() => {
-    if (!taskTypes || taskTypes.length === 0) return [[]];
-    return [
+  const typePickerColumns = useMemo(
+    () => [
       taskTypes.map((type) => ({
         text: `${type.icon} ${type.label}`,
         value: type.value,
-        typeData: type,
       })),
-    ];
-  }, [taskTypes]);
+    ],
+    []
+  );
 
   // 准备优先级选择器数据
-  const priorityPickerColumns = useMemo(() => {
-    if (!priorities || priorities.length === 0) return [[]];
-    return [
+  const priorityPickerColumns = useMemo(
+    () => [
       priorities.map((priority) => ({
         text: priority.label,
         value: priority.value,
-        priorityData: priority,
       })),
-    ];
-  }, [priorities]);
+    ],
+    []
+  );
 
   // 获取当前选中的任务类型信息
   const currentTaskType = useMemo(() => {
@@ -386,61 +340,10 @@ const EditCareTask: React.FC = () => {
     }
   }, [hasChanges, navigate]);
 
-  // ====== 调试日志和兜底渲染 ======
-  // console.log(
-  //   "【调试】currentTask:",
-  //   currentTask,
-  //   "\ncareTasks:",
-  //   careTasks,
-  //   "\nplants:",
-  //   plants,
-  //   "\nloading:",
-  //   loading,
-  //   "\nid:",
-  //   id
-  // );
-
-  if (!loading && !currentTask) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorText}>
-          任务不存在或数据未加载
-          <br />
-          当前id: {id}
-          <br />
-          careTasks: {JSON.stringify(careTasks)}
-        </div>
-        <Button type="primary" onClick={() => navigate("/care")}>
-          返回
-        </Button>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <Loading size="24px" />
-        <div className={styles.loadingText}>加载中...</div>
-      </div>
-    );
-  }
-
   if (!currentTask) {
     return (
       <div className={styles.errorContainer}>
         <div className={styles.errorText}>任务不存在</div>
-        <Button type="primary" onClick={() => navigate("/care")}>
-          返回
-        </Button>
-      </div>
-    );
-  }
-
-  if (!currentTask.id || !currentTask.createdAt) {
-    return (
-      <div className={styles.errorContainer}>
-        <div className={styles.errorText}>任务数据不完整</div>
         <Button type="primary" onClick={() => navigate("/care")}>
           返回
         </Button>
@@ -457,24 +360,6 @@ const EditCareTask: React.FC = () => {
   };
   // 兜底 currentPlant
   const safePlant = currentPlant || { name: "未知植物" };
-
-  // 兜底选择器 columns
-  const safePlantPickerColumns =
-    plantPickerColumns &&
-    plantPickerColumns[0] &&
-    plantPickerColumns[0].length > 0
-      ? plantPickerColumns
-      : [[{ text: "无植物", value: "" }]];
-  const safeTypePickerColumns =
-    typePickerColumns && typePickerColumns[0] && typePickerColumns[0].length > 0
-      ? typePickerColumns
-      : [[{ text: "无类型", value: "" }]];
-  const safePriorityPickerColumns =
-    priorityPickerColumns &&
-    priorityPickerColumns[0] &&
-    priorityPickerColumns[0].length > 0
-      ? priorityPickerColumns
-      : [[{ text: "无优先级", value: "" }]];
 
   return (
     <div className={styles.editTaskPage}>
@@ -615,7 +500,6 @@ const EditCareTask: React.FC = () => {
           <Button
             type="primary"
             size="large"
-            loading={careLoading}
             onClick={handleSave}
             disabled={!hasChanges}
             className={styles.saveButton}
@@ -633,7 +517,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择植物"
-          columns={safePlantPickerColumns}
+          columns={plantPickerColumns}
           value={[formData.plantId]}
           onConfirm={handlePlantSelect}
           onCancel={() => setShowPlantPicker(false)}
@@ -648,7 +532,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择任务类型"
-          columns={safeTypePickerColumns}
+          columns={typePickerColumns}
           value={[formData.type]}
           onConfirm={handleTypeSelect}
           onCancel={() => setShowTypePicker(false)}
@@ -663,7 +547,7 @@ const EditCareTask: React.FC = () => {
       >
         <Picker
           title="选择优先级"
-          columns={safePriorityPickerColumns}
+          columns={priorityPickerColumns}
           value={[formData.priority]}
           onConfirm={handlePrioritySelect}
           onCancel={() => setShowPriorityPicker(false)}

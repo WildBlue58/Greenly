@@ -1,270 +1,73 @@
 import type { Plant } from "./types";
+import type { SliceCreator, PlantSlice } from "./slices";
+import { seedPlants } from "../mocks/seed";
 
-// 模拟植物数据
-const mockPlants: Plant[] = [
-  {
-    id: "1",
-    name: "绿萝",
-    species: "绿萝属",
-    image: "https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=400&h=400&fit=crop",
-    status: "healthy",
-    health: "good",
-    location: "客厅",
-    wateringFrequency: 7,
-    lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    nextWatering: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    notes: "生长良好，叶子翠绿",
-    description: "绿萝是一种常见的室内观叶植物，具有较强的净化空气能力，易于养护，适合新手种植。",
-    careLevel: "easy",
-    lightNeeds: "medium",
-    waterNeeds: "medium",
-    temperature: { min: 15, max: 30 },
-    humidity: 60,
-    careTips: [
-      "保持土壤适度湿润",
-      "提供散射光照射",
-      "定期擦拭叶片保持清洁",
-      "春秋季节可适当施肥"
-    ],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    name: "多肉植物",
-    species: "景天科",
-    image: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=400&h=400&fit=crop",
-    status: "needs_care",
-    health: "warning",
-    location: "阳台",
-    wateringFrequency: 14,
-    lastWatered: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-    nextWatering: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
-    notes: "需要浇水，叶子有些干瘪",
-    description: "多肉植物具有厚实的叶片和茎部，能够储存水分，耐旱性强，喜欢阳光充足的环境。",
-    careLevel: "easy",
-    lightNeeds: "high",
-    waterNeeds: "low",
-    temperature: { min: 10, max: 35 },
-    humidity: 40,
-    careTips: [
-      "避免积水，宁干勿湿",
-      "提供充足的阳光照射",
-      "注意冬季保温",
-      "使用排水良好的土壤"
-    ],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    name: "君子兰",
-    species: "石蒜科",
-    image: "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=400&h=400&fit=crop",
-    status: "healthy",
-    health: "good",
-    location: "书房",
-    wateringFrequency: 5,
-    lastWatered: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    nextWatering: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-    notes: "开花期，需要适当施肥",
-    description: "君子兰是著名的观花植物，花朵艳丽，叶片挺拔，具有很高的观赏价值，需要细心养护。",
-    careLevel: "medium",
-    lightNeeds: "medium",
-    waterNeeds: "medium",
-    temperature: { min: 18, max: 25 },
-    humidity: 70,
-    careTips: [
-      "保持适宜的温度和湿度",
-      "避免阳光直射",
-      "花期适当增加施肥",
-      "定期转动花盆保持株型美观"
-    ],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+const DAY = 24 * 60 * 60 * 1000;
 
-// 植物状态管理
-export const plantStore = (set: any, get: any) => ({
-  plants: [] as Plant[],
-  currentPlant: null as Plant | null,
+const createId = (): string => {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `plant-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+};
+
+export const createPlantSlice: SliceCreator<PlantSlice> = (set) => ({
+  plants: seedPlants,
+  currentPlant: null,
   plantsLoading: false,
 
-  // 获取植物列表
-  fetchPlants: async () => {
-    set({ plantsLoading: true });
-    try {
-      // 首先尝试从localStorage获取数据
-      const storedPlants = localStorage.getItem("plants");
-      if (storedPlants) {
-        const plants = JSON.parse(storedPlants);
-        set({ plants, plantsLoading: false });
-        return;
-      }
-
-      // 如果没有存储的数据，使用模拟数据
-      console.log("使用模拟植物数据");
-      localStorage.setItem("plants", JSON.stringify(mockPlants));
-      set({ plants: mockPlants, plantsLoading: false });
-      
-      // 注释掉原来的API调用，避免错误
-      /*
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/plants", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("获取植物列表失败");
-      }
-
-      const data = await response.json();
-      set({ plants: data.plants, plantsLoading: false });
-      */
-    } catch (error) {
-      console.error("获取植物列表失败:", error);
-      // 如果出错，使用模拟数据
-      set({ plants: mockPlants, plantsLoading: false });
-    }
-  },
-
-  // 添加植物
+  // 保留页面提交的全部字段，仅为缺失字段补默认值
   addPlant: async (plantData: Partial<Plant>) => {
-    try {
-      const newPlant: Plant = {
-        id: Date.now().toString(),
-        name: plantData.name || "新植物",
-        species: plantData.species || "未知",
-        image: plantData.image || "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop",
-        status: plantData.status || "healthy",
-        health: plantData.health || "good",
-        location: plantData.location || "客厅",
-        wateringFrequency: plantData.wateringFrequency || 7,
-        lastWatered: new Date().toISOString(),
-        nextWatering: new Date(Date.now() + (plantData.wateringFrequency || 7) * 24 * 60 * 60 * 1000).toISOString(),
-        notes: plantData.notes || "",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+    const now = new Date().toISOString();
+    const wateringFrequency = plantData.wateringFrequency ?? 7;
+    const newPlant: Plant = {
+      name: "新植物",
+      species: "未知",
+      image:
+        "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=300&h=300&fit=crop",
+      status: "healthy",
+      health: "good",
+      location: "客厅",
+      wateringFrequency,
+      lastWatered: now,
+      nextWatering: new Date(Date.now() + wateringFrequency * DAY).toISOString(),
+      notes: "",
+      ...plantData,
+      id: createId(),
+      createdAt: now,
+      updatedAt: now,
+    };
 
-      set((state: any) => {
-        const newPlants = [...state.plants, newPlant];
-        localStorage.setItem("plants", JSON.stringify(newPlants));
-        return { plants: newPlants };
-      });
-      
-      return newPlant;
-    } catch (error) {
-      console.error("添加植物失败:", error);
-      throw error;
-    }
+    set((state) => ({ plants: [...state.plants, newPlant] }));
+    return newPlant;
   },
 
-  // 更新植物
   updatePlant: async (id: string, plantData: Partial<Plant>) => {
-    try {
-      set((state: any) => {
-        const updatedPlants = state.plants.map((plant: Plant) =>
-          plant.id === id ? { ...plant, ...plantData, updatedAt: new Date().toISOString() } : plant
-        );
-        localStorage.setItem("plants", JSON.stringify(updatedPlants));
-        return {
-          plants: updatedPlants,
-          currentPlant: state.currentPlant?.id === id ? { ...state.currentPlant, ...plantData, updatedAt: new Date().toISOString() } : state.currentPlant,
-        };
-      });
-    } catch (error) {
-      console.error("更新植物失败:", error);
-      throw error;
-    }
+    set((state) => ({
+      plants: state.plants.map((plant) =>
+        plant.id === id
+          ? { ...plant, ...plantData, updatedAt: new Date().toISOString() }
+          : plant
+      ),
+      currentPlant:
+        state.currentPlant?.id === id
+          ? {
+              ...state.currentPlant,
+              ...plantData,
+              updatedAt: new Date().toISOString(),
+            }
+          : state.currentPlant,
+    }));
   },
 
-  // 删除植物
   deletePlant: async (id: string) => {
-    try {
-      set((state: any) => {
-        const filteredPlants = state.plants.filter((plant: Plant) => plant.id !== id);
-        localStorage.setItem("plants", JSON.stringify(filteredPlants));
-        return {
-          plants: filteredPlants,
-          currentPlant: state.currentPlant?.id === id ? null : state.currentPlant,
-        };
-      });
-    } catch (error) {
-      console.error("删除植物失败:", error);
-      throw error;
-    }
+    set((state) => ({
+      plants: state.plants.filter((plant) => plant.id !== id),
+      currentPlant: state.currentPlant?.id === id ? null : state.currentPlant,
+    }));
   },
 
-  // 设置当前植物
   setCurrentPlant: (plant: Plant | null) => {
     set({ currentPlant: plant });
-  },
-
-  // 获取单个植物详情
-  fetchPlantById: async (id: string) => {
-    try {
-      const state = get();
-      const plant = state.plants.find((p: Plant) => p.id === id);
-      if (plant) {
-        set({ currentPlant: plant });
-        return plant;
-      } else {
-        throw new Error("植物不存在");
-      }
-    } catch (error) {
-      console.error("获取植物详情失败:", error);
-      throw error;
-    }
-  },
-
-  // 浇水
-  waterPlant: async (id: string) => {
-    try {
-      set((state: any) => {
-        const updatedPlants = state.plants.map((plant: Plant) => {
-          if (plant.id === id) {
-            const nextWatering = new Date(Date.now() + plant.wateringFrequency * 24 * 60 * 60 * 1000);
-            return {
-              ...plant,
-              lastWatered: new Date().toISOString(),
-              nextWatering: nextWatering.toISOString(),
-              updatedAt: new Date().toISOString(),
-            };
-          }
-          return plant;
-        });
-        localStorage.setItem("plants", JSON.stringify(updatedPlants));
-        return {
-          plants: updatedPlants,
-          currentPlant: state.currentPlant?.id === id ? updatedPlants.find((p: Plant) => p.id === id) : state.currentPlant,
-        };
-      });
-    } catch (error) {
-      console.error("浇水失败:", error);
-      throw error;
-    }
-  },
-
-  // 更新植物健康状态
-  updatePlantHealth: async (id: string, health: Plant["health"]) => {
-    try {
-      set((state: any) => {
-        const updatedPlants = state.plants.map((plant: Plant) =>
-          plant.id === id ? { ...plant, health, updatedAt: new Date().toISOString() } : plant
-        );
-        localStorage.setItem("plants", JSON.stringify(updatedPlants));
-        return {
-          plants: updatedPlants,
-          currentPlant: state.currentPlant?.id === id ? { ...state.currentPlant, health, updatedAt: new Date().toISOString() } : state.currentPlant,
-        };
-      });
-    } catch (error) {
-      console.error("更新健康状态失败:", error);
-      throw error;
-    }
   },
 });

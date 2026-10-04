@@ -1,46 +1,40 @@
 import { create } from "zustand";
-import { userStore } from "./user";
-import { plantStore } from "./plant";
-import { careStore } from "./care";
-import { aiStore } from "./ai";
-import { appStore } from "./app";
-import type { User, Plant } from "./types";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { createUserSlice } from "./user";
+import { createPlantSlice } from "./plant";
+import { createCareSlice } from "./care";
+import { createAiSlice } from "./ai";
+import { createAppSlice } from "./app";
+import { APP_STORAGE_KEY, STORAGE_VERSION } from "../repositories/appStorage";
+import type { AppStore } from "./slices";
 
-// 定义 Store 类型
-interface StoreState {
-  // User store
-  user: User | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-  login: (credentials: any) => Promise<void>;
-  register: (userData: any) => Promise<void>;
-  logout: () => void;
-  updateProfile: (profile: Partial<User>) => Promise<void>;
-  checkAuth: () => Promise<void>;
-  
-  // Plant store
-  plants: Plant[];
-  currentPlant: Plant | null;
-  plantsLoading: boolean;
-  fetchPlants: () => Promise<void>;
-  addPlant: (plantData: Partial<Plant>) => Promise<Plant>;
-  updatePlant: (id: string, plantData: Partial<Plant>) => Promise<void>;
-  deletePlant: (id: string) => Promise<void>;
-  setCurrentPlant: (plant: Plant | null) => void;
-  fetchPlantById: (id: string) => Promise<Plant>;
-  waterPlant: (id: string) => Promise<void>;
-  updatePlantHealth: (id: string, health: Plant["health"]) => Promise<void>;
-  
-  // 其他 store 的方法（根据需要添加）
-  [key: string]: any;
-}
-
-// 创建主store
-export const useStore = create<StoreState>((set, get) => ({
-  // 整合所有子store
-  ...userStore(set, get),
-  ...plantStore(set, get),
-  ...careStore(set, get),
-  ...aiStore(set, get),
-  ...appStore(set, get),
-}));
+/**
+ * 全局唯一 store。
+ * 持久化由 persist 中间件负责：需要持久化的字段在 partialize 中声明，
+ * 其余（loading 标志、会话内状态）不落盘。localStorage 中没有数据时
+ * 各 slice 的初始值即种子数据（见 src/mocks/seed.ts）。
+ */
+export const useStore = create<AppStore>()(
+  persist(
+    (...a) => ({
+      ...createUserSlice(...a),
+      ...createPlantSlice(...a),
+      ...createCareSlice(...a),
+      ...createAiSlice(...a),
+      ...createAppSlice(...a),
+    }),
+    {
+      name: APP_STORAGE_KEY,
+      version: STORAGE_VERSION,
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        user: state.user,
+        plants: state.plants,
+        carePlans: state.carePlans,
+        careRecords: state.careRecords,
+        careTasks: state.careTasks,
+        theme: state.theme,
+      }),
+    }
+  )
+);

@@ -10,7 +10,7 @@ import { ConfigProvider } from "react-vant";
 import { Layout, BlankLayout } from "./components/layout";
 import Loading from "./components/common/Loading";
 import { useStore } from "./store";
-import { initializeMockCareData } from "./utils/initializeMockData";
+import { applyTheme } from "./store/app";
 import "./App.css";
 
 // 懒加载页面组件
@@ -128,38 +128,13 @@ const greenTheme = {
 };
 
 function App() {
-  const {
-    checkAuth,
-    fetchPlants,
-    fetchCarePlans,
-    fetchCareTasks,
-    initializeApp,
-  } = useStore() as any;
+  const theme = useStore((state) => state.theme);
 
-  // 初始化应用
+  // 数据（植物、养护、用户）由 zustand persist 在启动时自动恢复，
+  // 这里只负责把主题应用到 DOM
   useEffect(() => {
-    const initApp = async () => {
-      try {
-        // 初始化模拟数据（仅在开发环境）
-        initializeMockCareData();
-
-        // 初始化应用设置
-        initializeApp();
-
-        // 检查用户认证状态
-        await checkAuth();
-
-        // 加载数据
-        await Promise.all([fetchPlants(), fetchCarePlans(), fetchCareTasks()]);
-
-        console.log("应用初始化完成");
-      } catch (error) {
-        console.error("应用初始化失败:", error);
-      }
-    };
-
-    initApp();
-  }, [checkAuth, fetchPlants, fetchCarePlans, fetchCareTasks, initializeApp]);
+    applyTheme(theme);
+  }, [theme]);
 
   return (
     <ConfigProvider themeVars={greenTheme}>
